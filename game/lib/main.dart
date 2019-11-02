@@ -5,9 +5,9 @@ import 'game.dart';
 
 void main() async {
   Flame.audio.disableLog();
-  await Flame.util.initialDimensions();
+  Size size = await Flame.util.initialDimensions();
 
-  MyGame game = MyGame();
+  MyGame game = MyGame(size);
 
   runApp(MaterialApp(
     routes: {
