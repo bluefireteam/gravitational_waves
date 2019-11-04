@@ -6,27 +6,30 @@ import 'package:flutter/gestures.dart';
 
 import 'components/background.dart';
 import 'components/player.dart';
+import 'palette.dart';
 
 class MyGame extends BaseGame {
 
-  double lastGeneratedX = -Background.CHUNCK_SIZE.toDouble();
+  double lastGeneratedX;
   Player player;
 
   MyGame(Size size) {
     this.size = size;
+    this.lastGeneratedX = -size.width;
 
-    start();
+    start(size);
   }
 
-  void start() {
-    add(player = Player());
+  void start(Size size) {
+    add(player = Player(size));
     generateNextChunck();
   }
 
   void generateNextChunck() {
-    while (lastGeneratedX < (player.x / size.width) + Background.CHUNCK_SIZE) {
-      add(Background(lastGeneratedX));
-      lastGeneratedX += Background.CHUNCK_SIZE;
+    while (lastGeneratedX < player.x + size.width) {
+      final bg = Background(lastGeneratedX);
+      add(bg);
+      lastGeneratedX = bg.endX;
     }
   }
 
@@ -36,6 +39,12 @@ class MyGame extends BaseGame {
     generateNextChunck();
 
     camera.x = player.x - size.width / 3;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.black.paint);
+    super.render(canvas);
   }
 
   @override

@@ -12,6 +12,11 @@ class Player extends PositionComponent with HasGameRef<MyGame>, Resizable {
   static const double PLAYER_SPEED = 10.0;
   static final Paint _paint = Paint()..color = const Color(0xFFFFFF00);
 
+  Player(Size size) {
+    this.x = 0.0;
+    this.y = size.height / 2;
+  }
+
   double get playerSize => size.width * 2 / Background.CHUNCK_SIZE;
 
   @override
@@ -29,5 +34,12 @@ class Player extends PositionComponent with HasGameRef<MyGame>, Resizable {
   void update(double t) {
     x += t * PLAYER_SPEED;
     // TODO impl gravity!
+  }
+
+  Background getCurrentBg() {
+    return gameRef.components
+      .where((c) => c is Background)
+      .map((c) => c as Background)
+      .firstWhere((c) => c.contains(this));
   }
 }

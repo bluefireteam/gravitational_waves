@@ -2,9 +2,13 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
+import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 
-class Background extends PositionComponent with Resizable {
+import '../game.dart';
+import 'player.dart';
+
+class Background extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   static const int CHUNCK_SIZE = 32;
   static final Paint _paint = Paint()..color = const Color(0xFFFF00FF);
@@ -24,7 +28,14 @@ class Background extends PositionComponent with Resizable {
   }
 
   double get blockWidth => size.width * 2 / CHUNCK_SIZE;
-  double get blockHeight => size.width / 18;
+  double get blockHeight => size.height / 14;
+
+  double get startX => x;
+  double get endX => x + blockWidth * CHUNCK_SIZE;
+
+  bool contains(Player player) {
+    return player.x >= startX && player.x <= endX;
+  }
 
   @override
   void render(Canvas c) {
@@ -41,4 +52,7 @@ class Background extends PositionComponent with Resizable {
 
   @override
   void update(double t) {}
+
+  @override
+  bool destroy() => endX < gameRef.camera.x - size.width;
 }
