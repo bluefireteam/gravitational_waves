@@ -9,7 +9,7 @@ import 'background.dart';
 
 class Player extends PositionComponent with HasGameRef<MyGame> {
 
-  static const double PLAYER_SPEED = 40.0;
+  static const double PLAYER_SPEED = 60.0;
   static final Paint _paint = Paint()..color = const Color(0xFFFFFF00);
 
   double speedY;

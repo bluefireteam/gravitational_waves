@@ -10,8 +10,13 @@ import '../util.dart';
 import 'player.dart';
 
 class Column {
+  static const OFFSET = 5;
+
   int bottom, top;
   Column(this.bottom, this.top);
+
+  double get topHeight => BLOCK_SIZE * (OFFSET + top);
+  double get bottomHeight => BLOCK_SIZE * (OFFSET + bottom);
 }
 
 class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
@@ -56,11 +61,8 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
     columns.asMap().forEach((i, column) {
       double px = x + i * BLOCK_SIZE;
 
-      double topHeight = BLOCK_SIZE * (3 + column.top);
-      c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, topHeight), _paint);
-
-      double bottomHeight = BLOCK_SIZE * (3 + column.bottom);
-      c.drawRect(Rect.fromLTWH(px, size.height - bottomHeight, BLOCK_SIZE, bottomHeight), _paint);
+      c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _paint);
+      c.drawRect(Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight), _paint);
     });
   }
 
@@ -75,8 +77,6 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
     Column column = columns[idx];
 
     double px = x + idx * BLOCK_SIZE;
-    double top = BLOCK_SIZE * (3 + column.top);
-    double bottom = BLOCK_SIZE * (3 + column.bottom);
-    return Rect.fromLTWH(px, top, BLOCK_SIZE, size.height - top - bottom);
+    return Rect.fromLTWH(px, column.topHeight, BLOCK_SIZE, size.height - column.topHeight - column.bottomHeight);
   }
 }
