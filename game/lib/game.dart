@@ -12,7 +12,7 @@ import 'util.dart';
 
 class MyGame extends BaseGame {
 
-  static const GRAVITY_ACC = 100.0;
+  static const GRAVITY_ACC = 150.0;
 
   double lastGeneratedX;
   Player player;
@@ -25,7 +25,7 @@ class MyGame extends BaseGame {
   MyGame(Size size) {
     resize(size);
 
-    this.lastGeneratedX = -CHUNCK_SIZE / 2.0;
+    this.lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
     _addBg(Background.plains(lastGeneratedX));
 
     this.gravity = GRAVITY_ACC;
@@ -47,7 +47,7 @@ class MyGame extends BaseGame {
 
   void recalculateScaleFactor(Size rawSize) {
     int blocksWidth = 32;
-    int blocksHeight = 24;
+    int blocksHeight = 18;
 
     double width = blocksWidth * BLOCK_SIZE;
     double height = blocksHeight * BLOCK_SIZE;
@@ -98,8 +98,8 @@ class MyGame extends BaseGame {
   }
 
   @override
-  void onTapDown(TapDownDetails details) {
-    super.onTapDown(details);
+  void onTapUp(TapUpDetails details) {
+    super.onTapUp(details);
     gravity *= -1;
   }
 
