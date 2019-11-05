@@ -25,7 +25,7 @@ class MyGame extends BaseGame {
   MyGame(Size size) {
     resize(size);
 
-    this.lastGeneratedX = -size.width;
+    this.lastGeneratedX = -CHUNCK_SIZE / 2.0;
     _addBg(Background.plains(lastGeneratedX));
 
     this.gravity = GRAVITY_ACC;

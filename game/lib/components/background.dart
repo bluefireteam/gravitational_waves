@@ -16,7 +16,6 @@ class Column {
 
 class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
-  static const int CHUNCK_SIZE = 64;
   static final Paint _paint = Paint()..color = const Color(0xFFFF00FF);
 
   List<Column> columns;
