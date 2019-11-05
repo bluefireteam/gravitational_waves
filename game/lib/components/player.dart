@@ -54,7 +54,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     return gameRef.components
       .where((c) => c is Background)
       .map((c) => c as Background)
-      .firstWhere((c) => c.contains(this))
+      .firstWhere((c) => c.contains(right))
       .findRectContaining(right);
   }
 

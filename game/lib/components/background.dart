@@ -7,7 +7,6 @@ import 'package:flame/components/mixins/resizable.dart';
 
 import '../game.dart';
 import '../util.dart';
-import 'player.dart';
 
 class Column {
   static const OFFSET = 5;
@@ -52,8 +51,8 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   double get startX => x;
   double get endX => x + BLOCK_SIZE * CHUNCK_SIZE;
 
-  bool contains(Player player) {
-    return player.right >= startX && player.right < endX;
+  bool contains(double targetX) {
+    return targetX >= startX && targetX < endX;
   }
 
   @override
