@@ -8,23 +8,35 @@ import 'package:flame/components/mixins/resizable.dart';
 import '../game.dart';
 import 'player.dart';
 
+class Column {
+  int bottom, top;
+  Column(this.bottom, this.top);
+}
+
 class Background extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
-  static const int CHUNCK_SIZE = 32;
+  static const int CHUNCK_SIZE = 64;
   static final Paint _paint = Paint()..color = const Color(0xFFFF00FF);
 
-  List<int> top;
-  List<int> bottom;
+  List<Column> columns;
 
   Background(double x) {
     this.x = x;
-    this.top = _generateChunck();
-    this.bottom = _generateChunck();
+    this.columns = _generateChunck().toList();
   }
 
-  static List<int> _generateChunck() {
+  static Iterable<Column> _generateChunck() sync* {
     final r = math.Random();
-    return List.generate(CHUNCK_SIZE, (_) => r.nextInt(3));
+    int beforeTop, beforeBottom;
+    for (int i = 0; i < CHUNCK_SIZE; i++) {
+      if (beforeTop == null || r.nextDouble() < 0.25) {
+        beforeTop = r.nextInt(3);
+      }
+      if (beforeBottom == null || r.nextDouble() < 0.25) {
+        beforeBottom = r.nextInt(3);
+      }
+      yield Column(beforeTop, beforeBottom);
+    }
   }
 
   double get blockWidth => size.width * 2 / CHUNCK_SIZE;
@@ -39,15 +51,15 @@ class Background extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
-    for (int i = 0; i < CHUNCK_SIZE; i++) {
+    columns.asMap().forEach((i, column) {
       double px = x + i * blockWidth;
 
-      double topHeight = blockHeight * (3 + top[i]);
+      double topHeight = blockHeight * (3 + column.top);
       c.drawRect(Rect.fromLTWH(px, 0.0, blockWidth, topHeight), _paint);
 
-      double bottomHeight = blockHeight * (3 + bottom[i]);
+      double bottomHeight = blockHeight * (3 + column.bottom);
       c.drawRect(Rect.fromLTWH(px, size.height - bottomHeight, blockWidth, bottomHeight), _paint);
-    }
+    });
   }
 
   @override
@@ -55,4 +67,13 @@ class Background extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   @override
   bool destroy() => endX < gameRef.camera.x - size.width;
+
+  Rect findRectContaining(double targetX) {
+    int idx = ((targetX - x) / blockWidth).round();
+    double px = x + idx * blockWidth;
+    Column column = columns[idx];
+    double top = blockHeight * (3 + column.top);
+    double bottom = blockHeight * (3 + column.bottom);
+    return Rect.fromLTWH(px, top, blockWidth, size.height - top - bottom);
+  }
 }

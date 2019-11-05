@@ -10,12 +10,16 @@ import 'palette.dart';
 
 class MyGame extends BaseGame {
 
+  static const GRAVITY_ACC = 100.0;
+
   double lastGeneratedX;
   Player player;
+  double gravity;
 
   MyGame(Size size) {
     this.size = size;
     this.lastGeneratedX = -size.width;
+    this.gravity = GRAVITY_ACC;
 
     start(size);
   }
@@ -50,6 +54,7 @@ class MyGame extends BaseGame {
   @override
   void onTapDown(TapDownDetails details) {
     super.onTapDown(details);
+    gravity *= -1;
   }
 
   void pause() {}
