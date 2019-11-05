@@ -1,12 +1,14 @@
-
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/game.dart';
+import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
 
 import 'components/background.dart';
 import 'components/player.dart';
 import 'palette.dart';
+import 'util.dart';
 
 class MyGame extends BaseGame {
 
@@ -16,25 +18,55 @@ class MyGame extends BaseGame {
   Player player;
   double gravity;
 
+  Size rawSize, scaledSize;
+  Position resizeOffset = Position.empty();
+  double scale = 2.0;
+
   MyGame(Size size) {
-    this.size = size;
+    resize(size);
+
     this.lastGeneratedX = -size.width;
+    _addBg(Background.plains(lastGeneratedX));
+
     this.gravity = GRAVITY_ACC;
 
-    start(size);
-  }
-
-  void start(Size size) {
-    add(player = Player(size));
+    add(player = Player());
     generateNextChunck();
   }
 
   void generateNextChunck() {
     while (lastGeneratedX < player.x + size.width) {
-      final bg = Background(lastGeneratedX);
-      add(bg);
-      lastGeneratedX = bg.endX;
+      _addBg(Background(lastGeneratedX));
     }
+  }
+
+  void _addBg(Background bg) {
+    add(bg);
+    lastGeneratedX = bg.endX;
+  }
+
+  void recalculateScaleFactor(Size rawSize) {
+    int blocksWidth = 32;
+    int blocksHeight = 24;
+
+    double width = blocksWidth * BLOCK_SIZE;
+    double height = blocksHeight * BLOCK_SIZE;
+
+    double scaleX = rawSize.width / width;
+    double scaleY = rawSize.height / height;
+
+    this.scale = math.min(scaleX, scaleY);
+
+    this.rawSize = rawSize;
+    this.size = Size(width, height);
+    this.scaledSize = Size(scale * width, scale * height);
+    this.resizeOffset = Position((rawSize.width - scaledSize.width) / 2, (rawSize.height - scaledSize.height) / 2);
+  }
+
+  @override
+  void resize(Size rawSize) {
+    recalculateScaleFactor(rawSize);
+    super.resize(size);
   }
 
   @override
@@ -46,7 +78,21 @@ class MyGame extends BaseGame {
   }
 
   @override
-  void render(Canvas canvas) {
+  void render(Canvas c) {
+    c.save();
+    c.translate(resizeOffset.x, resizeOffset.y);
+    c.scale(scale, scale);
+
+    renderGame(c);
+
+    c.restore();
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, rawSize.width, resizeOffset.y), Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(0.0, resizeOffset.y + scaledSize.height, rawSize.width, resizeOffset.y), Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, resizeOffset.x, rawSize.height), Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(resizeOffset.x + scaledSize.width, 0.0, resizeOffset.x, rawSize.height), Palette.black.paint);
+  }
+
+  void renderGame(Canvas canvas) {
     canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.black.paint);
     super.render(canvas);
   }

@@ -2,31 +2,29 @@ import 'dart:ui';
 
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/components/mixins/resizable.dart';
 
 import '../game.dart';
+import '../util.dart';
 import 'background.dart';
 
-class Player extends PositionComponent with HasGameRef<MyGame>, Resizable {
+class Player extends PositionComponent with HasGameRef<MyGame> {
 
   static const double PLAYER_SPEED = 25.0;
   static final Paint _paint = Paint()..color = const Color(0xFFFFFF00);
 
   double speedY;
 
-  Player(Size size) {
+  Player() {
     this.x = 0.0;
-    this.y = size.height / 2;
+    this.width = this.height = BLOCK_SIZE;
     this.speedY = 0.0;
   }
 
-  double get playerSize => size.width * 2 / Background.CHUNCK_SIZE;
-
   @override
-  double get width => playerSize;
-
-  @override
-  double get height => playerSize;
+  set gameRef(MyGame gameRef) {
+    super.gameRef = gameRef;
+    this.y = getCurrentRect().bottom - BLOCK_SIZE;
+  }
 
   @override
   void render(Canvas c) {
