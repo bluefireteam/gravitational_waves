@@ -12,8 +12,6 @@ import 'util.dart';
 
 class MyGame extends BaseGame {
 
-  static const GRAVITY_ACC = 150.0;
-
   double lastGeneratedX;
   Player player;
   double gravity;

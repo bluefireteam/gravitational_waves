@@ -1,2 +1,5 @@
 const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;
+
+const PLAYER_SPEED = 160.0;
+const GRAVITY_ACC = 250.0;
