@@ -23,13 +23,12 @@ class TitlePage extends Page {
 
     Fonts.menuTitle.render(canvas, 'Gravitional Waves', Position(size.width / 2, rowSize), anchor: Anchor.center);
 
-    double currentX = colSize;
-    for (final item in items) {
+    items.asMap().forEach((idx, item) {
+      final currentX = (2 * idx + 1) * colSize;
       final rect = Rect.fromLTWH(currentX, 5/2 * rowSize, colSize, rowSize);
       canvas.drawRect(rect, Palette.menuItems.paint);
       Fonts.menuItems.render(canvas, item, Position.fromOffset(rect.center), anchor: Anchor.center);
-      currentX += 2 * colSize;
-    }
+    });
   }
 
   void tap(Position p) {
