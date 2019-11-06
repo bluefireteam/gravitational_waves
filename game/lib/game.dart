@@ -7,6 +7,8 @@ import 'package:flutter/gestures.dart';
 
 import 'components/background.dart';
 import 'components/player.dart';
+import 'pages/page.dart';
+import 'pages/title_page.dart';
 import 'palette.dart';
 import 'util.dart';
 
@@ -20,9 +22,15 @@ class MyGame extends BaseGame {
   Position resizeOffset = Position.empty();
   double scale = 2.0;
 
+  Page currentPage;
+
   MyGame(Size size) {
     resize(size);
+    currentPage = TitlePage(this);
+  }
 
+  void start() {
+    currentPage = null;
     this.lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
     _addBg(Background.plains(lastGeneratedX));
 
@@ -69,6 +77,10 @@ class MyGame extends BaseGame {
 
   @override
   void update(double t) {
+    if (currentPage != null) {
+      return;
+    }
+
     super.update(t);
     generateNextChunck();
 
@@ -91,12 +103,20 @@ class MyGame extends BaseGame {
   }
 
   void renderGame(Canvas canvas) {
+    if (currentPage != null) {
+      currentPage.render(canvas);
+      return;
+    }
     canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.black.paint);
     super.render(canvas);
   }
 
   @override
   void onTapUp(TapUpDetails details) {
+    if (currentPage != null) {
+      final o = details.globalPosition;
+      currentPage.tap(Position(o.dx, o.dy));
+    }
     super.onTapUp(details);
     gravity *= -1;
   }
