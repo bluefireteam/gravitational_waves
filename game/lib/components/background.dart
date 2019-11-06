@@ -37,12 +37,19 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   static Iterable<Column> _generateChunck() sync* {
     final r = math.Random();
     int beforeTop, beforeBottom;
+    int changesTop = 0, changesBottom = 0;
     for (int i = 0; i < CHUNCK_SIZE; i++) {
-      if (beforeTop == null || r.nextDouble() < 0.25) {
+      if (beforeTop == null || (changesTop * r.nextDouble() > 0.85)) {
         beforeTop = r.nextInt(3);
+        changesTop = 0;
+      } else {
+        changesTop++;
       }
-      if (beforeBottom == null || r.nextDouble() < 0.25) {
+      if (beforeBottom == null || (changesBottom * r.nextDouble() > 0.85)) {
         beforeBottom = r.nextInt(3);
+        changesBottom = 0;
+      } else {
+        changesBottom++;
       }
       yield Column(beforeTop, beforeBottom);
     }
