@@ -93,6 +93,7 @@ class MyGame extends BaseGame {
     c.translate(resizeOffset.x, resizeOffset.y);
     c.scale(scale, scale);
 
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.black.paint);
     renderGame(c);
 
     c.restore();
@@ -107,7 +108,6 @@ class MyGame extends BaseGame {
       currentPage.render(canvas);
       return;
     }
-    canvas.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.black.paint);
     super.render(canvas);
   }
 

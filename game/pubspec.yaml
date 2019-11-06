@@ -16,3 +16,7 @@ dev_dependencies:
 
 
 flutter:
+  fonts:
+   - family: BitPotion
+     fonts:
+       - asset: assets/fonts/BitPotionExt.ttf
