@@ -30,11 +30,11 @@ class MyGame extends BaseGame {
   }
 
   void start() {
+    this.gravity = GRAVITY_ACC;
+
     currentPage = null;
     this.lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
     _addBg(Background.plains(lastGeneratedX));
-
-    this.gravity = GRAVITY_ACC;
 
     add(player = Player());
     generateNextChunck();
@@ -111,11 +111,15 @@ class MyGame extends BaseGame {
     super.render(canvas);
   }
 
+  Position fixScaleFor(Position rawP) {
+    return rawP.clone().minus(resizeOffset).div(scale);
+  }
+
   @override
   void onTapUp(TapUpDetails details) {
     if (currentPage != null) {
-      final o = details.globalPosition;
-      currentPage.tap(Position(o.dx, o.dy));
+      currentPage.tap(fixScaleFor(Position.fromOffset(details.globalPosition)));
+      return;
     }
     super.onTapUp(details);
     gravity *= -1;
