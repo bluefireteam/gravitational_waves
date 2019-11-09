@@ -20,8 +20,6 @@ class TitlePage extends Page {
     ];
   }
 
-  Size get size => gameRef.size;
-
   double get colSize => size.width / (2 * buttons.length + 1);
   double get rowSize => size.height / 4;
 
@@ -31,15 +29,16 @@ class TitlePage extends Page {
   }
 
   @override
+  bool fullScreen = true;
+
+  @override
   void render(Canvas canvas) {
     Fonts.menuTitle.render(canvas, 'Gravitional Waves', Position(size.width / 2, rowSize), anchor: Anchor.center);
     buttons.forEach((b) => b.render(canvas));
   }
 
-  void tap(Position p) {
-    Offset offset = p.toOffset();
-    buttons.firstWhere((b) => b.rectGenerator().contains(offset), orElse: () => null)?.action();
-  }
+  @override
+  void tap(Position p) => Button.handleTap(buttons, p);
 
   void doNewGame() {
     gameRef.start();

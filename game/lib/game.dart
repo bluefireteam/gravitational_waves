@@ -1,9 +1,11 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
+import 'package:gravitational_waves/pages/game_over_page.dart';
 
 import 'components/background.dart';
 import 'components/player.dart';
@@ -30,13 +32,15 @@ class MyGame extends BaseGame {
   }
 
   void start() {
-    this.gravity = GRAVITY_ACC;
-
     currentPage = null;
-    this.lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+    gravity = GRAVITY_ACC;
+    lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+
+    components.clear();
     _addBg(Background.plains(lastGeneratedX));
 
     add(player = Player());
+    fixCamera();
     generateNextChunck();
   }
 
@@ -83,9 +87,10 @@ class MyGame extends BaseGame {
 
     super.update(t);
     generateNextChunck();
-
-    camera.x = player.x - size.width / 3;
+    fixCamera();
   }
+
+  void fixCamera() => camera.x = player.x - size.width / 3;
 
   @override
   void render(Canvas c) {
@@ -104,11 +109,18 @@ class MyGame extends BaseGame {
   }
 
   void renderGame(Canvas canvas) {
-    if (currentPage != null) {
-      currentPage.render(canvas);
-      return;
+    if (currentPage?.fullScreen != true) {
+      super.render(canvas);
+      renderLives(canvas);
+      
     }
-    super.render(canvas);
+    currentPage?.render(canvas);
+  }
+
+  void renderLives(Canvas canvas) {
+    final p = Position(size.width - 10, size.height - 10);
+    final text = player.livesLeft.toString();
+    Fonts.livesCounter.render(canvas, text, p, anchor: Anchor.bottomRight);
   }
 
   Position fixScaleFor(Position rawP) {
@@ -126,4 +138,8 @@ class MyGame extends BaseGame {
   }
 
   void pause() {}
+
+  void gameOver() {
+    currentPage = GameOverPage(this);
+  }
 }

@@ -11,4 +11,7 @@ abstract class Page {
 
   void render(Canvas canvas);
   void tap(Position p);
+  bool get fullScreen;
+
+  Size get size => gameRef.size;
 }
