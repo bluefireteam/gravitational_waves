@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,9 @@ void main() async {
   Flame.initializeWidget();
 
   Flame.audio.disableLog();
-  await Flame.util.setLandscape();
+  if (debugDefaultTargetPlatformOverride != TargetPlatform.fuchsia) {
+    await Flame.util.setLandscape();
+  }
   Size size = await Flame.util.initialDimensions();
 
   MyGame game = MyGame(size);

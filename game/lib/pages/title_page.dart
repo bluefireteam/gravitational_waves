@@ -8,9 +8,11 @@ import '../game.dart';
 import '../util.dart';
 import 'button.dart';
 import 'page.dart';
+import 'with_buttons.dart';
 
-class TitlePage extends Page {
+class TitlePage extends Page with WithButtons {
 
+  @override
   List<Button> buttons;
 
   TitlePage(MyGame gameRef) : super(gameRef) {
@@ -34,11 +36,8 @@ class TitlePage extends Page {
   @override
   void render(Canvas canvas) {
     Fonts.menuTitle.render(canvas, 'Gravitional Waves', Position(size.width / 2, rowSize), anchor: Anchor.center);
-    buttons.forEach((b) => b.render(canvas));
+    renderButtons(canvas);
   }
-
-  @override
-  void tap(Position p) => Button.handleTap(buttons, p);
 
   void doNewGame() {
     gameRef.start();

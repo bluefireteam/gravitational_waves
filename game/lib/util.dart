@@ -5,8 +5,8 @@ import 'palette.dart';
 const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;
 
-const PLAYER_SPEED = 150.0;
-const GRAVITY_ACC = 750.0;
+const PLAYER_SPEED = 175.0;
+const GRAVITY_ACC = 1000.0;
 
 class Fonts {
   static final TextConfig _base = TextConfig(fontFamily: 'BitPotion');

@@ -57,8 +57,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     final blockRect = getCurrentRect();
 
     if (y < blockRect.top || y > blockRect.bottom - height) {
+      livesLeft--;
       if (livesLeft > 0) {
-        livesLeft--;
         hurtTimer = HURT_TIMER;
       } else {
         gameRef.gameOver();
