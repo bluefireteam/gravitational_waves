@@ -73,6 +73,8 @@ class MyGame extends BaseGame {
     this.resizeOffset = Position((rawSize.width - scaledSize.width) / 2, (rawSize.height - scaledSize.height) / 2);
   }
 
+  int get score => player.x ~/ 100;
+
   @override
   void resize(Size rawSize) {
     recalculateScaleFactor(rawSize);
@@ -112,15 +114,21 @@ class MyGame extends BaseGame {
     if (currentPage?.fullScreen != true) {
       super.render(canvas);
       renderLives(canvas);
-      
+      renderScore(canvas);
     }
     currentPage?.render(canvas);
   }
 
   void renderLives(Canvas canvas) {
     final p = Position(size.width - 10, size.height - 10);
-    final text = player.livesLeft.toString();
+    final text = '${player.livesLeft} hearts';
     Fonts.livesCounter.render(canvas, text, p, anchor: Anchor.bottomRight);
+  }
+
+  void renderScore(Canvas canvas) {
+    final p = Position(10, size.height - 10);
+    final text = '$score m';
+    Fonts.scoreCounter.render(canvas, text, p, anchor: Anchor.bottomLeft);
   }
 
   Position fixScaleFor(Position rawP) {
