@@ -1,0 +1,152 @@
+{
+  "tileset": {
+    "path": "/Users/erick/projects/gamedev/gravitational_waves/art/tileset/tileset.png",
+    "size": 16
+  },
+  "animations": {
+    "back-group-1": {
+      "x": 0,
+      "y": 0,
+      "w": 3,
+      "h": 3,
+      "length": 1,
+      "millis": 0
+    },
+    "back-group-2": {
+      "x": 3,
+      "y": 0,
+      "w": 3,
+      "h": 3,
+      "length": 1,
+      "millis": 0
+    },
+    "corners-1": {
+      "x": 6,
+      "y": 0,
+      "w": 2,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "corners-2": {
+      "x": 8,
+      "y": 0,
+      "w": 2,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "wall-pattern": {
+      "x": 0,
+      "y": 3,
+      "w": 5,
+      "h": 5,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-1": {
+      "x": 6,
+      "y": 2,
+      "w": 2,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-2": {
+      "x": 8,
+      "y": 2,
+      "w": 1,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-3": {
+      "x": 9,
+      "y": 2,
+      "w": 1,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-4": {
+      "x": 5,
+      "y": 3,
+      "w": 2,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-5": {
+      "x": 7,
+      "y": 3,
+      "w": 2,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-6": {
+      "x": 9,
+      "y": 3,
+      "w": 1,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-7": {
+      "x": 9,
+      "y": 4,
+      "w": 1,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-8": {
+      "x": 8,
+      "y": 5,
+      "w": 1,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-9": {
+      "x": 9,
+      "y": 5,
+      "w": 1,
+      "h": 1,
+      "length": 1,
+      "millis": 0
+    },
+    "back-props-10": {
+      "x": 5,
+      "y": 5,
+      "w": 3,
+      "h": 3,
+      "length": 0,
+      "millis": 0
+    },
+    "back-props-11": {
+      "x": 8,
+      "y": 6,
+      "w": 2,
+      "h": 2,
+      "length": 0,
+      "millis": 0
+    },
+    "stars-pattern-1": {
+      "x": 0,
+      "y": 8,
+      "w": 5,
+      "h": 7,
+      "length": 1,
+      "millis": 0
+    },
+    "starts-pattern-2": {
+      "x": 5,
+      "y": 8,
+      "w": 5,
+      "h": 7,
+      "length": 0,
+      "millis": 0
+    }
+  }
+}
