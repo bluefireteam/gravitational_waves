@@ -25,3 +25,19 @@ Map<String, dynamic> _$AnimationElementToJson(AnimationElement instance) =>
       'length': instance.length,
       'millis': instance.millis,
     };
+
+AnimationsJson _$AnimationsJsonFromJson(Map<String, dynamic> json) {
+  return AnimationsJson()
+    ..animations = (json['animations'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(
+          k,
+          e == null
+              ? null
+              : AnimationElement.fromJson(e as Map<String, dynamic>)),
+    );
+}
+
+Map<String, dynamic> _$AnimationsJsonToJson(AnimationsJson instance) =>
+    <String, dynamic>{
+      'animations': instance.animations,
+    };
