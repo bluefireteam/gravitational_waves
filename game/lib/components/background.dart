@@ -4,8 +4,6 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
 
 import '../game.dart';
 import '../palette.dart';
@@ -16,7 +14,9 @@ class Column {
   static const OFFSET = 5;
 
   int bottom, top;
-  Column(this.bottom, this.top);
+  int bottomRandom, topRandom;
+
+  Column(this.bottom, this.top, { this.bottomRandom = 1, this.topRandom = 1 });
 
   double get topHeight => BLOCK_SIZE * (OFFSET + top);
   double get bottomHeight => BLOCK_SIZE * (OFFSET + bottom);
@@ -55,7 +55,9 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       } else {
         changesBottom++;
       }
-      yield Column(beforeTop, beforeBottom);
+      int bottomRandom = r.nextDouble() > 0.5 ? 1 : 2;
+      int topRandom = r.nextDouble() > 0.5 ? 1 : 2;
+      yield Column(beforeTop, beforeBottom, bottomRandom: bottomRandom, topRandom: topRandom);
     }
   }
 
@@ -77,25 +79,45 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _paint);
       c.drawRect(Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight), _paint);
 
-      Sprite spriteTop;
-      if (before.top != column.top) {
-        spriteTop = Tileset.blocksG1[2];
-      } else if (after.top != column.top) {
-        spriteTop = Tileset.blocksG1[8];
+      double bottomPy = size.height - column.bottomHeight;
+      BlockSet bottomSet = Tileset.group(column.bottomRandom);
+      if (before.bottom < column.bottom) {
+        bottomSet.render(c, TilePosition.TOP_LEFT, px, bottomPy);
+        int diff = column.bottom - before.bottom;
+        for (int i = 1; i <= diff; i++) {
+          TilePosition pos = i == diff ? TilePosition.BOTTOM_LEFT : TilePosition.LEFT;
+          bottomSet.render(c, pos, px, bottomPy + i * BLOCK_SIZE);
+        }
+      } else if (after.bottom < column.bottom) {
+        bottomSet.render(c, TilePosition.TOP_RIGHT, px, bottomPy);
+        int diff = column.bottom - after.bottom;
+        for (int i = 1; i <= diff; i++) {
+          TilePosition pos = i == diff ? TilePosition.BOTTOM_RIGHT : TilePosition.RIGHT;
+          bottomSet.render(c, pos, px, bottomPy + i * BLOCK_SIZE);
+        }
       } else {
-        spriteTop = Tileset.blocksG1[5];
+        bottomSet.render(c, TilePosition.TOP, px, bottomPy);
       }
-      spriteTop.renderPosition(c, Position(px, column.topHeight - BLOCK_SIZE));
 
-      Sprite spriteBottom;
-      if (before.bottom != column.bottom) {
-        spriteBottom = Tileset.blocksG1[0];
-      } else if (after.bottom != column.bottom) {
-        spriteBottom = Tileset.blocksG1[6];
+      double topPy = column.topHeight - BLOCK_SIZE;
+      BlockSet topSet = Tileset.group(column.topRandom);
+      if (before.top < column.top) {
+        topSet.render(c, TilePosition.BOTTOM_LEFT, px, topPy);
+        int diff = column.top - before.top;
+        for (int i = 1; i <= diff; i++) {
+          TilePosition pos = i == diff ? TilePosition.TOP_RIGHT : TilePosition.LEFT;
+          topSet.render(c, pos, px, topPy - i * BLOCK_SIZE);
+        }
+      } else if (after.top < column.top) {
+        topSet.render(c, TilePosition.BOTTOM_RIGHT, px, topPy);
+        int diff = column.top - after.top;
+        for (int i = 1; i <= diff; i++) {
+          TilePosition pos = i == diff ? TilePosition.TOP_LEFT : TilePosition.RIGHT;
+          topSet.render(c, pos, px, topPy - i * BLOCK_SIZE);
+        }
       } else {
-        spriteBottom = Tileset.blocksG1[3];
+        topSet.render(c, TilePosition.BOTTOM, px, topPy);
       }
-      spriteBottom.renderPosition(c, Position(px, size.height - column.bottomHeight));
     });
   }
 
