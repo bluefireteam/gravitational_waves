@@ -8,6 +8,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'tileset.g.dart';
 
+const double _SRC_SIZE = 16.0;
+
 @JsonSerializable()
 class AnimationElement {
   int x, y, w, h, length, millis;
@@ -26,6 +28,21 @@ class AnimationsJson {
 
   factory AnimationsJson.fromJson(Map<String, dynamic> json) => _$AnimationsJsonFromJson(json);
   Map<String, dynamic> toJson() => _$AnimationsJsonToJson(this);
+
+  Sprite outerBlockGn(int group, int dx, int dy) {
+    return _blockGn('back-group-$group', dx, dy);
+  }
+
+  Sprite innerBlockGn(int group, int dx, int dy) {
+    return _blockGn('corners-$group', dx, dy);
+  }
+
+  Sprite _blockGn(String name, int dx, int dy) {
+    AnimationElement animation = animations[];
+    double x = (animation.x + dx) * _SRC_SIZE;
+    double y = (animation.y + dy) * _SRC_SIZE;
+    return Sprite('tileset.png', x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
+  }
 }
 
 enum OuterTilePosition {
@@ -34,35 +51,44 @@ enum OuterTilePosition {
   BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT
 }
 
-class BlockSet {
-  static const double SRC_SIZE = 16.0;
+enum InnerTilePosition {
+  TOP_LEFT, TOP_RIGHT,
+  BOTTOM_LEFT, BOTTOM_RIGHT,
+}
 
-  Map<OuterTilePosition, Sprite> blocks;
+class BlockSet {
+
+  Map<OuterTilePosition, Sprite> _outer;
+  Map<InnerTilePosition, Sprite> _inner;
 
   BlockSet(AnimationsJson animations, int group) {
-    blocks = {
-      OuterTilePosition.TOP_LEFT: _blockGn(animations, group, 0, 0),
-      OuterTilePosition.TOP: _blockGn(animations, group, 1, 0),
-      OuterTilePosition.TOP_RIGHT: _blockGn(animations, group, 2, 0),
-      OuterTilePosition.LEFT: _blockGn(animations, group, 0, 1),
-      OuterTilePosition.CENTER: _blockGn(animations, group, 1, 1),
-      OuterTilePosition.RIGHT: _blockGn(animations, group, 2, 1),
-      OuterTilePosition.BOTTOM_LEFT: _blockGn(animations, group, 0, 2),
-      OuterTilePosition.BOTTOM: _blockGn(animations, group, 1, 2),
-      OuterTilePosition.BOTTOM_RIGHT: _blockGn(animations, group, 2, 2),
+    final outerGn = (dx, dy) => animations.outerBlockGn(group, dx, dy);
+    final innerGn = (dx, dy) => animations.innerBlockGn(group, dx, dy);
+    _outer = {
+      OuterTilePosition.TOP_LEFT: outerGn(0, 0),
+      OuterTilePosition.TOP: outerGn(1, 0),
+      OuterTilePosition.TOP_RIGHT: outerGn(2, 0),
+      OuterTilePosition.LEFT: outerGn(0, 1),
+      OuterTilePosition.CENTER: outerGn(1, 1),
+      OuterTilePosition.RIGHT: outerGn(2, 1),
+      OuterTilePosition.BOTTOM_LEFT: outerGn(0, 2),
+      OuterTilePosition.BOTTOM: outerGn(1, 2),
+      OuterTilePosition.BOTTOM_RIGHT: outerGn(2, 2),
+    };
+    _inner = {
+      InnerTilePosition.TOP_LEFT: innerGn(0, 0),
+      InnerTilePosition.TOP_RIGHT: innerGn(1, 0),
+      InnerTilePosition.BOTTOM_LEFT: innerGn(0, 1),
+      InnerTilePosition.BOTTOM_RIGHT: innerGn(1, 1),
     };
   }
 
-  void render(Canvas c, OuterTilePosition pos, double dx, double dy) {
-    blocks[pos].renderPosition(c, Position(dx, dy));
+  void renderOuter(Canvas c, OuterTilePosition pos, double dx, double dy) {
+    _outer[pos].renderPosition(c, Position(dx, dy));
   }
 
-  static Sprite _blockGn(AnimationsJson animations, int group, int dx, int dy) {
-    AnimationElement animation = animations.animations['back-group-$group'];
-    double x = (animation.x + dx) * SRC_SIZE;
-    double y = (animation.y + dy) * SRC_SIZE;
-    print('x $x, y $y');
-    return Sprite('tileset.png', x: x, y: y, width: SRC_SIZE, height: SRC_SIZE);
+  void renderInner(Canvas c, InnerTilePosition pos, double dx, double dy) {
+    _outer[pos].renderPosition(c, Position(dx, dy));
   }
 }
 

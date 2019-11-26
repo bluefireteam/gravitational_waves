@@ -82,41 +82,41 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       double bottomPy = size.height - column.bottomHeight;
       BlockSet bottomSet = Tileset.group(column.bottomRandom);
       if (before.bottom < column.bottom) {
-        bottomSet.render(c, OuterTilePosition.TOP_LEFT, px, bottomPy);
+        bottomSet.renderOuter(c, OuterTilePosition.TOP_LEFT, px, bottomPy);
         int diff = column.bottom - before.bottom;
         for (int i = 1; i <= diff; i++) {
           OuterTilePosition pos = i == diff ? OuterTilePosition.BOTTOM_LEFT : OuterTilePosition.LEFT;
-          bottomSet.render(c, pos, px, bottomPy + i * BLOCK_SIZE);
+          bottomSet.renderOuter(c, pos, px, bottomPy + i * BLOCK_SIZE);
         }
       } else if (after.bottom < column.bottom) {
-        bottomSet.render(c, OuterTilePosition.TOP_RIGHT, px, bottomPy);
+        bottomSet.renderOuter(c, OuterTilePosition.TOP_RIGHT, px, bottomPy);
         int diff = column.bottom - after.bottom;
         for (int i = 1; i <= diff; i++) {
           OuterTilePosition pos = i == diff ? OuterTilePosition.BOTTOM_RIGHT : OuterTilePosition.RIGHT;
-          bottomSet.render(c, pos, px, bottomPy + i * BLOCK_SIZE);
+          bottomSet.renderOuter(c, pos, px, bottomPy + i * BLOCK_SIZE);
         }
       } else {
-        bottomSet.render(c, OuterTilePosition.TOP, px, bottomPy);
+        bottomSet.renderOuter(c, OuterTilePosition.TOP, px, bottomPy);
       }
 
       double topPy = column.topHeight - BLOCK_SIZE;
       BlockSet topSet = Tileset.group(column.topRandom);
       if (before.top < column.top) {
-        topSet.render(c, OuterTilePosition.BOTTOM_LEFT, px, topPy);
+        topSet.renderOuter(c, OuterTilePosition.BOTTOM_LEFT, px, topPy);
         int diff = column.top - before.top;
         for (int i = 1; i <= diff; i++) {
           OuterTilePosition pos = i == diff ? OuterTilePosition.TOP_RIGHT : OuterTilePosition.LEFT;
-          topSet.render(c, pos, px, topPy - i * BLOCK_SIZE);
+          topSet.renderOuter(c, pos, px, topPy - i * BLOCK_SIZE);
         }
       } else if (after.top < column.top) {
-        topSet.render(c, OuterTilePosition.BOTTOM_RIGHT, px, topPy);
+        topSet.renderOuter(c, OuterTilePosition.BOTTOM_RIGHT, px, topPy);
         int diff = column.top - after.top;
         for (int i = 1; i <= diff; i++) {
           OuterTilePosition pos = i == diff ? OuterTilePosition.TOP_LEFT : OuterTilePosition.RIGHT;
-          topSet.render(c, pos, px, topPy - i * BLOCK_SIZE);
+          topSet.renderOuter(c, pos, px, topPy - i * BLOCK_SIZE);
         }
       } else {
-        topSet.render(c, OuterTilePosition.BOTTOM, px, topPy);
+        topSet.renderOuter(c, OuterTilePosition.BOTTOM, px, topPy);
       }
     });
   }
