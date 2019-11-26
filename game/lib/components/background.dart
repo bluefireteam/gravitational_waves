@@ -4,9 +4,11 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
+import 'package:flame/position.dart';
 
 import '../game.dart';
 import '../util.dart';
+import 'tileset.dart';
 
 class Column {
   static const OFFSET = 5;
@@ -69,6 +71,9 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
       c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _paint);
       c.drawRect(Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight), _paint);
+
+      Tileset.blocksG1[3].renderPosition(c, Position(px, column.topHeight - BLOCK_SIZE));
+      Tileset.blocksG1[3].renderPosition(c, Position(px, size.height - column.bottomHeight));
     });
   }
 

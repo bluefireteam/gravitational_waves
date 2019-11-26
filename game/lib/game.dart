@@ -5,10 +5,10 @@ import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
-import 'package:gravitational_waves/pages/game_over_page.dart';
 
 import 'components/background.dart';
 import 'components/player.dart';
+import 'pages/game_over_page.dart';
 import 'pages/page.dart';
 import 'pages/title_page.dart';
 import 'palette.dart';
