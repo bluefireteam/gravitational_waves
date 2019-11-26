@@ -38,7 +38,7 @@ class AnimationsJson {
   }
 
   Sprite _blockGn(String name, int dx, int dy) {
-    AnimationElement animation = animations[];
+    AnimationElement animation = animations[name];
     double x = (animation.x + dx) * _SRC_SIZE;
     double y = (animation.y + dy) * _SRC_SIZE;
     return Sprite('tileset.png', x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
