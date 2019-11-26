@@ -28,7 +28,7 @@ class AnimationsJson {
   Map<String, dynamic> toJson() => _$AnimationsJsonToJson(this);
 }
 
-enum TilePosition {
+enum OuterTilePosition {
   TOP_LEFT, TOP, TOP_RIGHT,
   LEFT, CENTER, RIGHT,
   BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT
@@ -37,23 +37,23 @@ enum TilePosition {
 class BlockSet {
   static const double SRC_SIZE = 16.0;
 
-  Map<TilePosition, Sprite> blocks;
+  Map<OuterTilePosition, Sprite> blocks;
 
   BlockSet(AnimationsJson animations, int group) {
     blocks = {
-      TilePosition.TOP_LEFT: _blockGn(animations, group, 0, 0),
-      TilePosition.TOP: _blockGn(animations, group, 1, 0),
-      TilePosition.TOP_RIGHT: _blockGn(animations, group, 2, 0),
-      TilePosition.LEFT: _blockGn(animations, group, 0, 1),
-      TilePosition.CENTER: _blockGn(animations, group, 1, 1),
-      TilePosition.RIGHT: _blockGn(animations, group, 2, 1),
-      TilePosition.BOTTOM_LEFT: _blockGn(animations, group, 0, 2),
-      TilePosition.BOTTOM: _blockGn(animations, group, 1, 2),
-      TilePosition.BOTTOM_RIGHT: _blockGn(animations, group, 2, 2),
+      OuterTilePosition.TOP_LEFT: _blockGn(animations, group, 0, 0),
+      OuterTilePosition.TOP: _blockGn(animations, group, 1, 0),
+      OuterTilePosition.TOP_RIGHT: _blockGn(animations, group, 2, 0),
+      OuterTilePosition.LEFT: _blockGn(animations, group, 0, 1),
+      OuterTilePosition.CENTER: _blockGn(animations, group, 1, 1),
+      OuterTilePosition.RIGHT: _blockGn(animations, group, 2, 1),
+      OuterTilePosition.BOTTOM_LEFT: _blockGn(animations, group, 0, 2),
+      OuterTilePosition.BOTTOM: _blockGn(animations, group, 1, 2),
+      OuterTilePosition.BOTTOM_RIGHT: _blockGn(animations, group, 2, 2),
     };
   }
 
-  void render(Canvas c, TilePosition pos, double dx, double dy) {
+  void render(Canvas c, OuterTilePosition pos, double dx, double dy) {
     blocks[pos].renderPosition(c, Position(dx, dy));
   }
 
