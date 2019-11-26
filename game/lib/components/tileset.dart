@@ -88,7 +88,7 @@ class BlockSet {
   }
 
   void renderInner(Canvas c, InnerTilePosition pos, double dx, double dy) {
-    _outer[pos].renderPosition(c, Position(dx, dy));
+    _inner[pos].renderPosition(c, Position(dx, dy));
   }
 }
 
