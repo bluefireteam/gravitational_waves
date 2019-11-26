@@ -29,7 +29,7 @@ class Tileset {
   static AnimationsJson animations;
 
   static init() async {
-    String content = await rootBundle.loadString('assets/animations.json');
+    String content = await rootBundle.loadString('assets/images/tileset.json');
     animations = AnimationsJson.fromJson(json.decode(content));
   }
 }

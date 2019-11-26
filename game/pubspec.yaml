@@ -20,6 +20,7 @@ dev_dependencies:
 flutter:
   assets:
    - assets/images/tileset.png
+   - assets/images/tileset.json
 
   fonts:
    - family: BitPotion
