@@ -30,34 +30,42 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   Background(double x) {
     this.x = x;
-    this.columns = _generateChunck().toList();
+    this.columns = _generateChunck(CHUNCK_SIZE).toList();
   }
 
   Background.plains(double x) {
     this.x = x;
-    this.columns = List.generate(CHUNCK_SIZE, (_) => Column(0, 0));
+    this.columns = _generatePlains(CHUNCK_SIZE).toList();
   }
 
-  static Iterable<Column> _generateChunck() sync* {
+  static Iterable<Column> _generatePlains(int size) {
+    return List.generate(size, (_) => Column(0, 0));
+  }
+
+  static Iterable<Column> _generateChunck(int size) sync* {
     final r = math.Random();
     int beforeTop, beforeBottom;
     int changesTop = 0, changesBottom = 0;
-    for (int i = 0; i < CHUNCK_SIZE; i++) {
-      if (beforeTop == null || (changesTop * r.nextDouble() > 0.85)) {
-        beforeTop = r.nextInt(3);
-        changesTop = 0;
+    for (int i = 0; i < size; i++) {
+      if (i < 3 || i >= size - 3) {
+        yield Column(0, 0);
       } else {
-        changesTop++;
+        if (beforeTop == null || (changesTop * r.nextDouble() > 0.85)) {
+          beforeTop = r.nextInt(3);
+          changesTop = 0;
+        } else {
+          changesTop++;
+        }
+        if (beforeBottom == null || (changesBottom * r.nextDouble() > 0.85)) {
+          beforeBottom = r.nextInt(3);
+          changesBottom = 0;
+        } else {
+          changesBottom++;
+        }
+        int bottomRandom = r.nextDouble() > 0.5 ? 1 : 2;
+        int topRandom = r.nextDouble() > 0.5 ? 1 : 2;
+        yield Column(beforeTop, beforeBottom, bottomRandom: bottomRandom, topRandom: topRandom);
       }
-      if (beforeBottom == null || (changesBottom * r.nextDouble() > 0.85)) {
-        beforeBottom = r.nextInt(3);
-        changesBottom = 0;
-      } else {
-        changesBottom++;
-      }
-      int bottomRandom = r.nextDouble() > 0.5 ? 1 : 2;
-      int topRandom = r.nextDouble() > 0.5 ? 1 : 2;
-      yield Column(beforeTop, beforeBottom, bottomRandom: bottomRandom, topRandom: topRandom);
     }
   }
 
@@ -82,19 +90,19 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       double bottomPy = size.height - column.bottomHeight;
       BlockSet bottomSet = Tileset.group(column.bottomRandom);
       if (before.bottom < column.bottom) {
-        bottomSet.renderOuter(c, OuterTilePosition.TOP_LEFT, px, bottomPy);
         int diff = column.bottom - before.bottom;
-        for (int i = 1; i <= diff; i++) {
-          OuterTilePosition pos = i == diff ? OuterTilePosition.BOTTOM_LEFT : OuterTilePosition.LEFT;
-          bottomSet.renderOuter(c, pos, px, bottomPy + i * BLOCK_SIZE);
+        bottomSet.renderOuter(c, OuterTilePosition.TOP_LEFT, px, bottomPy);
+        for (int i = 1; i < diff; i++) {
+          bottomSet.renderOuter(c, OuterTilePosition.LEFT, px, bottomPy + i * BLOCK_SIZE);
         }
+        bottomSet.renderInner(c, InnerTilePosition.BOTTOM_RIGHT, px, bottomPy + diff * BLOCK_SIZE);
       } else if (after.bottom < column.bottom) {
-        bottomSet.renderOuter(c, OuterTilePosition.TOP_RIGHT, px, bottomPy);
         int diff = column.bottom - after.bottom;
-        for (int i = 1; i <= diff; i++) {
-          OuterTilePosition pos = i == diff ? OuterTilePosition.BOTTOM_RIGHT : OuterTilePosition.RIGHT;
-          bottomSet.renderOuter(c, pos, px, bottomPy + i * BLOCK_SIZE);
+        bottomSet.renderOuter(c, OuterTilePosition.TOP_RIGHT, px, bottomPy);
+        for (int i = 1; i < diff; i++) {
+          bottomSet.renderOuter(c, OuterTilePosition.RIGHT, px, bottomPy + i * BLOCK_SIZE);
         }
+        bottomSet.renderInner(c, InnerTilePosition.BOTTOM_LEFT, px, bottomPy + diff * BLOCK_SIZE);
       } else {
         bottomSet.renderOuter(c, OuterTilePosition.TOP, px, bottomPy);
       }
@@ -102,19 +110,19 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       double topPy = column.topHeight - BLOCK_SIZE;
       BlockSet topSet = Tileset.group(column.topRandom);
       if (before.top < column.top) {
-        topSet.renderOuter(c, OuterTilePosition.BOTTOM_LEFT, px, topPy);
         int diff = column.top - before.top;
-        for (int i = 1; i <= diff; i++) {
-          OuterTilePosition pos = i == diff ? OuterTilePosition.TOP_RIGHT : OuterTilePosition.LEFT;
-          topSet.renderOuter(c, pos, px, topPy - i * BLOCK_SIZE);
+        topSet.renderOuter(c, OuterTilePosition.BOTTOM_LEFT, px, topPy);
+        for (int i = 1; i < diff; i++) {
+          topSet.renderOuter(c, OuterTilePosition.LEFT, px, topPy - i * BLOCK_SIZE);
         }
+        topSet.renderInner(c, InnerTilePosition.TOP_RIGHT, px, topPy - diff * BLOCK_SIZE);
       } else if (after.top < column.top) {
-        topSet.renderOuter(c, OuterTilePosition.BOTTOM_RIGHT, px, topPy);
         int diff = column.top - after.top;
-        for (int i = 1; i <= diff; i++) {
-          OuterTilePosition pos = i == diff ? OuterTilePosition.TOP_LEFT : OuterTilePosition.RIGHT;
-          topSet.renderOuter(c, pos, px, topPy - i * BLOCK_SIZE);
+        topSet.renderOuter(c, OuterTilePosition.BOTTOM_RIGHT, px, topPy);
+        for (int i = 1; i < diff; i++) {
+          topSet.renderOuter(c, OuterTilePosition.RIGHT, px, topPy - i * BLOCK_SIZE);
         }
+        topSet.renderInner(c, InnerTilePosition.TOP_LEFT, px, topPy - diff * BLOCK_SIZE);
       } else {
         topSet.renderOuter(c, OuterTilePosition.BOTTOM, px, topPy);
       }
