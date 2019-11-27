@@ -29,7 +29,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   bool get dead => livesLeft == 0;
 
   Paint get _paint {
-    final shine = hurt && (hurtTimer * 1000) % 500 > 250;
+    final shine = hurt && (hurtTimer * 1000) % 250 > 125;
     final palette = shine ? Palette.playerShine : Palette.player;
     return palette.paint;
   }

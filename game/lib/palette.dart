@@ -13,7 +13,7 @@ class Palette extends BasicPalette {
   static const PaletteEntry livesCounter = const PaletteEntry(const Color(0xFF0000FF));
 
   static const PaletteEntry player = const PaletteEntry(const Color(0xFFFFFF00));
-  static const PaletteEntry playerShine = const PaletteEntry(const Color(0x88FFFF00));
+  static const PaletteEntry playerShine = const PaletteEntry(const Color(0x66FFFF00));
   static const PaletteEntry playerDebugRect = const PaletteEntry(const Color(0xFFFF2266));
 
   static const PaletteEntry background = const PaletteEntry(const Color(0xFF051C24));
