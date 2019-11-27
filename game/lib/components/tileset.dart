@@ -105,15 +105,15 @@ class BlockSet {
 }
 
 class Tileset {
-  static BlockSet _g1, _g2;
+  static BlockSet _v1, _v2;
   static Sprite wall;
   static List<Sprite> planets;
 
   static Future init() async {
     String content = await rootBundle.loadString('assets/images/tileset.json');
     AnimationsJson animations = AnimationsJson.fromJson(json.decode(content));
-    _g1 = BlockSet(animations, 1);
-    _g2 = BlockSet(animations, 2);
+    _v1 = BlockSet(animations, 1);
+    _v2 = BlockSet(animations, 2);
     wall = animations.sprite('wall-pattern');
 
     planets = [];
@@ -128,7 +128,7 @@ class Tileset {
     }
   }
 
-  static BlockSet group(int group) {
-    return group == 1 ? _g1 : _g2;
+  static BlockSet variant(int variant) {
+    return variant == 1 ? _v1 : _v2;
   }
 }

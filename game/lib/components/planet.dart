@@ -16,7 +16,7 @@ class Planet extends SpriteComponent with Resizable {
     this.height = sprite.size.y;
 
     this.x = size.width + width;
-    this.y = math.Random().nextDouble() * (size.height - height);
+    this.y = R.nextDouble() * (size.height - height);
   }
 
   @override

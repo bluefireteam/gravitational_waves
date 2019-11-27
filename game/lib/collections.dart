@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+import 'util.dart';
 
 T getOrElse<T>(List<T> ts, int idx, T elseValue) {
   if (idx >= 0 && idx < ts.length - 1) {
@@ -8,6 +8,5 @@ T getOrElse<T>(List<T> ts, int idx, T elseValue) {
 }
 
 T sample<T>(List<T> ts) {
-  final r = math.Random();
-  return ts[r.nextInt(ts.length)];
+  return ts[R.nextInt(ts.length)];
 }

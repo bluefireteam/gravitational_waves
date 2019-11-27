@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'components/background.dart';
 import 'components/planet.dart';
 import 'components/player.dart';
+import 'components/stars.dart';
 import 'components/wall.dart';
 import 'pages/game_over_page.dart';
 import 'pages/page.dart';
@@ -46,6 +47,7 @@ class MyGame extends BaseGame {
 
     add(player = Player());
     add(Wall());
+    add(Stars());
     fixCamera();
     generateNextChunck();
   }

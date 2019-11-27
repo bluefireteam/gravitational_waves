@@ -1,6 +1,11 @@
+import 'dart:math' as math;
 import 'package:flame/text_config.dart';
 
 import 'palette.dart';
+
+final R = math.Random();
+
+const DEBUG = false;
 
 const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;

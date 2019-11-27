@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
@@ -15,9 +14,12 @@ class Column {
   static const OFFSET = 5;
 
   int bottom, top;
-  int bottomRandom, topRandom;
+  int bottomVariant, topVariant;
 
-  Column(this.bottom, this.top, { this.bottomRandom = 1, this.topRandom = 1 });
+  Column(this.bottom, this.top) {
+    bottomVariant = R.nextDouble() > 0.5 ? 1 : 2;
+    topVariant = R.nextDouble() > 0.5 ? 1 : 2;
+  }
 
   double get topHeight => BLOCK_SIZE * (OFFSET + top);
   double get bottomHeight => BLOCK_SIZE * (OFFSET + bottom);
@@ -44,28 +46,26 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   }
 
   static Iterable<Column> _generateChunck(int size) sync* {
-    final r = math.Random();
     int beforeTop, beforeBottom;
     int changesTop = 0, changesBottom = 0;
     for (int i = 0; i < size; i++) {
       if (i < 3 || i >= size - 3) {
         yield Column(0, 0);
       } else {
-        if (beforeTop == null || (changesTop * r.nextDouble() > 0.91)) {
-          beforeTop = r.nextInt(3);
+        bool nextForcedZero = (i + 1) >= size - 3;
+        if (beforeTop == null || (changesTop * R.nextDouble() > 0.91)) {
+          beforeTop = nextForcedZero ? 0 : R.nextInt(3);
           changesTop = 0;
         } else {
           changesTop++;
         }
-        if (beforeBottom == null || (changesBottom * r.nextDouble() > 0.91)) {
-          beforeBottom = r.nextInt(3);
+        if (beforeBottom == null || (changesBottom * R.nextDouble() > 0.91)) {
+          beforeBottom = nextForcedZero ? 0 : R.nextInt(3);
           changesBottom = 0;
         } else {
           changesBottom++;
         }
-        int bottomRandom = r.nextDouble() > 0.5 ? 1 : 2;
-        int topRandom = r.nextDouble() > 0.5 ? 1 : 2;
-        yield Column(beforeTop, beforeBottom, bottomRandom: bottomRandom, topRandom: topRandom);
+        yield Column(beforeTop, beforeBottom);
       }
     }
   }
@@ -88,7 +88,7 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       c.drawRect(Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight), _bg);
 
       double bottomPy = size.height - column.bottomHeight;
-      BlockSet bottomSet = Tileset.group(column.bottomRandom);
+      BlockSet bottomSet = Tileset.variant(column.bottomVariant);
       if (before.bottom < column.bottom) {
         int diff = column.bottom - before.bottom;
         bottomSet.renderOuter(c, OuterTilePosition.TOP_LEFT, px, bottomPy);
@@ -108,7 +108,7 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       }
 
       double topPy = column.topHeight - BLOCK_SIZE;
-      BlockSet topSet = Tileset.group(column.topRandom);
+      BlockSet topSet = Tileset.variant(column.topVariant);
       if (before.top < column.top) {
         int diff = column.top - before.top;
         topSet.renderOuter(c, OuterTilePosition.BOTTOM_LEFT, px, topPy);
@@ -127,6 +127,16 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
         topSet.renderOuter(c, OuterTilePosition.BOTTOM, px, topPy);
       }
     });
+    if (DEBUG) {
+      renderDebug(c);
+    }
+  }
+
+  void renderDebug(Canvas c) {
+    c.drawRect(
+      Rect.fromLTWH(startX, 0.0, endX - startX, size.height),
+      Paint()..color = Color(0xFFFF00FF)..strokeWidth = 2.0..style = PaintingStyle.stroke,
+    );
   }
 
   @override
