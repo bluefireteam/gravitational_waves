@@ -89,5 +89,5 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   double get right => x + width;
 
   @override
-  int priority() => 2;
+  int priority() => 4;
 }

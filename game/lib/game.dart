@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 
 import 'components/background.dart';
 import 'components/player.dart';
+import 'components/wall.dart';
 import 'pages/game_over_page.dart';
 import 'pages/page.dart';
 import 'pages/title_page.dart';
@@ -40,6 +41,7 @@ class MyGame extends BaseGame {
     _addBg(Background.plains(lastGeneratedX));
 
     add(player = Player());
+    add(Wall());
     fixCamera();
     generateNextChunck();
   }

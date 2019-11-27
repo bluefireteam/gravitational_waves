@@ -4,8 +4,6 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
 
 import '../game.dart';
 import '../palette.dart';
@@ -27,7 +25,6 @@ class Column {
 class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   static final Paint _bg = Palette.background.paint;
-  static final Paint _wall = Palette.wall.paint;
 
   List<Column> columns;
 
@@ -81,38 +78,13 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   @override
   void render(Canvas c) {
-    renderColorBg(c);
-    renderWall(c);
-    renderColumns(c);
-  }
-
-  void renderColorBg(Canvas c) {
-    columns.asMap().forEach((i, column) {
-      double px = x + i * BLOCK_SIZE;
-
-      c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _bg);
-      c.drawRect(Rect.fromLTWH(px, column.topHeight, BLOCK_SIZE, size.height - column.bottomHeight - column.topHeight), _wall);
-      c.drawRect(Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight), _bg);
-    });
-  }
-
-  void renderWall(Canvas c) {
-    Sprite sprite = Tileset.wall;
-    double w = sprite.size.x;
-    double h = sprite.size.y;
-
-    double dx = startX;
-    while (dx < endX - w) {
-      sprite.renderCentered(c, Position(dx, size.height / 2), size: Position(w, h));
-      dx += w;
-    }
-  }
-
-  void renderColumns(Canvas c) {
     columns.asMap().forEach((i, column) {
       Column before = getOrElse(columns, i - 1, column);
       Column after = getOrElse(columns, i + 1, column);
       double px = x + i * BLOCK_SIZE;
+
+      c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _bg);
+      c.drawRect(Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight), _bg);
 
       double bottomPy = size.height - column.bottomHeight;
       BlockSet bottomSet = Tileset.group(column.bottomRandom);
@@ -161,6 +133,9 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   @override
   bool destroy() => endX < gameRef.camera.x - size.width;
+
+  @override
+  int priority() => 3;
 
   Rect findRectContaining(double targetX) {
     int idx = ((targetX - x) / BLOCK_SIZE).floor();
