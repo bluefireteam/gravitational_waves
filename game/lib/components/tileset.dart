@@ -107,6 +107,7 @@ class BlockSet {
 class Tileset {
   static BlockSet _g1, _g2;
   static Sprite wall;
+  static List<Sprite> planets;
 
   static Future init() async {
     String content = await rootBundle.loadString('assets/images/tileset.json');
@@ -114,6 +115,17 @@ class Tileset {
     _g1 = BlockSet(animations, 1);
     _g2 = BlockSet(animations, 2);
     wall = animations.sprite('wall-pattern');
+
+    planets = [];
+    int i = 1;
+    while (true) {
+      String key = 'back-props-$i';
+      if (!animations.animations.containsKey(key)) {
+        break;
+      }
+      planets.add(animations.sprite(key));
+      i++;
+    }
   }
 
   static BlockSet group(int group) {

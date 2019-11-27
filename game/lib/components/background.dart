@@ -5,6 +5,7 @@ import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 
+import '../collections.dart';
 import '../game.dart';
 import '../palette.dart';
 import '../util.dart';
@@ -143,12 +144,5 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
     double px = x + idx * BLOCK_SIZE;
     return Rect.fromLTWH(px, column.topHeight, BLOCK_SIZE, size.height - column.topHeight - column.bottomHeight);
-  }
-
-  static T getOrElse<T>(List<T> ts, int idx, T elseValue) {
-    if (idx >= 0 && idx < ts.length - 1) {
-      return ts[idx];
-    }
-    return elseValue;
   }
 }

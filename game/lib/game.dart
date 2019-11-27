@@ -7,15 +7,19 @@ import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
 
 import 'components/background.dart';
+import 'components/planet.dart';
 import 'components/player.dart';
 import 'components/wall.dart';
 import 'pages/game_over_page.dart';
 import 'pages/page.dart';
 import 'pages/title_page.dart';
 import 'palette.dart';
+import 'spawner.dart';
 import 'util.dart';
 
 class MyGame extends BaseGame {
+
+  static Spawner planetSpawner = Spawner(0.0001);
 
   double lastGeneratedX;
   Player player;
@@ -90,8 +94,13 @@ class MyGame extends BaseGame {
     }
 
     super.update(t);
+    maybeGeneratePlanet(t);
     generateNextChunck();
     fixCamera();
+  }
+
+  void maybeGeneratePlanet(double dt) {
+    planetSpawner.maybeSpawn(dt, () => addLater(Planet(size)));
   }
 
   void fixCamera() => camera.x = player.x - size.width / 3;

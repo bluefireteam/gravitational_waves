@@ -5,6 +5,8 @@ import 'palette.dart';
 const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;
 
+const STARS_SPEED = 5.0;
+const PLANET_SPEED = 45.0;
 const PLAYER_SPEED = 175.0;
 const GRAVITY_ACC = 2500.0;
 

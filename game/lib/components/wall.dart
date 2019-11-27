@@ -24,7 +24,8 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
   }
 
   void renderColorBg(Canvas c) {
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), _wall);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, (size.height - h) / 2), _wall);
+    c.drawRect(Rect.fromLTWH(0.0, (size.height + h) / 2, size.width, size.height), _wall);
   }
 
   void renderWall(Canvas c) {
