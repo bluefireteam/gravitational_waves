@@ -18,6 +18,14 @@ class AnimationElement {
 
   factory AnimationElement.fromJson(Map<String, dynamic> json) => _$AnimationElementFromJson(json);
   Map<String, dynamic> toJson() => _$AnimationElementToJson(this);
+
+  Sprite sprite() {
+    double x = this.x * _SRC_SIZE;
+    double y = this.y * _SRC_SIZE;
+    double w = this.w * _SRC_SIZE;
+    double h = this.h * _SRC_SIZE;
+    return Sprite('tileset.png', x: x, y: y, width: w, height: h);
+  }
 }
 
 @JsonSerializable()
@@ -35,6 +43,10 @@ class AnimationsJson {
 
   Sprite innerBlockGn(int group, int dx, int dy) {
     return _blockGn('corners-$group', dx, dy);
+  }
+
+  Sprite sprite(String name) {
+    return animations[name].sprite();
   }
 
   Sprite _blockGn(String name, int dx, int dy) {
@@ -93,17 +105,18 @@ class BlockSet {
 }
 
 class Tileset {
-  static AnimationsJson animations;
-  static BlockSet g1, g2;
+  static BlockSet _g1, _g2;
+  static Sprite wall;
 
   static Future init() async {
     String content = await rootBundle.loadString('assets/images/tileset.json');
-    animations = AnimationsJson.fromJson(json.decode(content));
-    g1 = BlockSet(animations, 1);
-    g2 = BlockSet(animations, 2);
+    AnimationsJson animations = AnimationsJson.fromJson(json.decode(content));
+    _g1 = BlockSet(animations, 1);
+    _g2 = BlockSet(animations, 2);
+    wall = animations.sprite('wall-pattern');
   }
 
   static BlockSet group(int group) {
-    return group == 1 ? g1 : g2;
+    return group == 1 ? _g1 : _g2;
   }
 }

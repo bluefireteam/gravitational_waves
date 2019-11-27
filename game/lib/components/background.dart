@@ -78,6 +78,15 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   @override
   void render(Canvas c) {
+    renderWall(c);
+    renderColumns(c);
+  }
+
+  void renderWall(Canvas c) {
+    // TODO render wall
+  }
+
+  void renderColumns(Canvas c) {
     columns.asMap().forEach((i, column) {
       Column before = getOrElse(columns, i - 1, column);
       Column after = getOrElse(columns, i + 1, column);

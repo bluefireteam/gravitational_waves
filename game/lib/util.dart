@@ -6,7 +6,7 @@ const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;
 
 const PLAYER_SPEED = 175.0;
-const GRAVITY_ACC = 2000.0;
+const GRAVITY_ACC = 2500.0;
 
 class Fonts {
   static final TextConfig _base = TextConfig(fontFamily: 'BitPotion');
