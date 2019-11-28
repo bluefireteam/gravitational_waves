@@ -6,6 +6,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:json_annotation/json_annotation.dart';
 
+import '../collections.dart';
 import '../util.dart';
 
 part 'tileset.g.dart';
@@ -141,6 +142,6 @@ class Tileset {
   }
 
   static int randomVariant() {
-    return R.nextInt(blocks.length);
+    return randomIdx(blocks);
   }
 }

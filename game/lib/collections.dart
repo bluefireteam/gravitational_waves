@@ -8,5 +8,9 @@ T getOrElse<T>(List<T> ts, int idx, T elseValue) {
 }
 
 T sample<T>(List<T> ts) {
-  return ts[R.nextInt(ts.length)];
+  return ts[randomIdx(ts)];
+}
+
+int randomIdx<T>(List<T> ts) {
+  return R.nextInt(ts.length);
 }
