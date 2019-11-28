@@ -3,8 +3,12 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
 
-// TODO impl Stars
 class Stars extends PositionComponent with Resizable {
+
+  Stars(Size size) {
+    //
+  }
+
   @override
   void render(Canvas c) {
     // TODO: implement render

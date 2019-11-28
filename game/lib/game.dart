@@ -47,7 +47,7 @@ class MyGame extends BaseGame {
 
     add(player = Player());
     add(Wall());
-    add(Stars());
+    add(Stars(size));
     fixCamera();
     generateNextChunck();
   }

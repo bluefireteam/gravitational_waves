@@ -17,8 +17,8 @@ class Column {
   int bottomVariant, topVariant;
 
   Column(this.bottom, this.top) {
-    bottomVariant = R.nextDouble() > 0.5 ? 1 : 2;
-    topVariant = R.nextDouble() > 0.5 ? 1 : 2;
+    bottomVariant = Tileset.randomVariant();
+    topVariant = Tileset.randomVariant();
   }
 
   double get topHeight => BLOCK_SIZE * (OFFSET + top);

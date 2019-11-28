@@ -6,6 +6,8 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:json_annotation/json_annotation.dart';
 
+import '../util.dart';
+
 part 'tileset.g.dart';
 
 const double _SRC_SIZE = 16.0;
@@ -54,6 +56,20 @@ class AnimationsJson {
     double x = (animation.x + dx) * _SRC_SIZE;
     double y = (animation.y + dy) * _SRC_SIZE;
     return Sprite('tileset.png', x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
+  }
+
+  List<T> generate<T>(String name, T Function(String) generator) {
+    List<T> list = [];
+    int i = 1;
+    while (true) {
+      String key = '$name-$i';
+      if (!animations.containsKey(key)) {
+        break;
+      }
+      list.add(generator(key));
+      i++;
+    }
+    return list;
   }
 }
 
@@ -105,30 +121,26 @@ class BlockSet {
 }
 
 class Tileset {
-  static BlockSet _v1, _v2;
+  static List<BlockSet> blocks;
   static Sprite wall;
   static List<Sprite> planets;
+  static List<Sprite> stars;
 
   static Future init() async {
     String content = await rootBundle.loadString('assets/images/tileset.json');
     AnimationsJson animations = AnimationsJson.fromJson(json.decode(content));
-    _v1 = BlockSet(animations, 1);
-    _v2 = BlockSet(animations, 2);
-    wall = animations.sprite('wall-pattern');
 
-    planets = [];
-    int i = 1;
-    while (true) {
-      String key = 'back-props-$i';
-      if (!animations.animations.containsKey(key)) {
-        break;
-      }
-      planets.add(animations.sprite(key));
-      i++;
-    }
+    wall = animations.sprite('wall-pattern');
+    blocks = [1, 2].map((i) => BlockSet(animations, i)).toList();
+    planets = animations.generate('back-props', (key) => animations.sprite(key));
+    stars = animations.generate('stars-pattern', (key) => animations.sprite(key));
   }
 
   static BlockSet variant(int variant) {
-    return variant == 1 ? _v1 : _v2;
+    return blocks[variant];
+  }
+
+  static int randomVariant() {
+    return R.nextInt(blocks.length);
   }
 }
