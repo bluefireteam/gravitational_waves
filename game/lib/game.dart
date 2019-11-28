@@ -5,6 +5,7 @@ import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
+import 'package:gravitational_waves/rotation_manager.dart';
 
 import 'components/background.dart';
 import 'components/planet.dart';
@@ -22,6 +23,7 @@ class MyGame extends BaseGame {
 
   static Spawner planetSpawner = Spawner(0.0001);
 
+  RotationManager rotationManager;
   double lastGeneratedX;
   Player player;
   double gravity;
@@ -50,6 +52,7 @@ class MyGame extends BaseGame {
     add(Stars(size));
     fixCamera();
     generateNextChunck();
+    rotationManager = RotationManager();
   }
 
   void generateNextChunck() {
@@ -99,6 +102,7 @@ class MyGame extends BaseGame {
     maybeGeneratePlanet(t);
     generateNextChunck();
     fixCamera();
+    rotationManager?.tick(t);
   }
 
   void maybeGeneratePlanet(double dt) {
@@ -113,7 +117,7 @@ class MyGame extends BaseGame {
     c.translate(resizeOffset.x, resizeOffset.y);
     c.scale(scale, scale);
 
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.background.paint);
     renderGame(c);
 
     c.restore();
@@ -125,11 +129,20 @@ class MyGame extends BaseGame {
 
   void renderGame(Canvas canvas) {
     if (currentPage?.fullScreen != true) {
-      super.render(canvas);
+      renderComponents(canvas);
       renderLives(canvas);
       renderScore(canvas);
     }
     currentPage?.render(canvas);
+  }
+
+  void renderComponents(Canvas canvas) {
+      canvas.save();
+      canvas.translate(size.width / 2, size.height / 2);
+      canvas.rotate(rotationManager.angle);
+      canvas.translate(-size.width / 2, -size.height / 2);
+      super.render(canvas);
+      canvas.restore();
   }
 
   void renderLives(Canvas canvas) {

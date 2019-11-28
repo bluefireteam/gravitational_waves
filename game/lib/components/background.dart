@@ -53,13 +53,13 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
         yield Column(0, 0);
       } else {
         bool nextForcedZero = (i + 1) >= size - 3;
-        if (beforeTop == null || (changesTop * R.nextDouble() > 0.91)) {
+        if (beforeTop == null || (changesTop / 2 * R.nextDouble() > 0.9)) {
           beforeTop = nextForcedZero ? 0 : R.nextInt(3);
           changesTop = 0;
         } else {
           changesTop++;
         }
-        if (beforeBottom == null || (changesBottom * R.nextDouble() > 0.91)) {
+        if (beforeBottom == null || (changesBottom / 2 * R.nextDouble() > 0.9)) {
           beforeBottom = nextForcedZero ? 0 : R.nextInt(3);
           changesBottom = 0;
         } else {

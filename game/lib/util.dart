@@ -10,6 +10,8 @@ const DEBUG = false;
 const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;
 
+const ROTATION_SPEED = 0.075;
+
 const STARS_SPEED = 5.0;
 const PLANET_SPEED = 45.0;
 const PLAYER_SPEED = 170.0;
