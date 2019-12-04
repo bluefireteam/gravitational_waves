@@ -22,7 +22,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.x = 0.0;
     this.width = this.height = BLOCK_SIZE;
     this.speedY = 0.0;
-    this.livesLeft = 3 * 1000;
+    this.livesLeft = 3;
     this.hurtTimer = 0.0;
   }
 
