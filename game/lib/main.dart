@@ -3,6 +3,7 @@ import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
 import './assets/tileset.dart';
+import 'assets/char.dart';
 import 'game.dart';
 
 void main() async {
@@ -13,7 +14,7 @@ void main() async {
     await Flame.util.setLandscape();
   }
   Size size = await Flame.util.initialDimensions();
-  await Tileset.init();
+  await Future.wait([Tileset.init(), Char.init()]);
 
   MyGame game = MyGame(size);
 

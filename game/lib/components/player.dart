@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/sprite.dart';
+import 'package:gravitational_waves/assets/char.dart';
 
 import '../game.dart';
 import '../palette.dart';
@@ -24,6 +26,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.hurtTimer = 0.0;
   }
 
+  bool get shouldFlip => gameRef.gravity > 0;
+
   bool get hurt => hurtTimer > 0.0;
 
   bool get dead => livesLeft == 0;
@@ -42,7 +46,22 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
-    c.drawRect(toRect(), _paint);
+    Sprite skin = Char.astronaut; // TODO add selected skin
+    if (!skin.loaded()) return;
+
+    Rect realRect = toRect();
+    double drawX = x - (skin.size.x - realRect.width) / 2;
+    double drawY = y - (shouldFlip ? (skin.size.y - realRect.height) : 0);
+    Rect renderRect = Rect.fromLTWH(0, 0, skin.size.x, skin.size.y);
+
+    c.save();
+    c.translate(drawX, drawY);
+    c.translate(0, renderRect.height / 2);
+    c.scale(1.0, shouldFlip ? 1.0 : -1.0);
+    c.translate(0, -renderRect.height / 2);
+    Char.astronaut.renderRect(c, renderRect, overridePaint: _paint);
+    c.restore();
+
     if (DEBUG) {
       c.drawRect(getCurrentRect(), Palette.playerDebugRect.paint..style = PaintingStyle.stroke);
     }
