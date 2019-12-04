@@ -21,6 +21,8 @@ flutter:
   assets:
    - assets/images/tileset.png
    - assets/images/tileset.json
+   - assets/images/char.png
+   - assets/images/char.json
 
   fonts:
    - family: BitPotion
