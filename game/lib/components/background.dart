@@ -8,7 +8,7 @@ import '../collections.dart';
 import '../game.dart';
 import '../palette.dart';
 import '../util.dart';
-import 'tileset.dart';
+import '../assets/tileset.dart';
 
 class Column {
   static const OFFSET = 5;

@@ -6,7 +6,7 @@ import 'package:flame/components/mixins/resizable.dart';
 import 'package:gravitational_waves/util.dart';
 
 import '../collections.dart';
-import 'tileset.dart';
+import '../assets/tileset.dart';
 
 class Planet extends SpriteComponent with Resizable {
 

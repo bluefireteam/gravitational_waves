@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tileset.dart';
+part of 'spritesheet.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

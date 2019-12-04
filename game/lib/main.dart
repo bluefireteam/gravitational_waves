@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
-import 'components/tileset.dart';
+import './assets/tileset.dart';
 import 'game.dart';
 
 void main() async {

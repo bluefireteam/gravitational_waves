@@ -8,7 +8,7 @@ import 'package:flame/sprite.dart';
 import 'package:gravitational_waves/game.dart';
 
 import '../palette.dart';
-import 'tileset.dart';
+import '../assets/tileset.dart';
 
 class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
   static final Paint _wall = Palette.wall.paint;

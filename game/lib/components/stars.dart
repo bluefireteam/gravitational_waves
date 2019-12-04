@@ -6,7 +6,7 @@ import 'package:flame/position.dart';
 import 'package:gravitational_waves/util.dart';
 
 import '../collections.dart';
-import 'tileset.dart';
+import '../assets/tileset.dart';
 
 class Stars extends PositionComponent with Resizable {
 
