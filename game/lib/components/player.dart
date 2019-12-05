@@ -3,20 +3,22 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/sprite.dart';
-import 'package:gravitational_waves/assets/char.dart';
 
+import '../assets/char.dart';
 import '../game.dart';
 import '../palette.dart';
 import '../util.dart';
 import 'background.dart';
+import 'player_particles.dart';
 
 class Player extends PositionComponent with HasGameRef<MyGame> {
-
   static const HURT_TIMER = 2.0;
 
   double speedY;
   int livesLeft;
   double hurtTimer;
+
+  PlayerParticles particles;
 
   Player() {
     this.x = 0.0;
@@ -24,6 +26,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.speedY = 0.0;
     this.livesLeft = 3;
     this.hurtTimer = 0.0;
+    this.particles = PlayerParticles();
   }
 
   bool get shouldFlip => gameRef.gravity > 0;
@@ -62,13 +65,25 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     Char.astronaut.renderRect(c, renderRect, overridePaint: _paint);
     c.restore();
 
+    renderParticles(c);
+
     if (DEBUG) {
-      c.drawRect(getCurrentRect(), Palette.playerDebugRect.paint..style = PaintingStyle.stroke);
+      c.drawRect(getCurrentRect(),
+          Palette.playerDebugRect.paint..style = PaintingStyle.stroke);
     }
+  }
+
+  void renderParticles(Canvas c) {
+    c.save();
+    c.translate(x, shouldFlip ? y : y - BLOCK_SIZE);
+    particles.render(c);
+    c.restore();
   }
 
   @override
   void update(double dt) {
+    particles.update(dt);
+
     if (hurt) {
       hurtTimer -= dt;
     }
@@ -89,7 +104,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     double accY = gameRef.gravity;
     y += accY * dt * dt / 2 + speedY * dt;
     speedY += accY * dt;
-    
+
     if (y < blockRect.top) {
       y = blockRect.top;
       speedY = 0;
@@ -101,10 +116,10 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   Rect getCurrentRect() {
     return gameRef.components
-      .where((c) => c is Background)
-      .map((c) => c as Background)
-      .firstWhere((c) => c.contains(right))
-      .findRectContaining(right);
+        .where((c) => c is Background)
+        .map((c) => c as Background)
+        .firstWhere((c) => c.contains(right))
+        .findRectContaining(right);
   }
 
   double get right => x + width;
