@@ -38,9 +38,9 @@ class PlayerParticles {
       generator: (_) {
         return MovingParticle(
           from: Offset(0, BLOCK_SIZE),
-          to: Offset(-R.nextDouble() * 5, BLOCK_SIZE - 3 + R.nextDouble() * 5),
+          to: Offset(-R.nextDouble() * 10, BLOCK_SIZE - 3 + R.nextDouble() * 5),
           child: child,
-          lifespan: 0.05 * R.nextInt(4),
+          lifespan: 0.025 * R.nextInt(4),
         );
       },
     );
