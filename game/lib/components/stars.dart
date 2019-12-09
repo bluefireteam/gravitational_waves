@@ -1,14 +1,16 @@
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
+import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/position.dart';
-import 'package:gravitational_waves/util.dart';
 
-import '../collections.dart';
 import '../assets/tileset.dart';
+import '../collections.dart';
+import '../game.dart';
+import '../util.dart';
 
-class Stars extends PositionComponent with Resizable {
+class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   List<int> repeats;
 
@@ -42,7 +44,8 @@ class Stars extends PositionComponent with Resizable {
 
   @override
   void update(double t) {
-    x -= STARS_SPEED * t;
+    double speed = gameRef.sleeping ? STARS_IDLE_SPEED : STARS_SPEED;
+    x -= speed * t;
     while (x < -size.width) x += size.width;
   }
 

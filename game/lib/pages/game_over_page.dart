@@ -50,7 +50,7 @@ class GameOverPage extends Page with WithButtons {
   }
 
   void doRestart() {
-    gameRef.start();
+    gameRef.restart();
   }
 
   void doMainMenu() {

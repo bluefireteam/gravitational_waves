@@ -32,6 +32,8 @@ class MyGame extends BaseGame {
   Position resizeOffset = Position.empty();
   double scale = 2.0;
 
+  bool sleeping;
+
   Page currentPage;
 
   MyGame(Size size) {
@@ -39,8 +41,10 @@ class MyGame extends BaseGame {
     currentPage = TitlePage(this);
   }
 
-  void start() {
+  void prepare() {
+    sleeping = true;
     currentPage = null;
+
     gravity = GRAVITY_ACC;
     lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
 
@@ -51,8 +55,17 @@ class MyGame extends BaseGame {
     add(Wall());
     add(Stars(size));
     fixCamera();
-    generateNextChunck();
     rotationManager = RotationManager();
+  }
+
+  void start() {
+    sleeping = false;
+    generateNextChunck();
+  }
+
+  void restart() {
+    prepare();
+    start();
   }
 
   void generateNextChunck() {
@@ -99,10 +112,13 @@ class MyGame extends BaseGame {
     }
 
     super.update(t);
-    maybeGeneratePlanet(t);
-    generateNextChunck();
     fixCamera();
-    rotationManager?.tick(t);
+
+    if (!sleeping) {
+      maybeGeneratePlanet(t);
+      generateNextChunck();
+      rotationManager?.tick(t);
+    }
   }
 
   void maybeGeneratePlanet(double dt) {
@@ -165,6 +181,10 @@ class MyGame extends BaseGame {
   void onTapUp(TapUpDetails details) {
     if (currentPage != null) {
       currentPage.tap(fixScaleFor(Position.fromOffset(details.globalPosition)));
+      return;
+    }
+    if (sleeping) {
+      start(); // TODO remove this behaviour after the title menu is implemented
       return;
     }
     super.onTapUp(details);

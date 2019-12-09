@@ -40,7 +40,7 @@ class TitlePage extends Page with WithButtons {
   }
 
   void doNewGame() {
-    gameRef.start();
+    gameRef.prepare();
   }
 
   void doQuit() {

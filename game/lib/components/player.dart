@@ -82,6 +82,10 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void update(double dt) {
+    if (gameRef.sleeping) {
+      return;
+    }
+
     particles.update(dt);
 
     if (hurt) {
