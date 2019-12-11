@@ -23,6 +23,7 @@ flutter:
    - assets/images/tileset.json
    - assets/images/char.png
    - assets/images/char.json
+   - assets/images/game_logo.png
 
   fonts:
    - family: BitPotion

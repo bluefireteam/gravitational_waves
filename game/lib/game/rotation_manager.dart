@@ -1,4 +1,4 @@
-import 'package:gravitational_waves/spawner.dart';
+import 'spawner.dart';
 
 import 'collections.dart';
 import 'util.dart';
