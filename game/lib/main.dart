@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
-import './assets/tileset.dart';
-import 'assets/char.dart';
-import 'game.dart';
+import './game/assets/tileset.dart';
+import './game/assets/char.dart';
+import './game/game.dart';
+
+import './screens/game_screen.dart';
 
 void main() async {
   Flame.initializeWidget();
@@ -17,16 +19,19 @@ void main() async {
   await Future.wait([Tileset.init(), Char.init()]);
 
   MyGame game = MyGame(size);
+  game.prepare();
+
+  GameScreen screen = GameScreen(game: game);
 
   runApp(MaterialApp(
     routes: {
       '/': (BuildContext ctx) => Scaffold(
               body: WillPopScope(
             onWillPop: () async {
-              game.pause();
+              screen.game.pause();
               return false;
             },
-            child: game.widget,
+            child: screen,
           )),
     },
   ));

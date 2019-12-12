@@ -5,7 +5,7 @@ import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import 'package:gravitational_waves/game.dart';
+import '../game.dart';
 
 import '../palette.dart';
 import '../assets/tileset.dart';

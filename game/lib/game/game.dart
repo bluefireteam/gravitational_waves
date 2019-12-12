@@ -5,8 +5,8 @@ import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
-import 'package:gravitational_waves/rotation_manager.dart';
 
+import 'rotation_manager.dart';
 import 'components/background.dart';
 import 'components/planet.dart';
 import 'components/player.dart';
@@ -14,7 +14,6 @@ import 'components/stars.dart';
 import 'components/wall.dart';
 import 'pages/game_over_page.dart';
 import 'pages/page.dart';
-import 'pages/title_page.dart';
 import 'palette.dart';
 import 'spawner.dart';
 import 'util.dart';
@@ -38,7 +37,6 @@ class MyGame extends BaseGame {
 
   MyGame(Size size) {
     resize(size);
-    currentPage = TitlePage(this);
   }
 
   void prepare() {
@@ -125,7 +123,9 @@ class MyGame extends BaseGame {
     planetSpawner.maybeSpawn(dt, () => addLater(Planet(size)));
   }
 
-  void fixCamera() => camera.x = player.x - size.width / 3;
+  void fixCamera() {
+    camera.x = player.x - size.width / 3;
+  }
 
   @override
   void render(Canvas c) {
@@ -184,7 +184,6 @@ class MyGame extends BaseGame {
       return;
     }
     if (sleeping) {
-      start(); // TODO remove this behaviour after the title menu is implemented
       return;
     }
     super.onTapUp(details);
