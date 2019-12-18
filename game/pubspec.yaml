@@ -16,8 +16,10 @@ dev_dependencies:
     sdk: flutter
   build_runner: 1.7.2
   json_serializable: 3.2.3
+  dashbook: 0.0.1
 
 flutter:
+  uses-material-design: true
   assets:
    - assets/images/tileset.png
    - assets/images/tileset.json
@@ -29,3 +31,7 @@ flutter:
    - family: BitPotion
      fonts:
        - asset: assets/fonts/BitPotionExt.ttf
+   - family: Quantum
+     fonts:
+       - asset: assets/fonts/Quantum.otf
+

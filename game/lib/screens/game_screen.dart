@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../game/game.dart';
 
+import '../widgets/button.dart';
+
 class GameScreen extends StatefulWidget {
 
   final MyGame game;
@@ -29,23 +31,28 @@ class _GameScreenState extends State<GameScreen> {
               alignment: Alignment.center,
               child: Column(
                   children: [
-                    SizedBox(height: 25),
                     Image.asset("assets/images/game_logo.png", width: 400),
-                    RaisedButton(
-                        child: Text("Play"),
-                        onPressed: () {
-                          widget.game.start();
-                          setState(() {
-                            _playing = true;
-                          });
-                        }
-                    ),
-                    RaisedButton(
-                        child: Text("Quit"),
-                        onPressed: () {
-                          // TODO
-                        }
-                    )
+                    Expanded(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          PrimaryButton(
+                              label: "Play",
+                              onPress: () {
+                                widget.game.start();
+                                setState(() {
+                                  _playing = true;
+                                });
+                              }
+                          ),
+                          SecondaryButton(
+                              label: "Quit",
+                              onPress: () {
+                                // TODO
+                              }
+                          ),
+                          SizedBox(height: 50),
+                      ]
+                    ))
                   ]
               )
           )
