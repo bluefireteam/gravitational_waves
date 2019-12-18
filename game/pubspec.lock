@@ -183,6 +183,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.1"
+  flame_splash_screen:
+    dependency: "direct main"
+    description:
+      name: flame_splash_screen
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   flare_dart:
     dependency: transitive
     description:

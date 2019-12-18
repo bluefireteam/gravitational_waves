@@ -68,9 +68,6 @@ class Tileset {
     blocks = [1, 2].map((i) => BlockSet(_sheet, i)).toList();
     planets = _sheet.generate('back-props', (key) => _sheet.sprite(key));
     stars = _sheet.generate('stars-pattern', (key) => _sheet.sprite(key));
-
-    // TODO not a good solution, but can't think of anything
-    await Future.delayed(Duration(seconds: 1));
   }
 
   static BlockSet variant(int variant) {

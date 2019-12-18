@@ -10,6 +10,7 @@ dependencies:
     sdk: flutter
   flame: 0.17.1
   json_annotation: 3.0.0
+  flame_splash_screen: 0.0.1
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +27,7 @@ flutter:
    - assets/images/char.png
    - assets/images/char.json
    - assets/images/game_logo.png
+   - assets/images/fireslime-banner.png
 
   fonts:
    - family: BitPotion
