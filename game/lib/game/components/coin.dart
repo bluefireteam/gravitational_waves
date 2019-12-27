@@ -1,31 +1,37 @@
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
+import 'package:flame/animation.dart';
+import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 
 import '../game.dart';
 
-class Coin extends PositionComponent with HasGameRef<MyGame> {
+class Coin extends AnimationComponent with HasGameRef<MyGame> {
 
   static const double WIDTH = 12.0, HEIGHT = 12.0;
 
-  Coin(double x, double y) {
+  bool picked = false;
+
+  Coin(double x, double y) : super(WIDTH, HEIGHT, buildAnimation()) {
     this.x = x - WIDTH / 2;
     this.y = y - HEIGHT / 2;
-    this.width = WIDTH;
-    this.height = HEIGHT;
   }
 
-  @override
-  void render(Canvas c) {
-    c.drawRect(toRect(), Paint()..color = const Color(0xFFFF00FF));
+  static Animation buildAnimation() {
+    return Animation.sequenced('crystal.png', 8, textureWidth: 16.0, textureHeight: 16.0);
   }
 
   @override
   void update(double t) {
+    if (picked) {
+      return;
+    }
+
+    super.update(t);
     if (gameRef.player.toRect().overlaps(toRect())) {
-      // TODO pickup
+      // TODO pickup (audio cue, update game)
       print('pickup coin');
+      picked = true;
     }
   }
 
@@ -34,9 +40,11 @@ class Coin extends PositionComponent with HasGameRef<MyGame> {
     return r.contains(Offset(x, y));
   }
 
-  @override
-  bool destroy() => x < gameRef.camera.x - gameRef.size.width;
+  bool get offscreen => x < gameRef.camera.x - gameRef.size.width;
 
   @override
-  int priority() => 5;
+  bool destroy() => picked || offscreen;
+
+  @override
+  int priority() => 4;
 }
