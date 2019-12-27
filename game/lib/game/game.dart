@@ -6,6 +6,8 @@ import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
 
+import 'collections.dart';
+import 'components/coin.dart';
 import 'rotation_manager.dart';
 import 'components/background.dart';
 import 'components/planet.dart';
@@ -68,7 +70,24 @@ class MyGame extends BaseGame {
 
   void generateNextChunck() {
     while (lastGeneratedX < player.x + size.width) {
-      _addBg(Background(lastGeneratedX));
+      Background bg = Background(lastGeneratedX);
+      _addBg(bg);
+
+      int amountCoints = 2 + R.nextInt(3);
+      final List<Coin> coins = [];
+      for (int i = 0; i < amountCoints; i++) {
+        Rect spot = bg.findRectFor(randomIdx(bg.columns));
+        bool top = R.nextBool();
+        double x = spot.center.dx;
+        double yOffset = Coin.HEIGHT / 2;
+        double y = top ? spot.top + yOffset : spot.bottom - yOffset;
+        if (coins.any((c) => c.overlaps(x, y))) {
+          continue;
+        }
+        Coin c = Coin(x, y);
+        coins.add(c);
+        add(c);
+      }
     }
   }
 

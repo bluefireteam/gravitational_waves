@@ -26,6 +26,7 @@ flutter:
    - assets/images/tileset.json
    - assets/images/char.png
    - assets/images/char.json
+   - assets/images/crystal.png
    - assets/images/game_logo.png
    - assets/images/fireslime-banner.png
 

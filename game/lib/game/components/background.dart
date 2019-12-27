@@ -150,8 +150,11 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   Rect findRectContaining(double targetX) {
     int idx = ((targetX - x) / BLOCK_SIZE).floor();
-    Column column = columns[idx];
+    return findRectFor(idx);
+  }
 
+  Rect findRectFor(int idx) {
+    Column column = columns[idx];
     double px = x + idx * BLOCK_SIZE;
     return Rect.fromLTWH(px, column.topHeight, BLOCK_SIZE, size.height - column.topHeight - column.bottomHeight);
   }
