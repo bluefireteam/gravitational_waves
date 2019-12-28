@@ -7,6 +7,7 @@ import 'package:flame/sprite.dart';
 import '../assets/char.dart';
 import '../game.dart';
 import '../palette.dart';
+import '../rumble.dart';
 import '../util.dart';
 import 'background.dart';
 import 'player_particles.dart';
@@ -112,6 +113,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     if (y < blockRect.top || y > blockRect.bottom - height) {
       livesLeft--;
+      Rumble.rumble();
       if (livesLeft > 0) {
         hurtTimer = HURT_TIMER;
       } else {

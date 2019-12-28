@@ -2,6 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/audio_pool.dart';
 import 'package:flame/flame.dart';
+import 'package:gravitational_waves/game/preferences.dart';
 
 import 'util.dart';
 
@@ -37,6 +38,7 @@ class Audio {
 
   static Stoppable sfx(String sound, {double volume = 1.0}) {
     if (!ENABLE_AUDIO) return () {};
+    if (!Preferences.instance.soundOn) return () {};
     final close = _startAsync(sound, volume: volume);
     return () async => (await close)();
   }
@@ -47,6 +49,7 @@ class Audio {
 
   static void music(String song) async {
     if (!ENABLE_AUDIO) return;
+    if (!Preferences.instance.musicOn) return;
     await musicPlayer.play('music/$song');
   }
 

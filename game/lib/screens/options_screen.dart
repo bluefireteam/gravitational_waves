@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:gravitational_waves/game/game.dart';
+import '../game/game.dart';
+import '../game/preferences.dart';
 
 import '../widgets/button.dart';
 
-class OptionsScreen extends StatelessWidget {
+class OptionsScreen extends StatefulWidget {
   final MyGame game;
 
   const OptionsScreen({Key key, this.game}) : super(key: key);
 
   @override
+  _OptionsScreenState createState() => _OptionsScreenState();
+}
+
+class _OptionsScreenState extends State<OptionsScreen> {
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        game.widget,
+        widget.game.widget,
         options(context),
       ],
     );
   }
+
+  bool musicOn() => Preferences.instance.musicOn;
+
+  bool soundOn() => Preferences.instance.soundOn;
+
+  bool rumbleOn() => Preferences.instance.rumbleOn;
 
   Widget options(BuildContext context) {
     return Align(
@@ -29,21 +41,24 @@ class OptionsScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 50),
                 SecondaryButton(
-                  label: 'Music On',
-                  onPress: () {
-                    print('todo');
+                  label: 'Music ${musicOn() ? 'On' : 'Off'}',
+                  onPress: () async {
+                    await Preferences.instance.toggleMusic();
+                    setState(() {});
                   },
                 ),
                 SecondaryButton(
-                  label: 'Sounds On',
-                  onPress: () {
-                    print('todo');
+                  label: 'Sound ${soundOn() ? 'On' : 'Off'}',
+                  onPress: () async {
+                    await Preferences.instance.toggleSounds();
+                    setState(() {});
                   },
                 ),
                 SecondaryButton(
-                  label: 'Vibrate On',
-                  onPress: () {
-                    print('todo');
+                  label: 'Rumble ${rumbleOn() ? 'On' : 'Off'}',
+                  onPress: () async {
+                    await Preferences.instance.toggleRumble();
+                    setState(() {});
                   },
                 ),
                 PrimaryButton(

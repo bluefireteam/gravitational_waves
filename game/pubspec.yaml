@@ -12,6 +12,8 @@ dependencies:
   audioplayers: 0.13.5
   json_annotation: 3.0.0
   flame_splash_screen: 0.0.1
+  shared_preferences: 0.5.6
+  vibrate: 0.0.4
 
 dev_dependencies:
   flutter_test:

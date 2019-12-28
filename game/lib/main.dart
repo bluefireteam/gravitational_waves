@@ -12,10 +12,12 @@ import './game/game.dart';
 
 import './screens/game_screen.dart';
 import 'game/audio.dart';
+import 'game/preferences.dart';
 
 void main() async {
   Flame.initializeWidget();
 
+  await Preferences.init();
   await Audio.init();
   if (debugDefaultTargetPlatformOverride != TargetPlatform.fuchsia) {
     await Flame.util.setLandscape();
