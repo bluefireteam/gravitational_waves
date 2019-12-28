@@ -5,3 +5,12 @@
 This is a simple homage to Gravity Square, an old inifinity runner discountinued by Kongregate.
 
 Color palette: https://lospec.com/palette-list/fzt-ethereal-16
+
+## Credits
+
+Music Contemplate, by Joshua McLean
+
+> Contains music ©2019 Joshua McLean (mrjoshuamclean.com)
+> Licensed under Creative Commons Attribution 4.0 International
+
+Sound Effects by ...

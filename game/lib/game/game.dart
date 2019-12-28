@@ -6,6 +6,7 @@ import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
 
+import 'audio.dart';
 import 'collections.dart';
 import 'components/coin.dart';
 import 'rotation_manager.dart';
@@ -63,6 +64,7 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
+    Audio.music('contemplate.mp3');
   }
 
   void restart() {
@@ -221,11 +223,13 @@ class MyGame extends BaseGame {
   void pause() {}
 
   void gameOver() {
+    Audio.die();
+    Audio.stopMusic();
     currentPage = GameOverPage(this);
   }
 
   void collectCoin() {
     coins++;
-    // TODO play coin sound
+    Audio.coin();
   }
 }

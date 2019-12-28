@@ -9,11 +9,12 @@ import './game/assets/char.dart';
 import './game/game.dart';
 
 import './screens/game_screen.dart';
+import 'game/audio.dart';
 
 void main() async {
   Flame.initializeWidget();
 
-  Flame.audio.disableLog();
+  await Audio.init();
   if (debugDefaultTargetPlatformOverride != TargetPlatform.fuchsia) {
     await Flame.util.setLandscape();
   }

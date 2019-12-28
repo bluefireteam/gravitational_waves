@@ -9,6 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   flame: 0.17.1
+  audioplayers: 0.13.5
   json_annotation: 3.0.0
   flame_splash_screen: 0.0.1
 
@@ -29,6 +30,9 @@ flutter:
    - assets/images/crystal.png
    - assets/images/game_logo.png
    - assets/images/fireslime-banner.png
+   - assets/audio/music/contemplate.mp3
+   - assets/audio/sfx/coin.wav
+   - assets/audio/sfx/die.wav
 
   fonts:
    - family: BitPotion

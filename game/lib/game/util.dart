@@ -5,6 +5,7 @@ import 'palette.dart';
 
 final R = math.Random();
 
+const ENABLE_AUDIO = true;
 const DEBUG = false;
 
 const BLOCK_SIZE = 16.0;
