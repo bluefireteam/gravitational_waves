@@ -28,6 +28,7 @@ class MyGame extends BaseGame {
   double lastGeneratedX;
   Player player;
   double gravity;
+  int coins;
 
   Size rawSize, scaledSize;
   Position resizeOffset = Position.empty();
@@ -47,6 +48,7 @@ class MyGame extends BaseGame {
 
     gravity = GRAVITY_ACC;
     lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+    coins = 0;
 
     components.clear();
     _addBg(Background.plains(lastGeneratedX));
@@ -167,6 +169,7 @@ class MyGame extends BaseGame {
       renderComponents(canvas);
       renderLives(canvas);
       renderScore(canvas);
+      renderCoins(canvas);
     }
     currentPage?.render(canvas);
   }
@@ -184,6 +187,12 @@ class MyGame extends BaseGame {
     final p = Position(size.width - 10, size.height - 10);
     final text = '${player.livesLeft} hearts';
     Fonts.livesCounter.render(canvas, text, p, anchor: Anchor.bottomRight);
+  }
+
+  void renderCoins(Canvas canvas) {
+    final p = Position(size.width  / 2, size.height - 10);
+    final text = '$coins coins';
+    Fonts.livesCounter.render(canvas, text, p, anchor: Anchor.bottomCenter);
   }
 
   void renderScore(Canvas canvas) {
@@ -213,5 +222,10 @@ class MyGame extends BaseGame {
 
   void gameOver() {
     currentPage = GameOverPage(this);
+  }
+
+  void collectCoin() {
+    coins++;
+    // TODO play coin sound
   }
 }

@@ -13,10 +13,11 @@ import 'player_particles.dart';
 
 class Player extends PositionComponent with HasGameRef<MyGame> {
   static const HURT_TIMER = 2.0;
+  static const SHINE_TIMER = 0.25;
 
   double speedY;
   int livesLeft;
-  double hurtTimer;
+  double hurtTimer, shinyTimer;
 
   PlayerParticles particles;
 
@@ -26,6 +27,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.speedY = 0.0;
     this.livesLeft = 3;
     this.hurtTimer = 0.0;
+    this.shinyTimer = 0.0;
     this.particles = PlayerParticles();
   }
 
@@ -33,11 +35,16 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   bool get hurt => hurtTimer > 0.0;
 
+  bool get shiny => shinyTimer > 0.0;
+
   bool get dead => livesLeft == 0;
 
   Paint get _paint {
-    final shine = hurt && (hurtTimer * 1000) % 250 > 125;
-    final palette = shine ? Palette.playerShine : Palette.player;
+    if (shiny) {
+      return Paint()..colorFilter = ColorFilter.mode(Palette.playerShine.color, BlendMode.srcATop);
+    }
+    final blinkHurt = hurt && (hurtTimer * 1000) % 250 > 125;
+    final palette = blinkHurt ? Palette.playerHurt : Palette.player;
     return palette.paint;
   }
 
@@ -80,6 +87,10 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     c.restore();
   }
 
+  void shine() {
+    shinyTimer = SHINE_TIMER;
+  }
+
   @override
   void update(double dt) {
     if (gameRef.sleeping) {
@@ -90,6 +101,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     if (hurt) {
       hurtTimer -= dt;
+    }
+    if (shiny) {
+      shinyTimer -= dt;
     }
 
     x += dt * PLAYER_SPEED;

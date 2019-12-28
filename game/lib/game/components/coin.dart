@@ -29,8 +29,8 @@ class Coin extends AnimationComponent with HasGameRef<MyGame> {
 
     super.update(t);
     if (gameRef.player.toRect().overlaps(toRect())) {
-      // TODO pickup (audio cue, update game)
-      print('pickup coin');
+      gameRef.player.shine();
+      gameRef.collectCoin();
       picked = true;
     }
   }
