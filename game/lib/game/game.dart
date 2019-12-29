@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'audio.dart';
 import 'collections.dart';
 import 'components/coin.dart';
+import 'game_data.dart';
 import 'rotation_manager.dart';
 import 'components/background.dart';
 import 'components/planet.dart';
@@ -169,9 +170,11 @@ class MyGame extends BaseGame {
   void renderGame(Canvas canvas) {
     if (currentPage?.fullScreen != true) {
       renderComponents(canvas);
-      renderLives(canvas);
-      renderScore(canvas);
-      renderCoins(canvas);
+      if (!sleeping) {
+        renderLives(canvas);
+        renderScore(canvas);
+        renderCoins(canvas);
+      }
     }
     currentPage?.render(canvas);
   }
@@ -222,9 +225,11 @@ class MyGame extends BaseGame {
 
   void pause() {}
 
-  void gameOver() {
+  void gameOver() async {
     Audio.die();
     Audio.stopMusic();
+
+    GameData.instance.addCoins(coins);
     currentPage = GameOverPage(this);
   }
 

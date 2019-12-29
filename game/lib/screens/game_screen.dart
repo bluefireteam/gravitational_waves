@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../game/game.dart';
-
+import '../game/game_data.dart';
 import '../widgets/button.dart';
 
 class GameScreen extends StatefulWidget {
@@ -43,12 +43,14 @@ class _GameScreenState extends State<GameScreen> {
                         }),
                     SecondaryButton(
                       label: 'Options',
-                      onPress: () => Navigator.of(context).pushNamed('/options'),
+                      onPress: () =>
+                          Navigator.of(context).pushNamed('/options'),
                     ),
                     SecondaryButton(
                       label: 'Quit',
                       onPress: () => exit(0),
                     ),
+                    Text('Total Coins: ${GameData.instance.coins}'),
                     SizedBox(height: 20),
                   ],
                 ),

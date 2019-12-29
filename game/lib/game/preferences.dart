@@ -43,8 +43,6 @@ class Preferences {
     await this.save();
   }
 
-  Preferences._empty();
-
   Future<bool> save() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('gravitational_waves.prefs', json.encode(toJson()));
