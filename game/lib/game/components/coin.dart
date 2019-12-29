@@ -36,8 +36,9 @@ class Coin extends AnimationComponent with HasGameRef<MyGame> {
   }
 
   bool overlaps(double x, double y) {
-    Rect r = this.toRect().inflate(2 * WIDTH);
-    return r.contains(Offset(x, y));
+    Rect r = this.toRect().inflate(WIDTH);
+    if (r.contains(Offset(x, y))) return true;
+    return (x - this.x).abs() < 4 * WIDTH;
   }
 
   bool get offscreen => x < gameRef.camera.x - gameRef.size.width;
