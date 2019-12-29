@@ -14,3 +14,7 @@ T sample<T>(List<T> ts) {
 int randomIdx<T>(List<T> ts) {
   return R.nextInt(ts.length);
 }
+
+T firstOrNull<T>(List<T> ts, bool Function(T) predicate) {
+  return ts.firstWhere(predicate, orElse: () => null);
+}

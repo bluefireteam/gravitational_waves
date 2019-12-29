@@ -6,6 +6,7 @@ import 'package:flame/sprite.dart';
 
 import '../assets/char.dart';
 import '../game.dart';
+import '../game_data.dart';
 import '../palette.dart';
 import '../rumble.dart';
 import '../util.dart';
@@ -57,7 +58,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
-    Sprite skin = Char.astronaut; // TODO add selected skin
+    Sprite skin = Char.fromSkin(GameData.instance.selectedSkin);
     if (!skin.loaded()) return;
 
     Rect realRect = toRect();

@@ -14,6 +14,7 @@ dependencies:
   flame_splash_screen: 0.0.1
   shared_preferences: 0.5.6
   vibrate: 0.0.4
+  dio: 3.0.8
 
 dev_dependencies:
   flutter_test:
@@ -25,6 +26,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+   - assets/firescore_uuid
    - assets/images/tileset.png
    - assets/images/tileset.json
    - assets/images/char.png

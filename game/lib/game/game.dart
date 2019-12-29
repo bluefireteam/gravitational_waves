@@ -19,6 +19,7 @@ import 'components/wall.dart';
 import 'pages/game_over_page.dart';
 import 'pages/page.dart';
 import 'palette.dart';
+import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
 
@@ -230,6 +231,7 @@ class MyGame extends BaseGame {
     Audio.stopMusic();
 
     GameData.instance.addCoins(coins);
+    ScoreBoard.submitScore(score);
     currentPage = GameOverPage(this);
   }
 
