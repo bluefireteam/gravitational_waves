@@ -37,7 +37,7 @@ class GameData {
   }
 
   Future addScore(int score) async {
-    this.highScore = math.max(this.highScore, score);
+    this.highScore = math.max(this.highScore ?? 0, score);
     await this.save();
   }
 

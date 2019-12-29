@@ -74,7 +74,7 @@ class ScoreBoard {
             data: {
               'playerId': playerId,
               'score': score,
-              'metadata': data.selectedSkin,
+              'metadata': data.selectedSkin.toString(),
             },
             options: Options(
                 headers: {

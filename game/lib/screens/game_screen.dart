@@ -12,11 +12,15 @@ class GameScreen extends StatefulWidget {
   GameScreen({this.game});
 
   @override
-  _GameScreenState createState() => _GameScreenState();
+  _GameScreenState createState() => _GameScreenState(game);
 }
 
 class _GameScreenState extends State<GameScreen> {
   bool _playing = false;
+
+  _GameScreenState(MyGame game) {
+    game.backToMenu = () => this.setState(() => _playing = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,7 @@ class _GameScreenState extends State<GameScreen> {
                       label: 'Quit',
                       onPress: () => exit(0),
                     ),
-                    Text('Total Coins: ${GameData.instance.coins}'),
+                    Text('Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore}'),
                     SizedBox(height: 20),
                   ],
                 ),

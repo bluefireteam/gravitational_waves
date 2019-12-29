@@ -27,6 +27,10 @@ class MyGame extends BaseGame {
 
   static Spawner planetSpawner = Spawner(0.0001);
 
+  // Setup by the flutter components to allow this game instance
+  // to callback to the flutter code and go back to the menu
+  void Function() backToMenu;
+
   RotationManager rotationManager;
   double lastGeneratedX;
   Player player;

@@ -7,7 +7,6 @@ import '../palette.dart';
 import '../util.dart';
 import 'button.dart';
 import 'page.dart';
-import 'title_page.dart';
 import 'with_buttons.dart';
 
 class GameOverPage extends Page with WithButtons {
@@ -54,7 +53,9 @@ class GameOverPage extends Page with WithButtons {
   }
 
   void doMainMenu() {
-    gameRef.currentPage = TitlePage(gameRef);
-    gameRef.components.clear();
+    gameRef.sleeping = true;
+    gameRef.currentPage = null;
+    gameRef.prepare();
+    if (gameRef.backToMenu != null) gameRef.backToMenu();
   }
 }
