@@ -70,7 +70,7 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
-    Audio.music('contemplate.mp3');
+    Audio.music('dark-moon.mp3');
   }
 
   void restart() {
@@ -234,8 +234,11 @@ class MyGame extends BaseGame {
     Audio.die();
     Audio.stopMusic();
 
-    GameData.instance.addCoins(coins);
-    ScoreBoard.submitScore(score);
+    if (score != null && coins != null) {
+      GameData.instance.addCoins(coins);
+      ScoreBoard.submitScore(score);
+    }
+
     currentPage = GameOverPage(this);
   }
 
