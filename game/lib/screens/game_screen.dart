@@ -39,20 +39,50 @@ class _GameScreenState extends State<GameScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    PrimaryButton(
-                        label: 'Play',
-                        onPress: () {
-                          widget.game.start();
-                          setState(() => _playing = true);
-                        }),
-                    SecondaryButton(
-                      label: 'Options',
-                      onPress: () =>
-                          Navigator.of(context).pushNamed('/options'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PrimaryButton(
+                          label: 'Classic',
+                          onPress: () {
+                            widget.game.start();
+                            setState(() => _playing = true);
+                          },
+                        ),
+                        PrimaryButton(
+                          label: 'Revamped',
+                          onPress: null, // disabled
+                        ),
+                      ],
                     ),
-                    SecondaryButton(
-                      label: 'Quit',
-                      onPress: () => exit(0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SecondaryButton(
+                        label: 'Skins',
+                        onPress: () =>
+                            Navigator.of(context).pushNamed('/skins'),
+                        ),
+                        SecondaryButton(
+                          label: 'Scoreboard',
+                          onPress: () =>
+                              Navigator.of(context).pushNamed('/scoreboard'),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SecondaryButton(
+                          label: 'Options',
+                          onPress: () =>
+                              Navigator.of(context).pushNamed('/options'),
+                        ),
+                        SecondaryButton(
+                          label: 'Quit',
+                          onPress: () => exit(0),
+                        ),
+                      ],
                     ),
                     Text('Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore}'),
                     SizedBox(height: 20),

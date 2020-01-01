@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flame_splash_screen/flame_splash_screen.dart';
 import 'package:gravitational_waves/screens/options_screen.dart';
+import 'package:gravitational_waves/screens/scoreboard_screen.dart';
+import 'package:gravitational_waves/screens/skins_screen.dart';
 
 import './game/assets/tileset.dart';
 import './game/assets/char.dart';
@@ -34,6 +36,8 @@ void main() async {
 
   GameScreen mainMenu = GameScreen(game: game);
   OptionsScreen options = OptionsScreen(game: game);
+  ScoreboardScreen scoreboard = ScoreboardScreen(game: game);
+  SkinsScreen skins = SkinsScreen(game: game);
 
   runApp(
     MaterialApp(
@@ -50,6 +54,8 @@ void main() async {
               },
             ),
         '/options': (BuildContext ctx) => Scaffold(body: options),
+        '/skins': (BuildContext ctx) => Scaffold(body: skins),
+        '/scoreboard': (BuildContext ctx) => Scaffold(body: scoreboard),
         '/game': (BuildContext ctx) => Scaffold(
               body: WillPopScope(
                 onWillPop: () async {

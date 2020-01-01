@@ -33,7 +33,7 @@ class Button extends StatelessWidget {
   final Color fontColor;
   final Color backgroundColor;
 
-  Button({ this.label, this.onPress, this.fontColor, this.backgroundColor, this.minWidth = 200 });
+  Button({ this.label, this.onPress, this.fontColor, this.backgroundColor, this.minWidth = 250 });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class Button extends StatelessWidget {
                     label,
                     style: TextStyle(
                         color: backgroundColor,
-                        fontFamily: "Quantum",
+                        fontFamily: 'Quantum',
                         fontSize: 34,
                     )
                 ),
