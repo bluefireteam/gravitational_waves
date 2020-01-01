@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../game/game.dart';
 import '../game/game_data.dart';
 import '../widgets/button.dart';
+import '../widgets/label.dart';
 
 class GameScreen extends StatefulWidget {
   final MyGame game;
@@ -84,7 +85,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ],
                     ),
-                    Text('Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore}'),
+                    Label(label: 'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore}'),
                     SizedBox(height: 20),
                   ],
                 ),

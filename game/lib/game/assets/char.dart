@@ -22,5 +22,6 @@ class Char {
       case Skin.ASTRONAUT: return astronaut;
       case Skin.SECURITY: return security;
     }
+    throw 'Unknown skin! $skin';
   }
 }

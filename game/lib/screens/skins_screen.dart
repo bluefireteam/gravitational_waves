@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../game/game.dart';
 import '../widgets/button.dart';
+import '../widgets/label.dart';
 
 class SkinsScreen extends StatefulWidget {
   final MyGame game;
@@ -33,7 +34,7 @@ class _SkinsScreenState extends State<SkinsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 50),
-                Text('skins...'),
+                Label(label: 'skins...'),
                 PrimaryButton(
                   label: 'Back',
                   onPress: () => Navigator.of(context).pop(),
