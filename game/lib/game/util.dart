@@ -7,6 +7,7 @@ final R = math.Random();
 
 const ENABLE_AUDIO = true;
 const DEBUG = false;
+const CHECK_PLAYER_ID = false;
 
 const BLOCK_SIZE = 16.0;
 const CHUNCK_SIZE = 64;

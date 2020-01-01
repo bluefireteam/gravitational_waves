@@ -66,6 +66,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   label: 'Back',
                   onPress: () => Navigator.of(context).pop(),
                 ),
+                SizedBox(height: 50),
               ],
             ),
           )
@@ -78,7 +79,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
     Color fontColor(ScoreBoardEntry entry) =>
       entry.playerId == playerId ? const Color(0xFFFFF8C0) : const Color(0xFF38607C);
 
-    final _list = Flexible(child: ListView(
+    final _list = ListView(
         padding: const EdgeInsets.all(10),
         children: (entries ?? []).asMap().entries.map((entry) {
           return Container(
@@ -131,21 +132,23 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
             ),
           );
       }).toList(),
-    ));
+    );
 
     if (playerId == null) {
-      return Column(
-        children: [
-          SizedBox(height: 50),
-          PrimaryButton(
-            label: 'Join the scoreboard',
-            onPress: () => Navigator.pushReplacementNamed(context, '/join-scoreboard'),
-          ),
-          Expanded(child: _list),
-        ],
+      return Flexible(
+        child: Column(
+          children: [
+            SizedBox(height: 50),
+            SecondaryButton(
+              label: 'Join the scoreboard',
+              onPress: () => Navigator.pushReplacementNamed(context, '/join-scoreboard'),
+            ),
+            Expanded(child: _list),
+          ],
+        ),
       );
     } else {
-      return _list;
+      return Flexible(child: _list);
     }
   }
 }

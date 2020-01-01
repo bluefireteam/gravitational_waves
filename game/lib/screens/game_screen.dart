@@ -85,7 +85,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ],
                     ),
-                    Label(label: 'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore}'),
+                    Label(label: 'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}'),
                     SizedBox(height: 20),
                   ],
                 ),

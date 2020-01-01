@@ -23,7 +23,7 @@ class GameData {
     this.coins = 0;
     this.highScore = null;
     this.selectedSkin = Skin.ASTRONAUT;
-    this.playerId = 'luanpotter'; // TODO allow this to change
+    this.playerId = null;
   }
 
   Future addCoins(int coins) async {
@@ -38,6 +38,11 @@ class GameData {
 
   Future addScore(int score) async {
     this.highScore = math.max(this.highScore ?? 0, score);
+    await this.save();
+  }
+
+  Future setPlayerId(String playerId) async {
+    this.playerId = playerId;
     await this.save();
   }
 
