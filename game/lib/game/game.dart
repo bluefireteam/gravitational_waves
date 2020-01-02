@@ -228,7 +228,9 @@ class MyGame extends BaseGame {
     gravity *= -1;
   }
 
-  void pause() {}
+  void pause() {
+    // TODO(luan) impl pause
+  }
 
   void gameOver() async {
     Audio.die();

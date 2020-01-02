@@ -26,6 +26,11 @@ class GameData {
     this.playerId = null;
   }
 
+  Future setSkin(Skin skin) async {
+    this.selectedSkin = skin;
+    await this.save();
+  }
+
   Future addCoins(int coins) async {
     this.coins += coins;
     await this.save();

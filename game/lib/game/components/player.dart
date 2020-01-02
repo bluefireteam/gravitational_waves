@@ -27,7 +27,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.x = 0.0;
     this.width = this.height = BLOCK_SIZE;
     this.speedY = 0.0;
-    this.livesLeft = 3;
+    this.livesLeft = 1;
     this.hurtTimer = 0.0;
     this.shinyTimer = 0.0;
     this.particles = PlayerParticles();
@@ -71,7 +71,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     c.translate(0, renderRect.height / 2);
     c.scale(1.0, shouldFlip ? 1.0 : -1.0);
     c.translate(0, -renderRect.height / 2);
-    Char.astronaut.renderRect(c, renderRect, overridePaint: _paint);
+    skin.renderRect(c, renderRect, overridePaint: _paint);
     c.restore();
 
     renderParticles(c);
