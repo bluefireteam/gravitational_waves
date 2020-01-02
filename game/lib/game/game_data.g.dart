@@ -10,6 +10,9 @@ GameData _$GameDataFromJson(Map<String, dynamic> json) {
   return GameData()
     ..coins = json['coins'] as int
     ..selectedSkin = _$enumDecodeNullable(_$SkinEnumMap, json['selectedSkin'])
+    ..ownedSkins = (json['ownedSkins'] as List)
+        ?.map((e) => _$enumDecodeNullable(_$SkinEnumMap, e))
+        ?.toList()
     ..playerId = json['playerId'] as String
     ..highScore = json['highScore'] as int;
 }
@@ -17,6 +20,7 @@ GameData _$GameDataFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$GameDataToJson(GameData instance) => <String, dynamic>{
       'coins': instance.coins,
       'selectedSkin': _$SkinEnumMap[instance.selectedSkin],
+      'ownedSkins': instance.ownedSkins?.map((e) => _$SkinEnumMap[e])?.toList(),
       'playerId': instance.playerId,
       'highScore': instance.highScore,
     };
