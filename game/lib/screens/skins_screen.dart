@@ -40,15 +40,29 @@ class _SkinsScreenState extends State<SkinsScreen> {
                 SizedBox(height: 50),
                 Row(
                   children: Skin.values.map((v) {
+                    bool isOwned = GameData.instance.ownedSkins.contains(v);
                     bool isSelected = GameData.instance.selectedSkin == v;
                     Sprite sprite = Char.fromSkin(v);
-                    Widget widget = Flame.util.spriteAsWidget(Size(80.0, 80.0), sprite);
+                    Widget flameWidget = Flame.util.spriteAsWidget(Size(80.0, 80.0), sprite);
+                    Widget widget = isOwned ? flameWidget : Stack(
+                      children: [
+                        Opacity(
+                          opacity: 0.3,
+                          child: flameWidget,
+                        ),
+                        Positioned(
+                          child: Text('${skinPrice(v)} coins'),
+                          right: 5.0,
+                          top: 5.0,
+                        ),
+                      ],
+                    );
                     Color color = isSelected ? const Color(0xFF3333CC) : const Color(0xFF333333);
                     return Container(
                       padding: EdgeInsets.all(12.0),
                       child: GestureDetector(
                         onTap: () async {
-                          await GameData.instance.setSkin(v);
+                          await GameData.instance.buyAndSetSkin(v);
                           this.setState(() {});
                         },
                         child: Container(color: color, child: widget),

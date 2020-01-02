@@ -16,6 +16,7 @@ class GameData {
 
   int coins;
   Skin selectedSkin;
+  List<Skin> ownedSkins;
   String playerId;
   int highScore;
 
@@ -23,12 +24,24 @@ class GameData {
     this.coins = 0;
     this.highScore = null;
     this.selectedSkin = Skin.ASTRONAUT;
+    this.ownedSkins = [Skin.ASTRONAUT];
     this.playerId = null;
   }
 
-  Future setSkin(Skin skin) async {
-    this.selectedSkin = skin;
+  Future<bool> buyAndSetSkin(Skin skin) async {
+    int price = skinPrice(skin);
+    if (this.ownedSkins.contains(skin)) {
+      this.selectedSkin = skin;
+    } else if (this.coins >= price) {
+      this.coins -= price;
+      this.ownedSkins.add(skin);
+      this.selectedSkin = skin;
+    } else {
+      return false;
+    }
+
     await this.save();
+    return true;
   }
 
   Future addCoins(int coins) async {
