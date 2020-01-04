@@ -38,8 +38,8 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.all(10),
-        child: ButtonTheme(minWidth: minWidth, height: 50, child: FlatButton(
+        margin: const EdgeInsets.all(2.5),
+        child: ButtonTheme(minWidth: minWidth, height: 36, child: FlatButton(
                 color: fontColor,
                 onPressed: onPress,
                 child: Text(
@@ -47,7 +47,7 @@ class Button extends StatelessWidget {
                     style: TextStyle(
                         color: backgroundColor,
                         fontFamily: 'Quantum',
-                        fontSize: 34,
+                        fontSize: 28,
                     )
                 ),
         ))

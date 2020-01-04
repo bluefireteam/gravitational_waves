@@ -28,6 +28,7 @@ void main() async {
   if (debugDefaultTargetPlatformOverride != TargetPlatform.fuchsia) {
     await Flame.util.setLandscape();
   }
+  await Flame.util.fullScreen();
   Size size = await Flame.util.initialDimensions();
   await Future.wait([Tileset.init(), Char.init()]);
 

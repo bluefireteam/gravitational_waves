@@ -38,8 +38,10 @@ class _GameScreenState extends State<GameScreen> {
               Image.asset('assets/images/game_logo.png', width: 400),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Label(label: 'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -85,8 +87,6 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ],
                     ),
-                    Label(label: 'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}'),
-                    SizedBox(height: 20),
                   ],
                 ),
               )
