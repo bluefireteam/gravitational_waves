@@ -5,6 +5,7 @@ import '../game/game_data.dart';
 import '../game/scoreboard.dart';
 import '../widgets/button.dart';
 import '../widgets/label.dart';
+import '../widgets/palette.dart';
 
 class ScoreboardScreen extends StatefulWidget {
   final MyGame game;
@@ -77,7 +78,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
 
   Widget showScoreboard(BuildContext context, String playerId, List<ScoreBoardEntry> entries) {
     Color fontColor(ScoreBoardEntry entry) =>
-      entry.playerId == playerId ? const Color(0xFFFFF8C0) : const Color(0xFF38607C);
+      entry.playerId == playerId ? PaletteColors.blues.light : PaletteColors.blues.normal;
 
     final _list = ListView(
         padding: const EdgeInsets.all(10),

@@ -97,8 +97,8 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
                 fontSize: 12,
                 label:
                   """By joining the scoreboard you agree that we collect your score,
-your selected hat and the choosen player id on the field above.
-Those informations are only used for the display of the scoreboar.
+your selected player skin and the choosen player id on the field above.
+Those informations are only used for the display of the scoreboard.
                 """,
               ),
             ],

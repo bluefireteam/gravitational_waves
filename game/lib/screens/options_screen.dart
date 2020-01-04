@@ -3,6 +3,8 @@ import '../game/game.dart';
 import '../game/preferences.dart';
 
 import '../widgets/button.dart';
+import '../widgets/label.dart';
+import '../widgets/palette.dart';
 
 class OptionsScreen extends StatefulWidget {
   final MyGame game;
@@ -35,11 +37,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
       alignment: Alignment.center,
       child: Column(
         children: [
+          SizedBox(height: 100, child: Label(label: "Options", fontSize: 82, fontColor: PaletteColors.blues.light)),
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: 50),
                 SecondaryButton(
                   label: 'Music ${musicOn() ? 'On' : 'Off'}',
                   onPress: () async {

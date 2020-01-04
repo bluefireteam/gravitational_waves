@@ -46,15 +46,16 @@ class _GameScreenState extends State<GameScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         PrimaryButton(
-                          label: 'Classic',
+                          label: 'Play',
                           onPress: () {
                             widget.game.start();
                             setState(() => _playing = true);
                           },
                         ),
-                        PrimaryButton(
-                          label: 'Revamped',
-                          onPress: null, // disabled
+                        SecondaryButton(
+                          label: 'Options',
+                          onPress: () =>
+                              Navigator.of(context).pushNamed('/options'),
                         ),
                       ],
                     ),
@@ -77,9 +78,10 @@ class _GameScreenState extends State<GameScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SecondaryButton(
-                          label: 'Options',
-                          onPress: () =>
-                              Navigator.of(context).pushNamed('/options'),
+                          label: 'Credits',
+                          onPress: () {
+                            // TODO
+                          },
                         ),
                         SecondaryButton(
                           label: 'Quit',
