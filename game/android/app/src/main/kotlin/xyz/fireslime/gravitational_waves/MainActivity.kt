@@ -1,4 +1,4 @@
-package com.example.gravitational_waves
+package xyz.fireslime.gravitational_waves
 
 import android.os.Bundle
 
