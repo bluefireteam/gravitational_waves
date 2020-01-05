@@ -21,7 +21,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: 1.7.2
   json_serializable: 3.2.3
-  dashbook: 0.0.1
+  dashbook: 0.0.2
 
 flutter:
   uses-material-design: true
@@ -34,6 +34,7 @@ flutter:
    - assets/images/crystal.png
    - assets/images/game_logo.png
    - assets/images/fireslime-banner.png
+   - assets/images/container-tileset.png
    - assets/audio/music/dark-moon.mp3
    - assets/audio/sfx/coin.wav
    - assets/audio/sfx/die.wav
