@@ -60,6 +60,8 @@ class ScoreBoard {
     final GameData data = GameData.instance;
     final lastSubmittedScore = data.highScore;
 
+    await data.addScore(score);
+
     if (lastSubmittedScore == null || score > lastSubmittedScore) {
       // Get the token
       final _uuid = await getUuid();
@@ -86,8 +88,6 @@ class ScoreBoard {
         if (submitResponse.statusCode != 204) {
           print(submitResponse);
           throw 'Could not submit the score';
-        } else {
-          await data.addScore(score);
         }
       }
     }
