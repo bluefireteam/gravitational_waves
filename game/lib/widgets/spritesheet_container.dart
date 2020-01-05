@@ -26,12 +26,12 @@ class _Painter extends Widgets.CustomPainter {
 
     final middle = Sprite.fromImage(spriteSheet, x: tileSize, y: tileSize, width: tileSize, height: tileSize);
 
-    // Corners
-    topLeftCorner.renderRect(canvas, Rect.fromLTWH(0, 0, destTileSize, destTileSize));
-    topRightCorner.renderRect(canvas, Rect.fromLTWH(size.width - destTileSize, 0, destTileSize, destTileSize));
-
-    bottomLeftCorner.renderRect(canvas, Rect.fromLTWH(0, size.height - destTileSize, destTileSize, destTileSize));
-    bottomRightCorner.renderRect(canvas, Rect.fromLTWH(size.width - destTileSize, size.height - destTileSize, destTileSize, destTileSize));
+    // Middle
+    for (var y = destTileSize; y < size.height - destTileSize; y = y + destTileSize) {
+      for (var x = destTileSize; x < size.width - destTileSize; x = x + destTileSize) {
+        middle.renderRect(canvas, Rect.fromLTWH(x, y, destTileSize, destTileSize));
+      }
+    }
 
     // Top and bottom side
     for (var i = destTileSize; i < size.width - destTileSize; i = i + destTileSize) {
@@ -45,11 +45,12 @@ class _Painter extends Widgets.CustomPainter {
       rightSide.renderRect(canvas, Rect.fromLTWH(size.width - destTileSize, i, destTileSize, destTileSize));
     }
 
-    for (var y = destTileSize; y < size.height - destTileSize; y = y + destTileSize) {
-      for (var x = destTileSize; x < size.height - destTileSize; x = x + destTileSize) {
-        middle.renderRect(canvas, Rect.fromLTWH(x, y, destTileSize, destTileSize));
-      }
-    }
+    // Corners
+    topLeftCorner.renderRect(canvas, Rect.fromLTWH(0, 0, destTileSize, destTileSize));
+    topRightCorner.renderRect(canvas, Rect.fromLTWH(size.width - destTileSize, 0, destTileSize, destTileSize));
+
+    bottomLeftCorner.renderRect(canvas, Rect.fromLTWH(0, size.height - destTileSize, destTileSize, destTileSize));
+    bottomRightCorner.renderRect(canvas, Rect.fromLTWH(size.width - destTileSize, size.height - destTileSize, destTileSize, destTileSize));
 
   }
 
@@ -61,23 +62,39 @@ class SpritesheetContainer extends Widgets.StatelessWidget {
   final Image spriteSheet;
   final double tileSize;
   final double destTileSize;
+  final double width;
+  final double height;
 
   final Widgets.Widget child;
 
-  SpritesheetContainer({ this.spriteSheet, this.tileSize, this.destTileSize, this.child });
+  final Widgets.EdgeInsetsGeometry padding;
+
+  SpritesheetContainer({
+    this.spriteSheet,
+    this.tileSize,
+    this.destTileSize,
+    this.child,
+    this.width,
+    this.height,
+    this.padding,
+  });
 
   @override
   Widgets.Widget build(Widgets.BuildContext context) {
     return Widgets.Container(
+        width: width,
+        height: height,
         child: Widgets.CustomPaint(
             painter: _Painter(
                 spriteSheet: spriteSheet,
                 tileSize: tileSize,
                 destTileSize: destTileSize
             ),
-            child: child
+            child: Widgets.Container(
+                child: child,
+                padding: padding,
+            )
         )
     );
   }
 }
-

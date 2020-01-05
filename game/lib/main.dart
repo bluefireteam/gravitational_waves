@@ -16,6 +16,8 @@ import 'game/audio.dart';
 import 'game/game_data.dart';
 import 'game/preferences.dart';
 
+import 'widgets/assets/ui_tileset.dart';
+
 void main() async {
   Flame.initializeWidget();
 
@@ -31,6 +33,8 @@ void main() async {
   await Flame.util.fullScreen();
   Size size = await Flame.util.initialDimensions();
   await Future.wait([Tileset.init(), Char.init()]);
+
+  await UITileset.load();
 
   MyGame game = MyGame(size);
 

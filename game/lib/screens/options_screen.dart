@@ -5,6 +5,7 @@ import '../game/preferences.dart';
 import '../widgets/button.dart';
 import '../widgets/label.dart';
 import '../widgets/palette.dart';
+import '../widgets/gr_container.dart';
 
 class OptionsScreen extends StatefulWidget {
   final MyGame game;
@@ -37,39 +38,49 @@ class _OptionsScreenState extends State<OptionsScreen> {
       alignment: Alignment.center,
       child: Column(
         children: [
-          SizedBox(height: 100, child: Label(label: "Options", fontSize: 82, fontColor: PaletteColors.blues.light)),
+          SizedBox(
+              height: 80,
+              child: Label(
+                  label: "Options",
+                  fontSize: 82,
+                  fontColor: PaletteColors.blues.light)),
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SecondaryButton(
-                  label: 'Music ${musicOn() ? 'On' : 'Off'}',
-                  onPress: () async {
-                    await Preferences.instance.toggleMusic();
-                    setState(() {});
-                  },
-                ),
-                SecondaryButton(
-                  label: 'Sound ${soundOn() ? 'On' : 'Off'}',
-                  onPress: () async {
-                    await Preferences.instance.toggleSounds();
-                    setState(() {});
-                  },
-                ),
-                SecondaryButton(
-                  label: 'Rumble ${rumbleOn() ? 'On' : 'Off'}',
-                  onPress: () async {
-                    await Preferences.instance.toggleRumble();
-                    setState(() {});
-                  },
-                ),
-                PrimaryButton(
-                  label: 'Back',
-                  onPress: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
-          )
+            child: GRContainer(
+                padding: EdgeInsets.all(10),
+                width: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SecondaryButton(
+                      label: 'Music ${musicOn() ? 'On' : 'Off'}',
+                      onPress: () async {
+                        await Preferences.instance.toggleMusic();
+                        setState(() {});
+                      },
+                    ),
+                    SecondaryButton(
+                      label: 'Sound ${soundOn() ? 'On' : 'Off'}',
+                      onPress: () async {
+                        await Preferences.instance.toggleSounds();
+                        setState(() {});
+                      },
+                    ),
+                    SecondaryButton(
+                      label: 'Rumble ${rumbleOn() ? 'On' : 'Off'}',
+                      onPress: () async {
+                        await Preferences.instance.toggleRumble();
+                        setState(() {});
+                      },
+                    ),
+                    PrimaryButton(
+                      label: 'Back',
+                      onPress: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                )
+              ),
+          ),
+          SizedBox(height: 10),
         ],
       ),
     );
