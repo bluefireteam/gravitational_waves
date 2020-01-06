@@ -10,7 +10,7 @@ class Palette extends BasicPalette {
   static const PaletteEntry menuItems = BasicPalette.white;
   static const PaletteEntry menuTitleText = BasicPalette.white;
   static const PaletteEntry menuItemsText = BasicPalette.black;
-  static const PaletteEntry livesCounter = const PaletteEntry(const Color(0xFF0000FF));
+  static const PaletteEntry hud = const PaletteEntry(const Color(0xFF00A8F3));
 
   static const PaletteEntry player = const PaletteEntry(const Color(0xFFFFFFFF));
   static const PaletteEntry playerHurt = const PaletteEntry(const Color(0x66FFFFFF));

@@ -93,7 +93,7 @@ class MyGame extends BaseGame {
         Rect spot = bg.findRectFor(randomIdx(bg.columns));
         bool top = R.nextBool();
         double x = spot.center.dx;
-        double yOffset = Coin.HEIGHT / 2;
+        double yOffset = Coin.SIZE / 2;
         double y = top ? spot.top + yOffset : spot.bottom - yOffset;
         if (coins.any((c) => c.overlaps(x, y))) {
           continue;
@@ -180,9 +180,6 @@ class MyGame extends BaseGame {
     if (currentPage?.fullScreen != true) {
       renderComponents(canvas);
       if (!sleeping) {
-        renderLives(canvas);
-        renderScore(canvas);
-        renderCoins(canvas);
         hud.render(canvas);
       }
     }
@@ -196,24 +193,6 @@ class MyGame extends BaseGame {
       canvas.translate(-size.width / 2, -size.height / 2);
       super.render(canvas);
       canvas.restore();
-  }
-
-  void renderLives(Canvas canvas) {
-    final p = Position(size.width - 10, size.height - 10);
-    final text = '${player.livesLeft} hearts';
-    Fonts.livesCounter.render(canvas, text, p, anchor: Anchor.bottomRight);
-  }
-
-  void renderCoins(Canvas canvas) {
-    final p = Position(size.width  / 2, size.height - 10);
-    final text = '$coins coins';
-    Fonts.livesCounter.render(canvas, text, p, anchor: Anchor.bottomCenter);
-  }
-
-  void renderScore(Canvas canvas) {
-    final p = Position(10, size.height - 10);
-    final text = '$score m';
-    Fonts.scoreCounter.render(canvas, text, p, anchor: Anchor.bottomLeft);
   }
 
   Position fixScaleFor(Position rawP) {

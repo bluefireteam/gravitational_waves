@@ -29,12 +29,7 @@ class NineBox {
   }
 
   /// Renders this nine box as a rectangle of coordinates ([x], [y]) and size ([width], [height]).
-  /// 
-  /// Since the corners are kept, the width and height must be at least 2*tileSize.
   void draw(Canvas c, double x, double y, double width, double height) {
-    assert(width > 2 * tileSize);
-    assert(height > 2 * tileSize);
-
     if (!sprite.loaded()) {
       return;
     }

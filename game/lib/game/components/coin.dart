@@ -3,22 +3,26 @@ import 'dart:ui';
 import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/sprite.dart';
 
 import '../game.dart';
 
 class Coin extends AnimationComponent with HasGameRef<MyGame> {
 
-  static const double WIDTH = 12.0, HEIGHT = 12.0;
+  static const double SRC_SIZE = 16.0;
+  static const double SIZE = 12.0;
+
+  static final Sprite still = Sprite('crystal.png', width: SRC_SIZE, height: SRC_SIZE, x: 3 * SRC_SIZE);
 
   bool picked = false;
 
-  Coin(double x, double y) : super(WIDTH, HEIGHT, buildAnimation()) {
-    this.x = x - WIDTH / 2;
-    this.y = y - HEIGHT / 2;
+  Coin(double x, double y) : super(SIZE, SIZE, buildAnimation()) {
+    this.x = x - SIZE / 2;
+    this.y = y - SIZE / 2;
   }
 
   static Animation buildAnimation() {
-    return Animation.sequenced('crystal.png', 8, textureWidth: 16.0, textureHeight: 16.0);
+    return Animation.sequenced('crystal.png', 8, textureWidth: SRC_SIZE, textureHeight: SRC_SIZE);
   }
 
   @override
@@ -36,9 +40,9 @@ class Coin extends AnimationComponent with HasGameRef<MyGame> {
   }
 
   bool overlaps(double x, double y) {
-    Rect r = this.toRect().inflate(WIDTH);
+    Rect r = this.toRect().inflate(SIZE);
     if (r.contains(Offset(x, y))) return true;
-    return (x - this.x).abs() < 4 * WIDTH;
+    return (x - this.x).abs() < 4 * SIZE;
   }
 
   bool get offscreen => x < gameRef.camera.x - gameRef.size.width;
