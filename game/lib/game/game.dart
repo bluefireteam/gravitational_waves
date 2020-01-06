@@ -9,6 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'audio.dart';
 import 'collections.dart';
 import 'components/coin.dart';
+import 'components/hud.dart';
 import 'game_data.dart';
 import 'rotation_manager.dart';
 import 'components/background.dart';
@@ -70,6 +71,7 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
+    add(Hud());
     Audio.music('dark-moon.mp3');
   }
 
