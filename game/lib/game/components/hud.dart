@@ -9,7 +9,7 @@ import '../game.dart';
 
 class Hud extends PositionComponent with HasGameRef<MyGame> {
 
-  static final NineBox bg = NineBox(Sprite('container-tileset.png'), 16);
+  static final NineBox bg = NineBox(Sprite('container-tileset.png'), tileSize: 16);
 
   Hud() {
     this.width = 400;
