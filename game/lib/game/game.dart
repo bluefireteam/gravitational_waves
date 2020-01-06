@@ -42,12 +42,15 @@ class MyGame extends BaseGame {
   Position resizeOffset = Position.empty();
   double scale = 2.0;
 
+  Hud hud;
+
   bool sleeping;
 
   Page currentPage;
 
   MyGame(Size size) {
     resize(size);
+    hud = Hud(this);
   }
 
   void prepare() {
@@ -71,7 +74,6 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
-    add(Hud());
     Audio.music('dark-moon.mp3');
   }
 
@@ -181,6 +183,7 @@ class MyGame extends BaseGame {
         renderLives(canvas);
         renderScore(canvas);
         renderCoins(canvas);
+        hud.render(canvas);
       }
     }
     currentPage?.render(canvas);

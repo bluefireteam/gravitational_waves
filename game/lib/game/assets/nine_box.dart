@@ -32,12 +32,12 @@ class NineBox {
   /// 
   /// Since the corners are kept, the width and height must be at least 2*tileSize.
   void draw(Canvas c, double x, double y, double width, double height) {
+    assert(width > 2 * tileSize);
+    assert(height > 2 * tileSize);
+
     if (!sprite.loaded()) {
       return;
     }
-
-    assert(width > 2 * tileSize);
-    assert(height > 2 * tileSize);
 
     // corners
     _drawTile(c, _getDest(x, y), 0, 0);
