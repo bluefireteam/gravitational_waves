@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
-import 'package:flame/anchor.dart';
 import 'package:flame/game.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
@@ -17,8 +16,6 @@ import 'components/planet.dart';
 import 'components/player.dart';
 import 'components/stars.dart';
 import 'components/wall.dart';
-import 'pages/game_over_page.dart';
-import 'pages/page.dart';
 import 'palette.dart';
 import 'scoreboard.dart';
 import 'spawner.dart';
@@ -31,6 +28,8 @@ class MyGame extends BaseGame {
   // Setup by the flutter components to allow this game instance
   // to callback to the flutter code and go back to the menu
   void Function() backToMenu;
+
+  void Function() showGameOver;
 
   RotationManager rotationManager;
   double lastGeneratedX;
@@ -46,8 +45,6 @@ class MyGame extends BaseGame {
 
   bool sleeping;
 
-  Page currentPage;
-
   MyGame(Size size) {
     resize(size);
     hud = Hud(this);
@@ -55,7 +52,6 @@ class MyGame extends BaseGame {
 
   void prepare() {
     sleeping = true;
-    currentPage = null;
 
     gravity = GRAVITY_ACC;
     lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
@@ -138,9 +134,6 @@ class MyGame extends BaseGame {
 
   @override
   void update(double t) {
-    if (currentPage != null) {
-      return;
-    }
 
     super.update(t);
     fixCamera();
@@ -177,13 +170,10 @@ class MyGame extends BaseGame {
   }
 
   void renderGame(Canvas canvas) {
-    if (currentPage?.fullScreen != true) {
-      renderComponents(canvas);
-      if (!sleeping) {
-        hud.render(canvas);
-      }
+    renderComponents(canvas);
+    if (!sleeping) {
+      hud.render(canvas);
     }
-    currentPage?.render(canvas);
   }
 
   void renderComponents(Canvas canvas) {
@@ -201,10 +191,6 @@ class MyGame extends BaseGame {
 
   @override
   void onTapUp(TapUpDetails details) {
-    if (currentPage != null) {
-      currentPage.tap(fixScaleFor(Position.fromOffset(details.globalPosition)));
-      return;
-    }
     if (sleeping) {
       return;
     }
@@ -225,7 +211,9 @@ class MyGame extends BaseGame {
       ScoreBoard.submitScore(score);
     }
 
-    currentPage = GameOverPage(this);
+    sleeping = true;
+    if (showGameOver != null)
+      showGameOver();
   }
 
   void collectCoin() {

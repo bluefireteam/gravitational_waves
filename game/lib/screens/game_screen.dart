@@ -6,6 +6,7 @@ import '../game/game.dart';
 import '../game/game_data.dart';
 import '../widgets/button.dart';
 import '../widgets/label.dart';
+import '../widgets/game_over.dart';
 
 class GameScreen extends StatefulWidget {
   final MyGame game;
@@ -19,9 +20,15 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   bool _playing = false;
   bool _playSection = false;
+  bool _showGameOver = false;
 
   _GameScreenState(MyGame game) {
     game.backToMenu = () => this.setState(() => _playing = false);
+    game.showGameOver = () {
+      setState(() {
+        _showGameOver = true;
+      });
+    };
   }
 
   @override
@@ -29,6 +36,26 @@ class _GameScreenState extends State<GameScreen> {
     List<Widget> children = [];
 
     children.add(widget.game.widget);
+
+    if (_showGameOver) {
+      children.add(Center(child: GameOverContainer(
+              distance: widget.game.score,
+              gems: widget.game.coins,
+              goToMainMenu: () {
+                setState(() {
+                  _showGameOver = false;
+                  _playing = false;
+                  widget.game.prepare();
+                });
+              },
+              playAgain: () {
+                setState(() {
+                  _showGameOver = false;
+                  widget.game.restart();
+                });
+              }
+      )));
+    }
 
     if (!_playing) {
       List<Widget> sectionChildren = [];
