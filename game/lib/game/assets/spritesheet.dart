@@ -13,7 +13,8 @@ class AnimationElement {
 
   AnimationElement();
 
-  factory AnimationElement.fromJson(Map<String, dynamic> json) => _$AnimationElementFromJson(json);
+  factory AnimationElement.fromJson(Map<String, dynamic> json) =>
+      _$AnimationElementFromJson(json);
   Map<String, dynamic> toJson() => _$AnimationElementToJson(this);
 
   Sprite sprite(String fileName) {
@@ -31,7 +32,8 @@ class AnimationsJson {
 
   AnimationsJson();
 
-  factory AnimationsJson.fromJson(Map<String, dynamic> json) => _$AnimationsJsonFromJson(json);
+  factory AnimationsJson.fromJson(Map<String, dynamic> json) =>
+      _$AnimationsJsonFromJson(json);
   Map<String, dynamic> toJson() => _$AnimationsJsonToJson(this);
 }
 
@@ -42,7 +44,8 @@ class Spritesheet {
   Spritesheet._(this.fileName, this.animations);
 
   static Future<Spritesheet> parse(fileName) async {
-    String content = await rootBundle.loadString('assets/images/$fileName.json');
+    String content =
+        await rootBundle.loadString('assets/images/$fileName.json');
     AnimationsJson animations = AnimationsJson.fromJson(json.decode(content));
     return Spritesheet._(fileName, animations);
   }
@@ -55,7 +58,8 @@ class Spritesheet {
     AnimationElement animation = animations.animations[name];
     double x = (animation.x + dx) * _SRC_SIZE;
     double y = (animation.y + dy) * _SRC_SIZE;
-    return Sprite('$fileName.png', x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
+    return Sprite('$fileName.png',
+        x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
   }
 
   List<T> generate<T>(String name, T Function(String) generator) {

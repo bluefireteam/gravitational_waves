@@ -7,18 +7,25 @@ import './spritesheet.dart';
 import '../collections.dart';
 
 enum OuterTilePosition {
-  TOP_LEFT, TOP, TOP_RIGHT,
-  LEFT, CENTER, RIGHT,
-  BOTTOM_LEFT, BOTTOM, BOTTOM_RIGHT
+  TOP_LEFT,
+  TOP,
+  TOP_RIGHT,
+  LEFT,
+  CENTER,
+  RIGHT,
+  BOTTOM_LEFT,
+  BOTTOM,
+  BOTTOM_RIGHT
 }
 
 enum InnerTilePosition {
-  TOP_LEFT, TOP_RIGHT,
-  BOTTOM_LEFT, BOTTOM_RIGHT,
+  TOP_LEFT,
+  TOP_RIGHT,
+  BOTTOM_LEFT,
+  BOTTOM_RIGHT,
 }
 
 class BlockSet {
-
   Map<OuterTilePosition, Sprite> _outer;
   Map<InnerTilePosition, Sprite> _inner;
 

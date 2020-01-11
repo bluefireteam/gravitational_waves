@@ -11,7 +11,6 @@ import '../game.dart';
 import '../util.dart';
 
 class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
-
   List<int> repeats;
 
   Stars(Size size) {
@@ -35,11 +34,8 @@ class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
   }
 
   void renderOnce(Canvas c, double x) {
-    repeats
-      .map((v) => Tileset.stars[v])
-      .toList()
-      .asMap()
-      .forEach((idx, sprite) => sprite.renderPosition(c, Position(x + w * idx, y)));
+    repeats.map((v) => Tileset.stars[v]).toList().asMap().forEach(
+        (idx, sprite) => sprite.renderPosition(c, Position(x + w * idx, y)));
   }
 
   @override

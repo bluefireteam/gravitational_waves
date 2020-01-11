@@ -17,7 +17,7 @@ class JoinScoreboardScreen extends StatefulWidget {
 }
 
 class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
-    static const fontColor = Color(0xFF38607c);
+  static const fontColor = Color(0xFF38607c);
 
   final playerIdTextController = TextEditingController();
 
@@ -36,17 +36,20 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
       return false;
     }
 
-    setState(() =>_status = 'Checking...');
+    setState(() => _status = 'Checking...');
 
     try {
-      final isPlayerIdAvailable = !CHECK_PLAYER_ID || await ScoreBoard.isPlayerIdAvailable(playerIdTextController.text);
+      final isPlayerIdAvailable = !CHECK_PLAYER_ID ||
+          await ScoreBoard.isPlayerIdAvailable(playerIdTextController.text);
 
       setState(() {
-        _status = isPlayerIdAvailable ? 'Player id available' : 'Player id already in use';
+        _status = isPlayerIdAvailable
+            ? 'Player id available'
+            : 'Player id already in use';
       });
 
       return isPlayerIdAvailable;
-    } catch(e) {
+    } catch (e) {
       setState(() => _status = 'Error');
     }
 
@@ -76,47 +79,44 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
 
   Widget joinScoreboard(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Column(
-            children: [
-              Label(label: 'Choose your player ID:'),
-              TextField(
-                controller: playerIdTextController,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: const Color(0xFFFFFFFF)),
-                  ),
-                ),
-                style: TextStyle(
-                  fontFamily: 'Quantum',
-                  color: fontColor
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Column(
+          children: [
+            Label(label: 'Choose your player ID:'),
+            TextField(
+              controller: playerIdTextController,
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: const Color(0xFFFFFFFF)),
                 ),
               ),
-              Label(
-                fontSize: 12,
-                label:
+              style: TextStyle(fontFamily: 'Quantum', color: fontColor),
+            ),
+            Label(
+              fontSize: 12,
+              label:
                   """By joining the scoreboard you agree that we collect your score,
 your selected player skin and the choosen player id on the field above.
 Those informations are only used for the display of the scoreboard.
                 """,
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              Label(label: _status),
-              SecondaryButton(
-                label: 'Check availability',
-                onPress: _checkPlayerIdAvailability,
-              ),
-              PrimaryButton(
-                  label: 'Join',
-                  onPress: _join,
-              ),
-            ],
-          ),
-        ],
-      );
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Label(label: _status),
+            SecondaryButton(
+              label: 'Check availability',
+              onPress: _checkPlayerIdAvailability,
+            ),
+            PrimaryButton(
+              label: 'Join',
+              onPress: _join,
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

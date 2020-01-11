@@ -10,7 +10,6 @@ part 'preferences.g.dart';
 
 @JsonSerializable()
 class Preferences {
-
   static Preferences instance;
 
   bool musicOn;
@@ -62,6 +61,7 @@ class Preferences {
     }
   }
 
-  factory Preferences.fromJson(Map<String, dynamic> json) => _$PreferencesFromJson(json);
+  factory Preferences.fromJson(Map<String, dynamic> json) =>
+      _$PreferencesFromJson(json);
   Map<String, dynamic> toJson() => _$PreferencesToJson(this);
 }

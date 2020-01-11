@@ -10,8 +10,8 @@ import '../util.dart';
 import 'coin.dart';
 
 class Hud extends Component {
-
-  static final NineBox bg = NineBox(Sprite('container-tileset.png'), tileSize: 16);
+  static final NineBox bg =
+      NineBox(Sprite('container-tileset.png'), tileSize: 16);
   static const double MARGIN = 8.0;
 
   MyGame gameRef;
@@ -28,8 +28,8 @@ class Hud extends Component {
     final tp1 = Fonts.hud.toTextPainter(p1);
     final tp2 = Fonts.hud.toTextPainter(p2);
 
-    final width = tp1.width + tp2.width + coinSpace + 2*MARGIN;
-    final height = tp1.height + 2*MARGIN;
+    final width = tp1.width + tp2.width + coinSpace + 2 * MARGIN;
+    final height = tp1.height + 2 * MARGIN;
 
     final x = (gameRef.size.width - width) / 2.0;
     final x1 = x + MARGIN;
