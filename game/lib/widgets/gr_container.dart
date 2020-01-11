@@ -20,13 +20,13 @@ class GRContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SpritesheetContainer(
-        padding: padding,
-        width: width,
-        height: height,
-        child: child,
-        spriteSheet: UITileset.tileset,
-        tileSize: 16,
-        destTileSize: 30,
+      padding: padding,
+      width: width,
+      height: height,
+      child: child,
+      spriteSheet: UITileset.tileset,
+      tileSize: 16,
+      destTileSize: 30,
     );
   }
 }

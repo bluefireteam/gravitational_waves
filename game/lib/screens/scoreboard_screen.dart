@@ -45,20 +45,26 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.none:
                       case ConnectionState.waiting:
-                      case ConnectionState.active: {
-                        return Center(
-                          child: Label(label: 'Loading results...'),
-                        );
-                      }
-                      case ConnectionState.done: {
-                        if (snapshot.hasError) {
-                          print(snapshot.error);
+                      case ConnectionState.active:
+                        {
                           return Center(
-                            child: Label(label: 'Could not fetch scoreboard.'),
+                            child: Label(label: 'Loading results...'),
                           );
                         }
-                        return showScoreboard(context, GameData.instance.playerId, snapshot.data[0] as List<ScoreBoardEntry>);
-                      }
+                      case ConnectionState.done:
+                        {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Center(
+                              child:
+                                  Label(label: 'Could not fetch scoreboard.'),
+                            );
+                          }
+                          return showScoreboard(
+                              context,
+                              GameData.instance.playerId,
+                              snapshot.data[0] as List<ScoreBoardEntry>);
+                        }
                     }
                     throw 'Invalid connection state ${snapshot.connectionState}';
                   },
@@ -76,62 +82,65 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
     );
   }
 
-  Widget showScoreboard(BuildContext context, String playerId, List<ScoreBoardEntry> entries) {
-    Color fontColor(ScoreBoardEntry entry) =>
-      entry.playerId == playerId ? PaletteColors.blues.light : PaletteColors.blues.normal;
+  Widget showScoreboard(
+      BuildContext context, String playerId, List<ScoreBoardEntry> entries) {
+    Color fontColor(ScoreBoardEntry entry) => entry.playerId == playerId
+        ? PaletteColors.blues.light
+        : PaletteColors.blues.normal;
 
     final _list = ListView(
-        padding: const EdgeInsets.all(10),
-        children: (entries ?? []).asMap().entries.map((entry) {
-          return Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
-            padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
-            color: entry.value.playerId == playerId ? const Color(0xFF38607C) : null,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 120,
+      padding: const EdgeInsets.all(10),
+      children: (entries ?? []).asMap().entries.map((entry) {
+        return Container(
+          margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+          padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
+          color:
+              entry.value.playerId == playerId ? const Color(0xFF38607C) : null,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 120,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    SizedBox(width: 5),
+                    // TODO show skin used
+                    Label(
+                      fontColor: fontColor(entry.value),
+                      label: '#${entry.key + 1}',
+                      fontSize: 14,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: 40,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(width: 5),
-                      // TODO show skin used
                       Label(
-                        fontColor: fontColor(entry.value),
-                        label: '#${entry.key + 1}',
+                        label: '${entry.value.playerId}',
                         fontSize: 14,
+                        fontColor: fontColor(entry.value),
                       ),
+                      SizedBox(width: 20),
+                      Label(
+                        label: '${entry.value.score}',
+                        fontSize: 14,
+                        fontColor: fontColor(entry.value),
+                      ),
+                      SizedBox(width: 5),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    height: 40,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Label(
-                          label: '${entry.value.playerId}',
-                          fontSize: 14,
-                          fontColor: fontColor(entry.value),
-                        ),
-                        SizedBox(width: 20),
-                        Label(
-                          label: '${entry.value.score}',
-                          fontSize: 14,
-                          fontColor: fontColor(entry.value),
-                        ),
-                        SizedBox(width: 5),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+              ),
+            ],
+          ),
+        );
       }).toList(),
     );
 
@@ -142,7 +151,8 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
             SizedBox(height: 50),
             SecondaryButton(
               label: 'Join the scoreboard',
-              onPress: () => Navigator.pushReplacementNamed(context, '/join-scoreboard'),
+              onPress: () =>
+                  Navigator.pushReplacementNamed(context, '/join-scoreboard'),
             ),
             Expanded(child: _list),
           ],

@@ -43,7 +43,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   Paint get _paint {
     if (shiny) {
-      return Paint()..colorFilter = ColorFilter.mode(Palette.playerShine.color, BlendMode.srcATop);
+      return Paint()
+        ..colorFilter =
+            ColorFilter.mode(Palette.playerShine.color, BlendMode.srcATop);
     }
     final blinkHurt = hurt && (hurtTimer * 1000) % 250 > 125;
     final palette = blinkHurt ? Palette.playerHurt : Palette.player;

@@ -77,8 +77,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
                       onPress: () => Navigator.of(context).pop(),
                     ),
                   ],
-                )
-              ),
+                )),
           ),
           SizedBox(height: 10),
         ],

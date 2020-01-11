@@ -11,7 +11,6 @@ part 'game_data.g.dart';
 
 @JsonSerializable()
 class GameData {
-
   static GameData instance;
 
   int coins;
@@ -83,6 +82,7 @@ class GameData {
     }
   }
 
-  factory GameData.fromJson(Map<String, dynamic> json) => _$GameDataFromJson(json);
+  factory GameData.fromJson(Map<String, dynamic> json) =>
+      _$GameDataFromJson(json);
   Map<String, dynamic> toJson() => _$GameDataToJson(this);
 }

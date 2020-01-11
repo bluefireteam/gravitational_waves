@@ -22,7 +22,6 @@ import 'spawner.dart';
 import 'util.dart';
 
 class MyGame extends BaseGame {
-
   static Spawner planetSpawner = Spawner(0.0001);
 
   // Setup by the flutter components to allow this game instance
@@ -121,7 +120,8 @@ class MyGame extends BaseGame {
     this.rawSize = rawSize;
     this.size = Size(width, height);
     this.scaledSize = Size(scale * width, scale * height);
-    this.resizeOffset = Position((rawSize.width - scaledSize.width) / 2, (rawSize.height - scaledSize.height) / 2);
+    this.resizeOffset = Position((rawSize.width - scaledSize.width) / 2,
+        (rawSize.height - scaledSize.height) / 2);
   }
 
   int get score => player.x ~/ 100;
@@ -134,7 +134,6 @@ class MyGame extends BaseGame {
 
   @override
   void update(double t) {
-
     super.update(t);
     fixCamera();
 
@@ -159,14 +158,23 @@ class MyGame extends BaseGame {
     c.translate(resizeOffset.x, resizeOffset.y);
     c.scale(scale, scale);
 
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Palette.background.paint);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+        Palette.background.paint);
     renderGame(c);
 
     c.restore();
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, rawSize.width, resizeOffset.y), Palette.black.paint);
-    c.drawRect(Rect.fromLTWH(0.0, resizeOffset.y + scaledSize.height, rawSize.width, resizeOffset.y), Palette.black.paint);
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, resizeOffset.x, rawSize.height), Palette.black.paint);
-    c.drawRect(Rect.fromLTWH(resizeOffset.x + scaledSize.width, 0.0, resizeOffset.x, rawSize.height), Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, rawSize.width, resizeOffset.y),
+        Palette.black.paint);
+    c.drawRect(
+        Rect.fromLTWH(0.0, resizeOffset.y + scaledSize.height, rawSize.width,
+            resizeOffset.y),
+        Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, resizeOffset.x, rawSize.height),
+        Palette.black.paint);
+    c.drawRect(
+        Rect.fromLTWH(resizeOffset.x + scaledSize.width, 0.0, resizeOffset.x,
+            rawSize.height),
+        Palette.black.paint);
   }
 
   void renderGame(Canvas canvas) {
@@ -177,12 +185,12 @@ class MyGame extends BaseGame {
   }
 
   void renderComponents(Canvas canvas) {
-      canvas.save();
-      canvas.translate(size.width / 2, size.height / 2);
-      canvas.rotate(rotationManager.angle);
-      canvas.translate(-size.width / 2, -size.height / 2);
-      super.render(canvas);
-      canvas.restore();
+    canvas.save();
+    canvas.translate(size.width / 2, size.height / 2);
+    canvas.rotate(rotationManager.angle);
+    canvas.translate(-size.width / 2, -size.height / 2);
+    super.render(canvas);
+    canvas.restore();
   }
 
   Position fixScaleFor(Position rawP) {
@@ -212,8 +220,7 @@ class MyGame extends BaseGame {
     }
 
     sleeping = true;
-    if (showGameOver != null)
-      showGameOver();
+    if (showGameOver != null) showGameOver();
   }
 
   void collectCoin() {

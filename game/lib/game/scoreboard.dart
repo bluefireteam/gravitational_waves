@@ -5,7 +5,8 @@ import './game_data.dart';
 import 'collections.dart';
 import 'skin.dart';
 
-Skin parseSkin(String value) => firstOrNull(Skin.values, (h) => h.toString() == value);
+Skin parseSkin(String value) =>
+    firstOrNull(Skin.values, (h) => h.toString() == value);
 
 class ScoreBoardEntry {
   String playerId;
@@ -14,9 +15,9 @@ class ScoreBoardEntry {
 
   static ScoreBoardEntry fromJson(Map<String, dynamic> json) {
     return ScoreBoardEntry()
-        ..skin = parseSkin(json['metadata'])
-        ..score = (json['score'] as double).toInt()
-        ..playerId = json['playerId'];
+      ..skin = parseSkin(json['metadata'])
+      ..score = (json['score'] as double).toInt()
+      ..playerId = json['playerId'];
   }
 }
 
@@ -26,7 +27,8 @@ class ScoreBoard {
 
   static Future<String> getUuid() async {
     if (uuid == null) {
-      uuid = (await rootBundle.loadString('assets/firescore_uuid')).replaceAll('\n', '');
+      uuid = (await rootBundle.loadString('assets/firescore_uuid'))
+          .replaceAll('\n', '');
     }
     return uuid;
   }
@@ -45,7 +47,8 @@ class ScoreBoard {
 
   static Future<bool> isPlayerIdAvailable(String playerId) async {
     final _uuid = await getUuid();
-    Response resp = await Dio().get('$host/scores/$_uuid?sortOrder=DESC&playerId=$playerId');
+    Response resp = await Dio()
+        .get('$host/scores/$_uuid?sortOrder=DESC&playerId=$playerId');
 
     final data = resp.data;
 
@@ -72,17 +75,13 @@ class ScoreBoard {
 
       if (playerId != null) {
         final submitResponse = await Dio().put(
-            '$host/scores',
-            data: {
-              'playerId': playerId,
-              'score': score,
-              'metadata': data.selectedSkin.toString(),
-            },
-            options: Options(
-                headers: {
-                  'Authorization': 'Bearer $token'
-                }
-            ),
+          '$host/scores',
+          data: {
+            'playerId': playerId,
+            'score': score,
+            'metadata': data.selectedSkin.toString(),
+          },
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
         );
 
         if (submitResponse.statusCode != 204) {

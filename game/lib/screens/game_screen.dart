@@ -38,7 +38,8 @@ class _GameScreenState extends State<GameScreen> {
     children.add(widget.game.widget);
 
     if (_showGameOver) {
-      children.add(Center(child: GameOverContainer(
+      children.add(Center(
+          child: GameOverContainer(
               distance: widget.game.score,
               gems: widget.game.coins,
               goToMainMenu: () {
@@ -53,8 +54,7 @@ class _GameScreenState extends State<GameScreen> {
                   _showGameOver = false;
                   widget.game.restart();
                 });
-              }
-      )));
+              })));
     }
 
     if (!_playing) {
@@ -63,74 +63,69 @@ class _GameScreenState extends State<GameScreen> {
       if (_playSection) {
         sectionChildren.addAll([
           PrimaryButton(
-              label: 'Classic',
-              onPress: () {
-                widget.game.start();
-                setState(() {
-                  _playSection = false;
-                  _playing = true;
+            label: 'Classic',
+            onPress: () {
+              widget.game.start();
+              setState(() {
+                _playSection = false;
+                _playing = true;
 
-                  widget.game.start();
-                });
-              },
+                widget.game.start();
+              });
+            },
           ),
-          PrimaryButton(
-              label: 'Revamped (Soon)',
-              onPress: null // Disabled
-          ),
+          PrimaryButton(label: 'Revamped (Soon)', onPress: null // Disabled
+              ),
         ]);
       } else {
-        sectionChildren.addAll(
-            [
-              Label(label: 'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}'),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      PrimaryButton(
-                          label: 'Play',
-                          onPress: () {
-                            setState(() => _playSection = true);
-                          },
-                      ),
-                      SecondaryButton(
-                          label: 'Options',
-                          onPress: () =>
-                          Navigator.of(context).pushNamed('/options'),
-                      ),
-                    ],
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SecondaryButton(
-                          label: 'Skins',
-                          onPress: () =>
-                          Navigator.of(context).pushNamed('/skins'),
-                      ),
-                      SecondaryButton(
-                          label: 'Scoreboard',
-                          onPress: () =>
-                          Navigator.of(context).pushNamed('/scoreboard'),
-                      ),
-                    ],
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SecondaryButton(
-                          label: 'Credits',
-                          onPress: () {
-                            // TODO
-                          },
-                      ),
-                      SecondaryButton(
-                          label: 'Quit',
-                          onPress: () => exit(0),
-                      ),
-                    ],
-                ),
-                ]
-                    );
+        sectionChildren.addAll([
+          Label(
+              label:
+                  'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PrimaryButton(
+                label: 'Play',
+                onPress: () {
+                  setState(() => _playSection = true);
+                },
+              ),
+              SecondaryButton(
+                label: 'Options',
+                onPress: () => Navigator.of(context).pushNamed('/options'),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SecondaryButton(
+                label: 'Skins',
+                onPress: () => Navigator.of(context).pushNamed('/skins'),
+              ),
+              SecondaryButton(
+                label: 'Scoreboard',
+                onPress: () => Navigator.of(context).pushNamed('/scoreboard'),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SecondaryButton(
+                label: 'Credits',
+                onPress: () {
+                  // TODO
+                },
+              ),
+              SecondaryButton(
+                label: 'Quit',
+                onPress: () => exit(0),
+              ),
+            ],
+          ),
+        ]);
       }
 
       children.add(

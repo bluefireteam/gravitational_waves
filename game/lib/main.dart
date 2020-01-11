@@ -50,7 +50,8 @@ void main() async {
         '/': (BuildContext ctx) => FlameSplashScreen(
               theme: FlameSplashTheme.dark,
               showBefore: (BuildContext context) {
-                return Image.asset('assets/images/fireslime-banner.png', width: 400);
+                return Image.asset('assets/images/fireslime-banner.png',
+                    width: 400);
               },
               onFinish: (BuildContext context) {
                 game.prepare();
@@ -60,7 +61,8 @@ void main() async {
         '/options': (BuildContext ctx) => Scaffold(body: options),
         '/skins': (BuildContext ctx) => Scaffold(body: skins),
         '/scoreboard': (BuildContext ctx) => Scaffold(body: scoreboard),
-        '/join-scoreboard': (BuildContext ctx) => Scaffold(body: joinScoreboard),
+        '/join-scoreboard': (BuildContext ctx) =>
+            Scaffold(body: joinScoreboard),
         '/game': (BuildContext ctx) => Scaffold(
               body: WillPopScope(
                 onWillPop: () async {

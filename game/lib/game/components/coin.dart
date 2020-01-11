@@ -8,11 +8,11 @@ import 'package:flame/sprite.dart';
 import '../game.dart';
 
 class Coin extends AnimationComponent with HasGameRef<MyGame> {
-
   static const double SRC_SIZE = 16.0;
   static const double SIZE = 12.0;
 
-  static final Sprite still = Sprite('crystal.png', width: SRC_SIZE, height: SRC_SIZE, x: 3 * SRC_SIZE);
+  static final Sprite still =
+      Sprite('crystal.png', width: SRC_SIZE, height: SRC_SIZE, x: 3 * SRC_SIZE);
 
   bool picked = false;
 
@@ -22,7 +22,8 @@ class Coin extends AnimationComponent with HasGameRef<MyGame> {
   }
 
   static Animation buildAnimation() {
-    return Animation.sequenced('crystal.png', 8, textureWidth: SRC_SIZE, textureHeight: SRC_SIZE);
+    return Animation.sequenced('crystal.png', 8,
+        textureWidth: SRC_SIZE, textureHeight: SRC_SIZE);
   }
 
   @override

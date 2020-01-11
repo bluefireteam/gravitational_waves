@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 class PaletteColors {
-  static final greens = PaletteGreens();  
+  static final greens = PaletteGreens();
   static final blues = PaletteBlues();
   static final pinks = PalettePinks();
 }

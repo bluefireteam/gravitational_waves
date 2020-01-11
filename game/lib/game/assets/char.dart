@@ -19,8 +19,10 @@ class Char {
 
   static Sprite fromSkin(Skin skin) {
     switch (skin) {
-      case Skin.ASTRONAUT: return astronaut;
-      case Skin.SECURITY: return security;
+      case Skin.ASTRONAUT:
+        return astronaut;
+      case Skin.SECURITY:
+        return security;
     }
     throw 'Unknown skin! $skin';
   }
