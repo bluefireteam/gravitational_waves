@@ -7,6 +7,9 @@ import '../game/assets/char.dart';
 import '../game/game.dart';
 import '../game/skin.dart';
 import '../widgets/button.dart';
+import '../widgets/gr_container.dart';
+import '../widgets/palette.dart';
+import '../widgets/label.dart';
 
 class SkinsScreen extends StatefulWidget {
   final MyGame game;
@@ -18,6 +21,9 @@ class SkinsScreen extends StatefulWidget {
 }
 
 class _SkinsScreenState extends State<SkinsScreen> {
+  
+  Skin _skinToBuy = null;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -29,22 +35,25 @@ class _SkinsScreenState extends State<SkinsScreen> {
   }
 
   Widget skins(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        children: [
+    List<Widget> children = [];
+
+    children.add(
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
-                Row(
+                SizedBox(height: 20),
+                Label(label: 'Current gems: ${GameData.instance.coins}', fontColor: PaletteColors.blues.light),
+                SizedBox(height: 20),
+                Container(height: 100, child: ListView(
+                  scrollDirection: Axis.horizontal,
                   children: Skin.values.map((v) {
                     bool isOwned = GameData.instance.ownedSkins.contains(v);
                     bool isSelected = GameData.instance.selectedSkin == v;
+                    final price = skinPrice(v);
                     Sprite sprite = Char.fromSkin(v);
                     Widget flameWidget =
-                        Flame.util.spriteAsWidget(Size(80.0, 80.0), sprite);
+                        Flame.util.spriteAsWidget(Size(100.0, 80.0), sprite);
                     Widget widget = isOwned
                         ? flameWidget
                         : Stack(
@@ -54,35 +63,82 @@ class _SkinsScreenState extends State<SkinsScreen> {
                                 child: flameWidget,
                               ),
                               Positioned(
-                                child: Text('${skinPrice(v)} coins'),
-                                right: 5.0,
-                                top: 5.0,
+                                child: Label(label: '$price gems', fontColor: PaletteColors.blues.light),
+                                right: 2.0,
+                                top: 2.0,
                               ),
                             ],
                           );
                     Color color = isSelected
-                        ? const Color(0xFF3333CC)
-                        : const Color(0xFF333333);
-                    return Container(
+                        ? PaletteColors.blues.light
+                        : null;
+
+                    return GRContainer(
                       padding: EdgeInsets.all(12.0),
                       child: GestureDetector(
                         onTap: () async {
-                          await GameData.instance.buyAndSetSkin(v);
-                          this.setState(() {});
+                            if (isOwned) {
+                              await GameData.instance.buyAndSetSkin(v);
+                              setState(() {});
+                            } else if (price <= GameData.instance.coins){
+                              this.setState(() {
+                                _skinToBuy = v;
+                              });
+                            }
                         },
                         child: Container(color: color, child: widget),
                       ),
                     );
                   }).toList(),
-                ),
-                PrimaryButton(
-                  label: 'Back',
-                  onPress: () => Navigator.of(context).pop(),
-                ),
+                )),
               ],
             ),
           )
-        ],
+      );
+
+      if (_skinToBuy != null) {
+        children.add(
+            Column(children: [
+              Label(
+                  label: "Are you sure you want to buy this skin",
+                  fontColor: PaletteColors.blues.light,
+                  fontSize: 20
+              ),
+              Label(
+                  label: "for ${skinPrice(_skinToBuy)} gems?",
+                  fontColor: PaletteColors.blues.light,
+                  fontSize: 20
+              ),
+              PrimaryButton(
+                  label: 'Yes',
+                  onPress: () async {
+                    await GameData.instance.buyAndSetSkin(_skinToBuy);
+                    setState(() {
+                      _skinToBuy = null;
+                    });
+                  },
+              ),
+              SecondaryButton(
+                  label: 'Cancel',
+                  onPress: () => setState(() {
+                    _skinToBuy = null;
+                  }),
+              )
+            ])
+        );
+      } else {
+        children.add(
+            SecondaryButton(
+                label: 'Back',
+                onPress: () => Navigator.of(context).pop(),
+            )
+        );
+      }
+
+    return Align(
+      alignment: Alignment.center,
+      child: Column(
+        children: children,
       ),
     );
   }

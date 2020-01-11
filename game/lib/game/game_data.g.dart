@@ -60,4 +60,8 @@ T _$enumDecodeNullable<T>(
 const _$SkinEnumMap = {
   Skin.ASTRONAUT: 'ASTRONAUT',
   Skin.SECURITY: 'SECURITY',
+  Skin.PINK_HAIR_PUNK: 'PINK_HAIR_PUNK',
+  Skin.GREEN_HAIR_PUNK: 'GREEN_HAIR_PUNK',
+  Skin.ROBOT: 'ROBOT',
+  Skin.HAZMAT_SUIT: 'HAZMAT_SUIT',
 };

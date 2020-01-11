@@ -1,8 +1,4 @@
 {
-  "tileset": {
-    "path": "/Users/erick/projects/gamedev/gravitational_waves/art/char/char.png",
-    "size": 16
-  },
   "animations": {
     "astronaut": {
       "x": 0,
@@ -15,6 +11,38 @@
     "security": {
       "x": 3,
       "y": 0,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "punk": {
+      "x": 6,
+      "y": 0,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "punk-2": {
+      "x": 0,
+      "y": 2,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "robot": {
+      "x": 3,
+      "y": 2,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "hazmat-suit": {
+      "x": 6,
+      "y": 2,
       "w": 3,
       "h": 2,
       "length": 1,
