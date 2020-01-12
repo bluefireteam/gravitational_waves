@@ -30,4 +30,6 @@ class Fonts {
       _base.withFontSize(16.0).withColor(Palette.menuItemsText.color);
   static final TextConfig hud =
       _base.withFontSize(16.0).withColor(Palette.hud.color);
+  static final TextConfig tutorial =
+      _base.withFontSize(24.0).withColor(Palette.hud.color);
 }

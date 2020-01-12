@@ -68,6 +68,10 @@ class GameData {
     return prefs.setString('gravitational_waves.data', json.encode(toJson()));
   }
 
+  bool isFirstTime() {
+    return this.highScore == null;
+  }
+
   static Future<GameData> init() async {
     return instance ??= await load();
   }

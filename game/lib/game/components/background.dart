@@ -4,26 +4,13 @@ import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 
+import '../assets/tileset.dart';
 import '../collections.dart';
+import '../column.dart';
 import '../game.dart';
 import '../palette.dart';
 import '../util.dart';
-import '../assets/tileset.dart';
-
-class Column {
-  static const OFFSET = 5;
-
-  int bottom, top;
-  int bottomVariant, topVariant;
-
-  Column(this.bottom, this.top) {
-    bottomVariant = Tileset.randomVariant();
-    topVariant = Tileset.randomVariant();
-  }
-
-  double get topHeight => BLOCK_SIZE * (OFFSET + top);
-  double get bottomHeight => BLOCK_SIZE * (OFFSET + bottom);
-}
+import 'tutorial.dart';
 
 class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   static final Paint _bg = Palette.background.paint;
@@ -38,6 +25,11 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   Background.plains(double x) {
     this.x = x;
     this.columns = _generatePlains(CHUNCK_SIZE).toList();
+  }
+
+  Background.tutorial(double x) {
+    this.x = x;
+    this.columns = Tutorial.generateTerrain().toList();
   }
 
   static Iterable<Column> _generatePlains(int size) {

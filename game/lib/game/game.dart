@@ -7,16 +7,18 @@ import 'package:flutter/gestures.dart';
 
 import 'audio.dart';
 import 'collections.dart';
+import 'components/background.dart';
 import 'components/coin.dart';
 import 'components/hud.dart';
-import 'game_data.dart';
-import 'rotation_manager.dart';
-import 'components/background.dart';
 import 'components/planet.dart';
 import 'components/player.dart';
 import 'components/stars.dart';
+import 'components/tutorial.dart';
 import 'components/wall.dart';
+import 'game_data.dart';
 import 'palette.dart';
+import 'pause_overlay.dart';
+import 'rotation_manager.dart';
 import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
@@ -36,13 +38,18 @@ class MyGame extends BaseGame {
   double gravity;
   int coins;
 
-  Size rawSize, scaledSize;
-  Position resizeOffset = Position.empty();
-  double scale = 2.0;
+  /* -1 : do not show, 0: show first, 1: show second */
+  int showTutorial;
+  Tutorial tutorial;
 
   Hud hud;
 
   bool sleeping;
+  bool paused;
+
+  Size rawSize, scaledSize;
+  Position resizeOffset = Position.empty();
+  double scale = 2.0;
 
   MyGame(Size size) {
     resize(size);
@@ -50,14 +57,23 @@ class MyGame extends BaseGame {
   }
 
   void prepare() {
+    final isFirstTime = true; // GameData.instance.isFirstTime();
+
     sleeping = true;
+    paused = false;
 
     gravity = GRAVITY_ACC;
     lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
     coins = 0;
 
     components.clear();
-    _addBg(Background.plains(lastGeneratedX));
+    if (isFirstTime) {
+      showTutorial = 0;
+      _addBg(Background.tutorial(lastGeneratedX));
+    } else {
+      showTutorial = -1;
+      _addBg(Background.plains(lastGeneratedX));
+    }
 
     add(player = Player());
     add(Wall());
@@ -69,7 +85,7 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
-    Audio.music('dark-moon.mp3');
+    Audio.startMusic();
   }
 
   void restart() {
@@ -132,9 +148,26 @@ class MyGame extends BaseGame {
     super.resize(size);
   }
 
+  void doShowTutorial() {
+    add(tutorial = Tutorial());
+    pause();
+  }
+
   @override
   void update(double t) {
+    if (paused) {
+      tutorial?.update(t);
+      return;
+    }
+
     super.update(t);
+    if (showTutorial > -1 && player.x >= Tutorial.POSITIONS[showTutorial]) {
+      doShowTutorial();
+      showTutorial++;
+      if (showTutorial > 1) {
+        showTutorial = -1;
+      }
+    }
     fixCamera();
 
     if (!sleeping) {
@@ -182,6 +215,9 @@ class MyGame extends BaseGame {
     if (!sleeping) {
       hud.render(canvas);
     }
+    if (paused) {
+      PauseOverlay.render(canvas, size);
+    }
   }
 
   void renderComponents(Canvas canvas) {
@@ -202,12 +238,30 @@ class MyGame extends BaseGame {
     if (sleeping) {
       return;
     }
+    if (paused) {
+      resume();
+      return;
+    }
     super.onTapUp(details);
     gravity *= -1;
   }
 
   void pause() {
-    // TODO(luan) impl pause
+    Audio.pauseMusic();
+    paused = true;
+  }
+
+  void resume() {
+    tutorial?.remove();
+    paused = false;
+    Audio.resumeMusic();
+  }
+
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) {
+      pause();
+    }
   }
 
   void gameOver() async {
