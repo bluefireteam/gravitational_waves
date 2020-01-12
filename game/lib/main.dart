@@ -7,6 +7,7 @@ import 'package:gravitational_waves/screens/join_scoreboard_screen.dart';
 import 'package:gravitational_waves/screens/options_screen.dart';
 import 'package:gravitational_waves/screens/scoreboard_screen.dart';
 import 'package:gravitational_waves/screens/skins_screen.dart';
+import 'package:gravitational_waves/screens/credits_screen.dart';
 
 import './game/assets/char.dart';
 import './game/assets/tileset.dart';
@@ -43,6 +44,7 @@ void main() async {
   ScoreboardScreen scoreboard = ScoreboardScreen(game: game);
   JoinScoreboardScreen joinScoreboard = JoinScoreboardScreen(game: game);
   SkinsScreen skins = SkinsScreen(game: game);
+  CreditsScreen credits = CreditsScreen(game: game);
 
   runApp(
     MaterialApp(
@@ -63,6 +65,7 @@ void main() async {
         '/scoreboard': (BuildContext ctx) => Scaffold(body: scoreboard),
         '/join-scoreboard': (BuildContext ctx) =>
             Scaffold(body: joinScoreboard),
+        '/credits': (BuildContext ctx) => Scaffold(body: credits),
         '/game': (BuildContext ctx) => Scaffold(
               body: WillPopScope(
                 onWillPop: () async {

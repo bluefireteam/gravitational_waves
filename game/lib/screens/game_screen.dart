@@ -115,9 +115,7 @@ class _GameScreenState extends State<GameScreen> {
             children: [
               SecondaryButton(
                 label: 'Credits',
-                onPress: () {
-                  // TODO
-                },
+                onPress: () => Navigator.of(context).pushNamed('/credits'),
               ),
               SecondaryButton(
                 label: 'Quit',

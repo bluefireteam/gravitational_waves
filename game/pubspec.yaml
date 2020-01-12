@@ -15,6 +15,7 @@ dependencies:
   shared_preferences: 0.5.6
   vibrate: 0.0.4
   dio: 3.0.8
+  url_launcher: 5.4.1
 
 dev_dependencies:
   flutter_test:
