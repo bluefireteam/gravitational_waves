@@ -7,17 +7,18 @@ import 'package:flutter/gestures.dart';
 
 import 'audio.dart';
 import 'collections.dart';
+import 'components/background.dart';
 import 'components/coin.dart';
 import 'components/hud.dart';
-import 'components/tutorial.dart';
-import 'game_data.dart';
-import 'rotation_manager.dart';
-import 'components/background.dart';
 import 'components/planet.dart';
 import 'components/player.dart';
 import 'components/stars.dart';
+import 'components/tutorial.dart';
 import 'components/wall.dart';
+import 'game_data.dart';
 import 'palette.dart';
+import 'pause_overlay.dart';
+import 'rotation_manager.dart';
 import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
@@ -214,7 +215,7 @@ class MyGame extends BaseGame {
       hud.render(canvas);
     }
     if (paused) {
-      // TODO render pause overlay
+      PauseOverlay.render(canvas, size);
     }
   }
 
