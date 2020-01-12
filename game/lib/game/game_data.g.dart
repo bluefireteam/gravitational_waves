@@ -64,4 +64,7 @@ const _$SkinEnumMap = {
   Skin.GREEN_HAIR_PUNK: 'GREEN_HAIR_PUNK',
   Skin.ROBOT: 'ROBOT',
   Skin.HAZMAT_SUIT: 'HAZMAT_SUIT',
+  Skin.VAMPIRE: 'VAMPIRE',
+  Skin.RETRO_PILOT: 'RETRO_PILOT',
+  Skin.ALIEN: 'ALIEN',
 };

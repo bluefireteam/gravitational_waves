@@ -47,6 +47,30 @@
       "h": 2,
       "length": 1,
       "millis": 0
+    },
+    "vampire": {
+      "x": 0,
+      "y": 4,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "retro-pilot": {
+      "x": 3,
+      "y": 4,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
+    },
+    "alien": {
+      "x": 6,
+      "y": 4,
+      "w": 3,
+      "h": 2,
+      "length": 1,
+      "millis": 0
     }
   }
 }

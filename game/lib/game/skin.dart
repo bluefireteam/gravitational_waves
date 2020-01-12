@@ -5,6 +5,9 @@ enum Skin {
   GREEN_HAIR_PUNK,
   ROBOT,
   HAZMAT_SUIT,
+  VAMPIRE,
+  RETRO_PILOT,
+  ALIEN,
 }
 
 int skinPrice(Skin skin) {
@@ -18,6 +21,10 @@ int skinPrice(Skin skin) {
     case Skin.HAZMAT_SUIT:
     case Skin.ROBOT:
       return 30;
+    case Skin.VAMPIRE:
+    case Skin.RETRO_PILOT:
+    case Skin.ALIEN:
+      return 50;
   }
   throw 'Unknown skin $skin!';
 }
