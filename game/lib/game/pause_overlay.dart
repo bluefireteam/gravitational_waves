@@ -4,7 +4,9 @@ import 'palette.dart';
 
 class PauseOverlay {
   static final Paint _filled = Palette.hud.paint..strokeWidth = 4.0;
-  static final Paint _hollow = Palette.hud.paint..strokeWidth = 6.0..style = PaintingStyle.stroke;
+  static final Paint _hollow = Palette.hud.paint
+    ..strokeWidth = 6.0
+    ..style = PaintingStyle.stroke;
 
   static void render(Canvas c, Size size) {
     c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), _hollow);

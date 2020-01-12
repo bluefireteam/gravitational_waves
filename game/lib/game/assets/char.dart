@@ -32,9 +32,9 @@ class Char {
       case Skin.GREEN_HAIR_PUNK:
         return greenHairPunk;
       case Skin.ROBOT:
-          return robot;
+        return robot;
       case Skin.HAZMAT_SUIT:
-          return hazmatSuit;
+        return hazmatSuit;
     }
     throw 'Unknown skin! $skin';
   }
