@@ -161,7 +161,7 @@ class MyGame extends BaseGame {
     }
 
     super.update(t);
-    if (showTutorial > -1 && player.x >= Tutorial.POSITIONS[showTutorial]) {
+    if (showTutorial > -1 && player.x >= Tutorial.positions[showTutorial]) {
       doShowTutorial();
       showTutorial++;
       if (showTutorial > 1) {
@@ -239,8 +239,11 @@ class MyGame extends BaseGame {
       return;
     }
     if (paused) {
+      bool isTutorial = tutorial != null;
       resume();
-      return;
+      if (!isTutorial) {
+        return;
+      }
     }
     super.onTapUp(details);
     gravity *= -1;

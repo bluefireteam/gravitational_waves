@@ -63,7 +63,7 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   }
 
   double get startX => x;
-  double get endX => x + BLOCK_SIZE * CHUNCK_SIZE;
+  double get endX => x + BLOCK_SIZE * columns.length;
 
   bool contains(double targetX) {
     return targetX >= startX && targetX < endX;

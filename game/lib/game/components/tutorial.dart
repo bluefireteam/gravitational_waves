@@ -10,11 +10,16 @@ import '../column.dart';
 import '../util.dart';
 
 class Tutorial extends Component with Resizable {
-  static const POSITIONS = [100, 200];
+  static final positions = [64 - 6, 64 + 12]
+    .map((e) => (-CHUNCK_SIZE / 2.0 + e) * BLOCK_SIZE)
+    .toList();
 
   static Iterable<Column> generateTerrain() {
-    // TODO generate tutorial
-    return List.generate(128, (_) => Column(0, 0));
+    return List.generate(64, (_) => Column(0, 0))
+           + List.generate(8, (_) => Column(1, 0))
+           + List.generate(10, (_) => Column(0, 0))
+           + List.generate(8, (_) => Column(0, 1))
+           + List.generate(8, (_) => Column(0, 0));
   }
 
   bool destroyed = false;
@@ -22,11 +27,14 @@ class Tutorial extends Component with Resizable {
 
   @override
   void render(Canvas c) {
-    Position p = Position(size.width / 2, size.height / 2);
-    Fonts.tutorial.render(c, 'Tap to change gravity', p, anchor: Anchor.center);
-    // TODO: implement render
+    Position p1 = Position(size.width / 2, size.height - 48.0 - 48.0);
+    Fonts.tutorial.render(c, 'Tap to change', p1, anchor: Anchor.bottomCenter);
 
-    animation.getSprite().renderPosition(c, Position(32.0, 32.0));
+    Position p2 = Position(size.width / 2, size.height - 32.0 - 48.0);
+    Fonts.tutorial.render(c, 'gravity', p2, anchor: Anchor.bottomCenter);
+
+    Position p3 = Position(size.width / 2, size.height - 16.0 - 48.0);
+    animation.getSprite().renderPosition(c, p3);
   }
 
   @override
