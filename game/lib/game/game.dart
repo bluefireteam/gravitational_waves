@@ -156,6 +156,7 @@ class MyGame extends BaseGame {
   @override
   void update(double t) {
     if (paused) {
+      tutorial?.update(t);
       return;
     }
 

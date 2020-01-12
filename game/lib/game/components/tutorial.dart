@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/anchor.dart';
+import 'package:flame/animation.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/position.dart';
@@ -11,17 +12,20 @@ class Tutorial extends Component with Resizable {
   static const POSITIONS = [100, 200];
 
   bool destroyed = false;
+  Animation animation = Animation.sequenced('hand.png', 2, textureWidth: 32.0, textureHeight: 48.0, stepTime: 0.6);
 
   @override
   void render(Canvas c) {
     Position p = Position(size.width / 2, size.height / 2);
     Fonts.tutorial.render(c, 'Tap to change gravity', p, anchor: Anchor.center);
     // TODO: implement render
+
+    animation.getSprite().renderPosition(c, Position(32.0, 32.0));
   }
 
   @override
   void update(double t) {
-    // TODO: implement update
+    animation.update(t);
   }
 
   void remove() {
