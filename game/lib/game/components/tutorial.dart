@@ -6,10 +6,16 @@ import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/position.dart';
 
+import '../column.dart';
 import '../util.dart';
 
 class Tutorial extends Component with Resizable {
   static const POSITIONS = [100, 200];
+
+  static Iterable<Column> generateTerrain() {
+    // TODO generate tutorial
+    return List.generate(128, (_) => Column(0, 0));
+  }
 
   bool destroyed = false;
   Animation animation = Animation.sequenced('hand.png', 2, textureWidth: 32.0, textureHeight: 48.0, stepTime: 0.6);
