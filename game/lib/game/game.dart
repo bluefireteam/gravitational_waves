@@ -85,7 +85,7 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
-    Audio.music('dark-moon.mp3');
+    Audio.startMusic();
   }
 
   void restart() {
@@ -238,8 +238,7 @@ class MyGame extends BaseGame {
       return;
     }
     if (paused) {
-      paused = false;
-      tutorial?.remove();
+      resume();
       return;
     }
     super.onTapUp(details);
@@ -247,7 +246,21 @@ class MyGame extends BaseGame {
   }
 
   void pause() {
+    Audio.pauseMusic();
     paused = true;
+  }
+
+  void resume() {
+    tutorial?.remove();
+    paused = false;
+    Audio.resumeMusic();
+  }
+
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) {
+      pause();
+    }
   }
 
   void gameOver() async {

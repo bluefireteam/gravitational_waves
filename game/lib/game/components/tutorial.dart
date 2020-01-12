@@ -32,5 +32,8 @@ class Tutorial extends Component with Resizable {
   int priority() => 7;
 
   @override
+  bool isHud() => true;
+
+  @override
   bool destroy() => destroyed;
 }

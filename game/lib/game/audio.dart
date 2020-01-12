@@ -56,4 +56,16 @@ class Audio {
   static void stopMusic() async {
     await musicPlayer.fixedPlayer.stop();
   }
+
+  static void pauseMusic() async {
+    await musicPlayer.fixedPlayer.pause();
+  }
+
+  static void resumeMusic() async {
+    await musicPlayer.fixedPlayer.resume();
+  }
+
+  static void startMusic() async {
+    return music('dark-moon.mp3');
+  }
 }
