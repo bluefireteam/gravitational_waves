@@ -57,7 +57,7 @@ class MyGame extends BaseGame {
   }
 
   void prepare() {
-    final isFirstTime = true; // GameData.instance.isFirstTime();
+    final isFirstTime = GameData.instance.isFirstTime();
 
     sleeping = true;
     paused = false;
@@ -216,7 +216,8 @@ class MyGame extends BaseGame {
       hud.render(canvas);
     }
     if (paused) {
-      PauseOverlay.render(canvas, size);
+      bool showMessage = tutorial == null;
+      PauseOverlay.render(canvas, size, showMessage);
     }
   }
 
@@ -250,12 +251,16 @@ class MyGame extends BaseGame {
   }
 
   void pause() {
+    if (sleeping || paused) {
+      return;
+    }
     Audio.pauseMusic();
     paused = true;
   }
 
   void resume() {
     tutorial?.remove();
+    tutorial = null;
     paused = false;
     Audio.resumeMusic();
   }
