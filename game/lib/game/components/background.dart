@@ -40,6 +40,12 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
     this.columns = _generatePlains(CHUNCK_SIZE).toList();
   }
 
+  Background.tutorial(double x) {
+    this.x = x;
+    // TODO generate tutorial
+    this.columns = _generatePlains(2 * CHUNCK_SIZE).toList();
+  }
+
   static Iterable<Column> _generatePlains(int size) {
     return List.generate(size, (_) => Column(0, 0));
   }
