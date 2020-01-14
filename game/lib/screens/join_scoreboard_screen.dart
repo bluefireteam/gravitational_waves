@@ -61,7 +61,7 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
 
     if (isPlayerIdAvailable) {
       await GameData.instance.setPlayerId(playerIdTextController.text);
-      await ScoreBoard.submitScore(GameData.instance.highScore);
+      await ScoreBoard.submitScore(GameData.instance.highScore, forceSubmission: true);
 
       Navigator.pushReplacementNamed(context, "/scoreboard");
     }

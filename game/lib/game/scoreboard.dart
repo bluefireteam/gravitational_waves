@@ -59,13 +59,13 @@ class ScoreBoard {
     throw 'Could not check player id availability';
   }
 
-  static Future<void> submitScore(int score) async {
+  static Future<void> submitScore(int score, { bool forceSubmission = false }) async {
     final GameData data = GameData.instance;
     final lastSubmittedScore = data.highScore;
 
     await data.addScore(score);
 
-    if (lastSubmittedScore == null || score > lastSubmittedScore) {
+    if (forceSubmission || score > lastSubmittedScore) {
       // Get the token
       final _uuid = await getUuid();
       final tokenResponse = await Dio().get('$host/scores/token/$_uuid');
