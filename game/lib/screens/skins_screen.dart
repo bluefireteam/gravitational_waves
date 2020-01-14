@@ -21,7 +21,7 @@ class SkinsScreen extends StatefulWidget {
 }
 
 class _SkinsScreenState extends State<SkinsScreen> {
-  Skin _skinToBuy = null;
+  Skin _skinToBuy;
 
   @override
   Widget build(BuildContext context) {

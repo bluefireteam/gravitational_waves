@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flame/flame.dart';
 
+import '../game/assets/char.dart';
+import '../game/skin.dart';
 import '../game/game.dart';
 import '../game/game_data.dart';
 import '../game/scoreboard.dart';
@@ -36,7 +39,8 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
+                SizedBox(height: 10),
+                Label(label: "Scoreboard", fontColor: PaletteColors.blues.light, fontSize: 36),
                 FutureBuilder(
                   future: Future.wait([
                     ScoreBoard.fetchScoreboard(),
@@ -73,7 +77,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   label: 'Back',
                   onPress: () => Navigator.of(context).pop(),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 10),
               ],
             ),
           )
@@ -85,8 +89,8 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
   Widget showScoreboard(
       BuildContext context, String playerId, List<ScoreBoardEntry> entries) {
     Color fontColor(ScoreBoardEntry entry) => entry.playerId == playerId
-        ? PaletteColors.blues.light
-        : PaletteColors.blues.normal;
+        ? PaletteColors.pinks.dark
+        : PaletteColors.blues.light;
 
     final _list = ListView(
       padding: const EdgeInsets.all(10),
@@ -95,7 +99,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
           margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
           padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
           color:
-              entry.value.playerId == playerId ? const Color(0xFF38607C) : null,
+              entry.value.playerId == playerId ? PaletteColors.pinks.light : PaletteColors.blues.dark,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -106,7 +110,11 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     SizedBox(width: 5),
-                    // TODO show skin used
+                    entry.value.skin != null
+                      ? (
+                        Flame.util.spriteAsWidget(Size(60.0, 40.0), Char.fromSkin(entry.value.skin))
+                      )
+                      : SizedBox(width: 60, height: 40),
                     Label(
                       fontColor: fontColor(entry.value),
                       label: '#${entry.key + 1}',
@@ -148,7 +156,6 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
       return Flexible(
         child: Column(
           children: [
-            SizedBox(height: 50),
             SecondaryButton(
               label: 'Join the scoreboard',
               onPress: () =>
