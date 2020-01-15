@@ -28,6 +28,8 @@ class Preferences {
     this.musicOn = !this.musicOn;
     if (!this.musicOn) {
       Audio.stopMusic();
+    } else {
+      Audio.menuMusic();
     }
     await this.save();
   }

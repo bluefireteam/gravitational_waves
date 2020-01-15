@@ -15,17 +15,21 @@ class _Line extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            child: Label(
-                label: '$leftLabel',
-                fontSize: 22,
-                fontColor: PaletteColors.blues.dark,
-                textAlign: TextAlign.end)),
+          child: Label(
+            label: '$leftLabel',
+            fontSize: 22,
+            fontColor: PaletteColors.blues.dark,
+            textAlign: TextAlign.end,
+          ),
+        ),
         SizedBox(width: 20),
         Expanded(
-            child: Label(
-                label: '$rightLabel',
-                fontSize: 22,
-                fontColor: PaletteColors.blues.light)),
+          child: Label(
+            label: '$rightLabel',
+            fontSize: 22,
+            fontColor: PaletteColors.blues.light,
+          ),
+        ),
       ],
     );
   }
@@ -47,9 +51,10 @@ class GameOverContainer extends StatelessWidget {
         height: 280,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Label(
-              label: 'Game Over',
-              fontSize: 36,
-              fontColor: PaletteColors.blues.dark),
+            label: 'Game Over',
+            fontSize: 36,
+            fontColor: PaletteColors.blues.dark,
+          ),
           SizedBox(height: 20),
           _Line('Gems', '$gems'),
           _Line('Distance', '$distance'),

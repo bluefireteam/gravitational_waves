@@ -44,6 +44,7 @@ flutter:
    - assets/images/container-tileset.png
    - assets/images/hand.png
    - assets/audio/music/dark-moon.mp3
+   - assets/audio/music/contemplative-breaks.mp3
    - assets/audio/sfx/coin.wav
    - assets/audio/sfx/die.wav
 

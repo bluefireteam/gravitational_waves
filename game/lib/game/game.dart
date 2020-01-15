@@ -85,7 +85,7 @@ class MyGame extends BaseGame {
   void start() {
     sleeping = false;
     generateNextChunck();
-    Audio.startMusic();
+    Audio.gameMusic();
   }
 
   void restart() {

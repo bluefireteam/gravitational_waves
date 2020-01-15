@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../game/audio.dart';
 import '../game/game.dart';
 import '../game/game_data.dart';
 import '../widgets/button.dart';
-import '../widgets/label.dart';
 import '../widgets/game_over.dart';
+import '../widgets/label.dart';
 
 class GameScreen extends StatefulWidget {
   final MyGame game;
@@ -47,6 +48,7 @@ class _GameScreenState extends State<GameScreen> {
                   _showGameOver = false;
                   _playing = false;
                   widget.game.prepare();
+                  Audio.menuMusic();
                 });
               },
               playAgain: () {

@@ -65,7 +65,11 @@ class Audio {
     await musicPlayer.fixedPlayer.resume();
   }
 
-  static void startMusic() async {
+  static void gameMusic() async {
     return music('dark-moon.mp3');
+  }
+
+  static void menuMusic() async {
+    return music('contemplative-breaks.mp3');
   }
 }

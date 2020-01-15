@@ -37,6 +37,8 @@ void main() async {
 
   await UITileset.load();
 
+  Audio.menuMusic();
+
   MyGame game = MyGame(size);
 
   GameScreen mainMenu = GameScreen(game: game);
