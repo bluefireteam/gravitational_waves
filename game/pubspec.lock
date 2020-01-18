@@ -49,7 +49,7 @@ packages:
       name: box2d_flame
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.4"
+    version: "0.4.5"
   build:
     dependency: transitive
     description:
@@ -70,7 +70,7 @@ packages:
       name: build_daemon
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   build_resolvers:
     dependency: transitive
     description:
@@ -105,7 +105,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.3"
+    version: "7.0.8"
   charcode:
     dependency: transitive
     description:
@@ -203,7 +203,7 @@ packages:
       name: flare_dart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   flare_flutter:
     dependency: transitive
     description:
@@ -274,7 +274,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.0+3"
+    version: "0.12.0+4"
   http_multi_server:
     dependency: transitive
     description:
@@ -337,7 +337,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.3+2"
+    version: "0.11.4"
   matcher:
     dependency: transitive
     description:
@@ -379,7 +379,7 @@ packages:
       name: ordered_set
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.5"
   package_config:
     dependency: transitive
     description:
