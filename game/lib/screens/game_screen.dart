@@ -76,8 +76,14 @@ class _GameScreenState extends State<GameScreen> {
               });
             },
           ),
-          PrimaryButton(label: 'Revamped (Soon)', onPress: null // Disabled
-              ),
+          PrimaryButton(
+            label: 'Revamped (Soon)',
+            onPress: null, // Disabled
+          ),
+          SecondaryButton(
+            label: 'Back',
+            onPress: () => setState(() => _playSection = false),
+          ),
         ]);
       } else {
         sectionChildren.addAll([
