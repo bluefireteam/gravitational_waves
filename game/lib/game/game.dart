@@ -251,10 +251,10 @@ class MyGame extends BaseGame {
   }
 
   void pause() {
+    Audio.pauseMusic();
     if (sleeping || paused) {
       return;
     }
-    Audio.pauseMusic();
     paused = true;
   }
 
