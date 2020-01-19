@@ -1,7 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
-import 'package:gravitational_waves/game/game_data.dart';
+import '../game/game_data.dart';
 
 import '../game/assets/char.dart';
 import '../game/game.dart';
