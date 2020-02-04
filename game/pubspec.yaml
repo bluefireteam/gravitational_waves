@@ -49,9 +49,6 @@ flutter:
    - assets/audio/sfx/die.wav
 
   fonts:
-   - family: BitPotion
-     fonts:
-       - asset: assets/fonts/BitPotionExt.ttf
    - family: Quantum
      fonts:
        - asset: assets/fonts/Quantum.otf
