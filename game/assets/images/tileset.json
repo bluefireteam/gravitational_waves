@@ -147,6 +147,22 @@
       "h": 7,
       "length": 0,
       "millis": 0
+    },
+    "broken-wall-pattern-1": {
+      "x": 0,
+      "y": 15,
+      "w": 5,
+      "h": 5,
+      "length": 1,
+      "millis": 0
+    },
+    "broken-wall-pattern-2": {
+      "x": 5,
+      "y": 15,
+      "w": 5,
+      "h": 5,
+      "length": 1,
+      "millis": 0
     }
   }
 }
