@@ -12,3 +12,4 @@ cp ./art/container-tileset.png ./game/assets/images/
 cp ./art/tutorial/hand.png ./game/assets/images/
 
 cp ./art/animated-props/spacebattle/spacebattle.png ./game/assets/images/
+cp ./art/firing-ship/firing-ship.png ./game/assets/images/
