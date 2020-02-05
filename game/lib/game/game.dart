@@ -18,6 +18,7 @@ import 'components/wall.dart';
 import 'game_data.dart';
 import 'palette.dart';
 import 'pause_overlay.dart';
+import 'powerups.dart';
 import 'rotation_manager.dart';
 import 'scoreboard.dart';
 import 'spawner.dart';
@@ -51,9 +52,12 @@ class MyGame extends BaseGame {
   Position resizeOffset = Position.empty();
   double scale = 2.0;
 
+  Powerups powerups;
+
   MyGame(Size size) {
     resize(size);
     hud = Hud(this);
+    powerups = Powerups(this);
   }
 
   void prepare() {
@@ -84,6 +88,7 @@ class MyGame extends BaseGame {
 
   void start() {
     sleeping = false;
+    powerups.reset();
     generateNextChunck();
     Audio.gameMusic();
   }
@@ -172,6 +177,7 @@ class MyGame extends BaseGame {
 
     if (!sleeping) {
       maybeGeneratePlanet(t);
+      powerups.maybeGeneratePowerups(t);
       generateNextChunck();
       rotationManager?.tick(t);
     }

@@ -40,7 +40,10 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
-                Label(label: "Scoreboard", fontColor: PaletteColors.blues.light, fontSize: 36),
+                Label(
+                    label: "Scoreboard",
+                    fontColor: PaletteColors.blues.light,
+                    fontSize: 36),
                 FutureBuilder(
                   future: Future.wait([
                     ScoreBoard.fetchScoreboard(),
@@ -98,8 +101,9 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
         return Container(
           margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
           padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
-          color:
-              entry.value.playerId == playerId ? PaletteColors.pinks.light : PaletteColors.blues.dark,
+          color: entry.value.playerId == playerId
+              ? PaletteColors.pinks.light
+              : PaletteColors.blues.dark,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -111,10 +115,9 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   children: [
                     SizedBox(width: 5),
                     entry.value.skin != null
-                      ? (
-                        Flame.util.spriteAsWidget(Size(60.0, 40.0), Char.fromSkin(entry.value.skin))
-                      )
-                      : SizedBox(width: 60, height: 40),
+                        ? (Flame.util.spriteAsWidget(
+                            Size(60.0, 40.0), Char.fromSkin(entry.value.skin)))
+                        : SizedBox(width: 60, height: 40),
                     Label(
                       fontColor: fontColor(entry.value),
                       label: '#${entry.key + 1}',

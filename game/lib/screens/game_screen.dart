@@ -32,6 +32,17 @@ class _GameScreenState extends State<GameScreen> {
     };
   }
 
+  void startGame({bool enablePowerups}) {
+    widget.game.start();
+    setState(() {
+      _playSection = false;
+      _playing = true;
+
+      widget.game.powerups.enabled = enablePowerups;
+      widget.game.start();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
@@ -66,19 +77,11 @@ class _GameScreenState extends State<GameScreen> {
         sectionChildren.addAll([
           PrimaryButton(
             label: 'Classic',
-            onPress: () {
-              widget.game.start();
-              setState(() {
-                _playSection = false;
-                _playing = true;
-
-                widget.game.start();
-              });
-            },
+            onPress: () => startGame(enablePowerups: false),
           ),
           PrimaryButton(
-            label: 'Revamped (Soon)',
-            onPress: null, // Disabled
+            label: 'Revamped',
+            onPress: () => startGame(enablePowerups: true),
           ),
           SecondaryButton(
             label: 'Back',

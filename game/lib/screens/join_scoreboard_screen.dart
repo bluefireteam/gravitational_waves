@@ -61,7 +61,8 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
 
     if (isPlayerIdAvailable) {
       await GameData.instance.setPlayerId(playerIdTextController.text);
-      await ScoreBoard.submitScore(GameData.instance.highScore, forceSubmission: true);
+      await ScoreBoard.submitScore(GameData.instance.highScore,
+          forceSubmission: true);
 
       Navigator.pushReplacementNamed(context, "/scoreboard");
     }
@@ -81,41 +82,46 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        GRContainer(width: 500, child:
-            Column(
-                children: [
-                  SizedBox(height: 20),
-                  Label(label: 'Choose your player ID:', fontSize: 22, fontColor: PaletteColors.pinks.light),
-                  Container(
-                      width: 400,
-                      child: TextField(
-                          controller: playerIdTextController,
-                          decoration: InputDecoration(
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: PaletteColors.blues.light),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: PaletteColors.blues.light),
-                              ),
-                          ),
-                          style: TextStyle(fontFamily: 'Quantum', color: PaletteColors.blues.light),
+        GRContainer(
+            width: 500,
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                Label(
+                    label: 'Choose your player ID:',
+                    fontSize: 22,
+                    fontColor: PaletteColors.pinks.light),
+                Container(
+                  width: 400,
+                  child: TextField(
+                    controller: playerIdTextController,
+                    decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: PaletteColors.blues.light),
                       ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: PaletteColors.blues.light),
+                      ),
+                    ),
+                    style: TextStyle(
+                        fontFamily: 'Quantum',
+                        color: PaletteColors.blues.light),
                   ),
-                  
-                  SizedBox(height: 10),
-                  Label(
-                      fontSize: 12,
-                      label:
-                      """By joining the scoreboard you agree that we collect your score,
+                ),
+                SizedBox(height: 10),
+                Label(
+                    fontSize: 12,
+                    label:
+                        """By joining the scoreboard you agree that we collect your score,
 your selected player skin and the choosen player id on the field above.
 Those informations are only used for the display of the scoreboard.
                       """,
-                      fontColor: PaletteColors.blues.light
-                  ),
-                  SizedBox(height: 10),
-                ],
-            )
-        ),
+                    fontColor: PaletteColors.blues.light),
+                SizedBox(height: 10),
+              ],
+            )),
         Column(
           children: [
             Label(label: _status, fontColor: PaletteColors.pinks.light),
@@ -125,12 +131,12 @@ Those informations are only used for the display of the scoreboard.
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               PrimaryButton(
-                  label: 'Join',
-                  onPress: _join,
+                label: 'Join',
+                onPress: _join,
               ),
               SecondaryButton(
-                  label: 'Cancel',
-                  onPress: () => Navigator.of(context).pop(),
+                label: 'Cancel',
+                onPress: () => Navigator.of(context).pop(),
               ),
             ]),
           ],

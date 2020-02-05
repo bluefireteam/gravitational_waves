@@ -17,18 +17,19 @@ class Label extends Text {
 }
 
 class Link extends StatelessWidget {
-
   final String link;
   final double fontSize;
 
-  Link({ this.link, this.fontSize });
+  Link({this.link, this.fontSize});
 
   @override
-  Widget build(BuildContext context) =>
-    GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
         onTap: _onTap,
-        child: Label(label: link, fontSize: fontSize, fontColor: PaletteColors.pinks.light),
-    );
+        child: Label(
+            label: link,
+            fontSize: fontSize,
+            fontColor: PaletteColors.pinks.light),
+      );
 
   void _onTap() async {
     if (await canLaunch(link)) {

@@ -21,7 +21,7 @@ class PauseOverlay {
     c.drawRect(Rect.fromLTWH(xOffset - 4.0, yOffset, 4.0, 18.0), _filled);
 
     if (showMessage) {
-      Position p = Position(size.width / 2, size.height  / 2);
+      Position p = Position(size.width / 2, size.height / 2);
       Fonts.tutorial.render(c, 'Tap to resume', p, anchor: Anchor.center);
     }
   }

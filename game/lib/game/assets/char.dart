@@ -40,14 +40,14 @@ class Char {
       case Skin.ROBOT:
         return robot;
       case Skin.HAZMAT_SUIT:
-          return hazmatSuit;
+        return hazmatSuit;
 
       case Skin.VAMPIRE:
-          return vampire;
+        return vampire;
       case Skin.RETRO_PILOT:
-          return retroPilot;
+        return retroPilot;
       case Skin.ALIEN:
-          return alien;
+        return alien;
     }
     throw 'Unknown skin! $skin';
   }

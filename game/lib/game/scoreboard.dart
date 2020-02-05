@@ -59,7 +59,8 @@ class ScoreBoard {
     throw 'Could not check player id availability';
   }
 
-  static Future<void> submitScore(int score, { bool forceSubmission = false }) async {
+  static Future<void> submitScore(int score,
+      {bool forceSubmission = false}) async {
     final GameData data = GameData.instance;
     final lastSubmittedScore = data.highScore;
 
