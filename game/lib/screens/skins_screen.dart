@@ -1,15 +1,15 @@
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
-import '../game/game_data.dart';
 
 import '../game/assets/char.dart';
 import '../game/game.dart';
+import '../game/game_data.dart';
 import '../game/skin.dart';
 import '../widgets/button.dart';
 import '../widgets/gr_container.dart';
-import '../widgets/palette.dart';
 import '../widgets/label.dart';
+import '../widgets/palette.dart';
 
 class SkinsScreen extends StatefulWidget {
   final MyGame game;
