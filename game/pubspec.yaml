@@ -8,8 +8,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame: 0.18.0
-  audioplayers: 0.13.5
+  flame: 0.18.1
+  audioplayers: 0.14.0
   json_annotation: 3.0.0
   flame_splash_screen: 0.0.1
   shared_preferences: 0.5.6
