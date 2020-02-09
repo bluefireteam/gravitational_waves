@@ -8,6 +8,7 @@ import '../game/game_data.dart';
 import '../widgets/button.dart';
 import '../widgets/game_over.dart';
 import '../widgets/label.dart';
+import '../widgets/slide_in_container.dart';
 
 class GameScreen extends StatefulWidget {
   final MyGame game;
@@ -142,14 +143,24 @@ class _GameScreenState extends State<GameScreen> {
           alignment: Alignment.center,
           child: Column(
             children: [
-              Image.asset('assets/images/game_logo.png', width: 400),
+              AnimatedContainer(
+                  duration: Duration(seconds: 1),
+                  curve: Curves.fastOutSlowIn,
+                  child: SlideInContainer(
+                      from: const Offset(0.0, -1.5),
+                      child: Image.asset('assets/images/game_logo.png', width: 400),
+                  ),
+              ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: sectionChildren,
+                child: SlideInContainer(
+                    from: const Offset(0.0, 1.5),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: sectionChildren,
+                    )
                 ),
-              )
+              ),
             ],
           ),
         ),
