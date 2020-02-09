@@ -3,7 +3,7 @@ description: This is a simple homage to Gravity Square, an old inifinity runner 
 version: 0.1.1+2
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:

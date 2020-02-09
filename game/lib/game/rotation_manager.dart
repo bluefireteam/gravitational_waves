@@ -17,7 +17,7 @@ class RotationManager {
     angle += angularSpeed * dt;
     if (_clock > 3.0) {
       changeSpeed.maybeSpawn(
-          dt, () => angularSpeed = ROTATION_SPEED * sample(prob));
+          dt, () => angularSpeed = ROTATION_SPEED * prob.sample(R));
     }
   }
 }

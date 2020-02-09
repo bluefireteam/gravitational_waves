@@ -62,15 +62,15 @@ class Spritesheet {
         x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
   }
 
-  List<T> generate<T>(String name, T Function(String) generator) {
-    List<T> list = [];
+  List<Sprite> generate(String name) {
+    List<Sprite> list = [];
     int i = 1;
     while (true) {
       String key = '$name-$i';
       if (!animations.animations.containsKey(key)) {
         break;
       }
-      list.add(generator(key));
+      list.add(sprite(key));
       i++;
     }
     return list;

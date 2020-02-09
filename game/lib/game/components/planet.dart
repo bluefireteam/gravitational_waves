@@ -9,7 +9,7 @@ import '../util.dart';
 
 class Planet extends SpriteComponent with Resizable {
   Planet(Size size) {
-    this.sprite = sample(Tileset.planets);
+    this.sprite = Tileset.planets.sample(R);
     this.width = sprite.size.x;
     this.height = sprite.size.y;
 

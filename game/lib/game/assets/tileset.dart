@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
+import '../util.dart';
 import './spritesheet.dart';
 import '../collections.dart';
 
@@ -64,7 +65,11 @@ class Tileset {
   static Spritesheet _sheet;
 
   static List<BlockSet> blocks;
+
   static Sprite wall;
+  static List<Sprite> brokenWalls;
+  static List<Pair<int, int>> brokenWallDeltas;
+
   static List<Sprite> planets;
   static List<Sprite> stars;
 
@@ -72,9 +77,15 @@ class Tileset {
     _sheet = await Spritesheet.parse('tileset');
 
     wall = _sheet.sprite('wall-pattern');
+    brokenWalls = _sheet.generate('broken-wall-pattern');
+    brokenWallDeltas = [
+      Pair(40, 30),
+      Pair(5, 42),
+    ];
+
     blocks = [1, 2].map((i) => BlockSet(_sheet, i)).toList();
-    planets = _sheet.generate('back-props', (key) => _sheet.sprite(key));
-    stars = _sheet.generate('stars-pattern', (key) => _sheet.sprite(key));
+    planets = _sheet.generate('back-props');
+    stars = _sheet.generate('stars-pattern');
   }
 
   static BlockSet variant(int variant) {
@@ -82,7 +93,7 @@ class Tileset {
   }
 
   static int randomVariant() {
-    return randomIdx(blocks);
+    return blocks.randomIdx(R);
   }
 
   Sprite sprite(String name) {

@@ -72,8 +72,8 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   @override
   void render(Canvas c) {
     columns.asMap().forEach((i, column) {
-      Column before = getOrElse(columns, i - 1, column);
-      Column after = getOrElse(columns, i + 1, column);
+      Column before = columns.getOrElse(i - 1, column);
+      Column after = columns.getOrElse(i + 1, column);
       double px = x + i * BLOCK_SIZE;
 
       c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _bg);

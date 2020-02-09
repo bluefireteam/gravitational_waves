@@ -44,6 +44,7 @@ class MyGame extends BaseGame {
   Tutorial tutorial;
 
   Hud hud;
+  Wall wall;
 
   bool sleeping;
   bool paused;
@@ -80,7 +81,7 @@ class MyGame extends BaseGame {
     }
 
     add(player = Player());
-    add(Wall());
+    add(wall = Wall());
     add(Stars(size));
     fixCamera();
     rotationManager = RotationManager();
@@ -106,7 +107,7 @@ class MyGame extends BaseGame {
       int amountCoints = 2 + R.nextInt(3);
       final List<Coin> coins = [];
       for (int i = 0; i < amountCoints; i++) {
-        Rect spot = bg.findRectFor(randomIdx(bg.columns));
+        Rect spot = bg.findRectFor(bg.columns.randomIdx(R));
         bool top = R.nextBool();
         double x = spot.center.dx;
         double yOffset = Coin.SIZE / 2;

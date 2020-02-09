@@ -5,8 +5,9 @@ import './game_data.dart';
 import 'collections.dart';
 import 'skin.dart';
 
-Skin parseSkin(String value) =>
-    firstOrNull(Skin.values, (h) => h.toString() == value);
+Skin parseSkin(String value) {
+  return Skin.values.firstOrNull((h) => h.toString() == value);
+}
 
 class ScoreBoardEntry {
   String playerId;

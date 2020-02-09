@@ -27,7 +27,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.x = 0.0;
     this.width = this.height = BLOCK_SIZE;
     this.speedY = 0.0;
-    this.livesLeft = 1;
+    this.livesLeft = STARTING_LIVES;
     this.hurtTimer = 0.0;
     this.shinyTimer = 0.0;
     this.particles = PlayerParticles();

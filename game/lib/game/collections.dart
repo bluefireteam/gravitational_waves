@@ -1,20 +1,54 @@
-import 'util.dart';
+import 'dart:math';
 
-T getOrElse<T>(List<T> ts, int idx, T elseValue) {
-  if (idx >= 0 && idx < ts.length - 1) {
-    return ts[idx];
+class Pair<T1, T2> {
+    final T1 first;
+    final T2 second;
+    Pair(this.first, this.second);
+}
+
+extension MyList<T> on List<T> {
+  T getOrElse(int idx, T elseValue) {
+    if (idx >= 0 && idx < this.length - 1) {
+      return this[idx];
+    }
+    return elseValue;
   }
-  return elseValue;
+
+  T sample([Random random]) {
+    final r = random ?? Random();
+    return this[this.randomIdx(r)];
+  }
+
+  int randomIdx([Random random]) {
+    final r = random ?? Random();
+    return r.nextInt(this.length);
+  }
 }
 
-T sample<T>(List<T> ts) {
-  return ts[randomIdx(ts)];
-}
+extension MyIterable<T> on Iterable<T> {
+  T firstOrNull(bool Function(T) predicate) {
+    return this.firstWhere(predicate, orElse: () => null);
+  }
 
-int randomIdx<T>(List<T> ts) {
-  return R.nextInt(ts.length);
-}
+  List<T> shuffled([Random random]) {
+    final r = random ?? Random();
+    return this.toList()..shuffle(r);
+  }
 
-T firstOrNull<T>(List<T> ts, bool Function(T) predicate) {
-  return ts.firstWhere(predicate, orElse: () => null);
+  Map<K, V> associate<K, V>({
+    K Function(T) keyMapper,
+    V Function(T) valueMapper,
+  }) {
+    keyMapper ??= (e) => e as K;
+    valueMapper ??= (e) => e as V;
+    Map<K, V> map = {};
+    for (final t in this) {
+      final key = keyMapper(t);
+      if (map.containsKey(key)) {
+        throw 'Invalid keyMapper, duplicate found for key $key';
+      }
+      map[key] = valueMapper(t);
+    }
+    return map;
+  }
 }

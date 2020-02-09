@@ -15,7 +15,7 @@ class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   Stars(Size size) {
     int amount = (size.width / w).ceil();
-    repeats = List.generate(amount, (_) => randomIdx(Tileset.stars));
+    repeats = List.generate(amount, (_) => Tileset.stars.randomIdx(R));
 
     x = 0;
   }

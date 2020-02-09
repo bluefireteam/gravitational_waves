@@ -10,6 +10,7 @@ const DEBUG = false;
 const CHECK_PLAYER_ID = false;
 
 const BLOCK_SIZE = 16.0;
+const BLOCK_SIZE_INT = 16;
 const CHUNCK_SIZE = 64;
 
 const ROTATION_SPEED = 0.075;
@@ -20,6 +21,8 @@ const PLANET_SPEED = 45.0;
 const SHIPS_SPEED = 90.0;
 const PLAYER_SPEED = 170.0;
 const GRAVITY_ACC = 2750.0;
+
+const STARTING_LIVES = 100;
 
 class Fonts {
   static final TextConfig _base = TextConfig(fontFamily: 'Quantum');
