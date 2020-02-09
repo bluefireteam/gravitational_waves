@@ -82,17 +82,24 @@ class _GameScreenState extends State<GameScreen> {
 
       if (_playSection) {
         sectionChildren.addAll([
-          PrimaryButton(
-            label: 'Classic',
-            onPress: () => startGame(enablePowerups: false),
-          ),
-          PrimaryButton(
-            label: 'Revamped',
-            onPress: () => startGame(enablePowerups: true),
-          ),
-          SecondaryButton(
-            label: 'Back',
-            onPress: () => setState(() => _playSection = false),
+          SlideInContainer(
+              from: Offset(-2.0, 0.0),
+              duration: Duration(milliseconds:500),
+              child: Column(
+                  children: [
+                    PrimaryButton(
+                        label: 'Classic',
+                        onPress: () => startGame(enablePowerups: false),
+                    ),
+                    PrimaryButton(
+                        label: 'Revamped',
+                        onPress: () => startGame(enablePowerups: true),
+                    ),
+                    SecondaryButton(
+                        label: 'Back',
+                        onPress: () => setState(() => _playSection = false),
+                    ),
+                  ]),
           ),
         ]);
       } else {

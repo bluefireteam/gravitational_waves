@@ -12,7 +12,7 @@ class SlideInContainer extends StatefulWidget {
     this.from = const Offset(0.0, 0.0),
     this.to = const Offset(0.0, 0.0),
     this.duration = const Duration(seconds: 1),
-    this.curve = Curves.elasticIn,
+    this.curve = Curves.easeInExpo,
   });
 
   @override
