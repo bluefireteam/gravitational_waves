@@ -52,23 +52,29 @@ class _GameScreenState extends State<GameScreen> {
 
     if (_showGameOver) {
       children.add(Center(
-          child: GameOverContainer(
-              distance: widget.game.score,
-              gems: widget.game.coins,
-              goToMainMenu: () {
-                setState(() {
-                  _showGameOver = false;
-                  _playing = false;
-                  widget.game.prepare();
-                  Audio.menuMusic();
-                });
-              },
-              playAgain: () {
-                setState(() {
-                  _showGameOver = false;
-                  widget.game.restart();
-                });
-              })));
+          child: SlideInContainer(
+              from: Offset(0.0, 1.5),
+              duration: Duration(milliseconds: 500),
+              child: GameOverContainer(
+                  distance: widget.game.score,
+                  gems: widget.game.coins,
+                  goToMainMenu: () {
+                    setState(() {
+                      _showGameOver = false;
+                      _playing = false;
+                      widget.game.prepare();
+                      Audio.menuMusic();
+                    });
+                  },
+                  playAgain: () {
+                    setState(() {
+                      _showGameOver = false;
+                      widget.game.restart();
+                    });
+                  }
+              )
+            )
+          ));
     }
 
     if (!_playing) {
