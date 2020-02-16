@@ -46,7 +46,7 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
       int brokenType = brokenPanes[currentPane];
 
       Sprite sprite = brokenType != null ? Tileset.brokenWalls[brokenType] : wallSprite;
-      sprite.renderCentered(c, Position(dx, size.height / 2), size: Position(w, h));
+      sprite.renderPosition(c, Position(dx, startY), size: Position(w, h));
 
       dx += w;
       currentPane++;

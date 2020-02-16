@@ -4,12 +4,13 @@ import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 
 import '../../game.dart';
+import '../../util.dart';
 
 class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
   BrokenGlass(double x, double y) {
     this.x = x;
     this.y = y;
-    this.width = this.height = 24;
+    this.width = this.height = BLOCK_SIZE;
   }
 
   @override

@@ -79,8 +79,8 @@ class Tileset {
     wall = _sheet.sprite('wall-pattern');
     brokenWalls = _sheet.generate('broken-wall-pattern');
     brokenWallDeltas = [
-      Pair(40, 30),
-      Pair(5, 42),
+      Pair(3 * BLOCK_SIZE_INT, 2 * BLOCK_SIZE_INT),
+      Pair(1 * BLOCK_SIZE_INT, 3 * BLOCK_SIZE_INT),
     ];
 
     blocks = [1, 2].map((i) => BlockSet(_sheet, i)).toList();
