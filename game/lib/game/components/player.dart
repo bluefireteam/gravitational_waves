@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
 import '../assets/char.dart';
@@ -22,6 +23,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   double hurtTimer, shinyTimer;
 
   PlayerParticles particles;
+
+  Position suctionCenter;
+  double scale = 1.0;
 
   Player() {
     this.x = 0.0;
@@ -63,24 +67,37 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     Sprite skin = Char.fromSkin(GameData.instance.selectedSkin);
     if (!skin.loaded()) return;
 
+    double scaledW = skin.size.x * scale;
+    double scaledH = skin.size.y * scale;
+    double dX = (skin.size.x - scaledW) / 2;
+    double dY = (skin.size.y - scaledH) / 2;
+
     Rect realRect = toRect();
-    double drawX = x - (skin.size.x - realRect.width) / 2;
-    double drawY = y - (shouldFlip ? (skin.size.y - realRect.height) : 0);
-    Rect renderRect = Rect.fromLTWH(0, 0, skin.size.x, skin.size.y);
+    double drawX = x - (skin.size.x - realRect.width) / 2 + dX;
+    double drawY = y - (shouldFlip ? (skin.size.y - realRect.height) : 0.0) + dY;
+    Rect renderRect = Rect.fromLTWH(0, 0, scaledW, scaledH);
 
     c.save();
     c.translate(drawX, drawY);
-    c.translate(0, renderRect.height / 2);
-    c.scale(1.0, shouldFlip ? 1.0 : -1.0);
-    c.translate(0, -renderRect.height / 2);
+    if (angle == 0) {
+      c.translate(0, renderRect.height / 2);
+      c.scale(1.0, 1.0 * (shouldFlip ? 1.0 : -1.0));
+      c.translate(0, -renderRect.height / 2);
+    } else {
+      c.translate(renderRect.width / 2, renderRect.height / 2);
+      c.rotate(angle);
+      c.translate(-renderRect.width / 2, -renderRect.height / 2);
+    }
     skin.renderRect(c, renderRect, overridePaint: _paint);
     c.restore();
 
     renderParticles(c);
 
     if (DEBUG) {
-      c.drawRect(getCurrentRect(),
-          Palette.playerDebugRect.paint..style = PaintingStyle.stroke);
+      c.drawRect(
+        getCurrentRect(),
+        Palette.playerDebugRect.paint..style = PaintingStyle.stroke,
+      );
     }
   }
 
@@ -95,13 +112,16 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     shinyTimer = SHINE_TIMER;
   }
 
+  void suck(Position center) {
+    this.suctionCenter = center;
+  }
+
   @override
   void update(double dt) {
     if (gameRef.sleeping) {
+      hurtTimer = shinyTimer = 0.0;
       return;
     }
-
-    particles.update(dt);
 
     if (hurt) {
       hurtTimer -= dt;
@@ -109,6 +129,22 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     if (shiny) {
       shinyTimer -= dt;
     }
+
+    if (suctionCenter != null) {
+      bool isThereYet = moveToCenter(suctionCenter, SUCTION_SPEED, dt);
+      if (scale == 0.001) {
+        gameRef.gameOver();
+      } else if (isThereYet) {
+        scale -= dt;
+        scale = scale.clamp(0.001, 1.0);
+
+        angle += dt;
+      }
+
+      return;
+    }
+
+    particles.update(dt);
 
     x += dt * PLAYER_SPEED;
 
@@ -149,4 +185,33 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   int priority() => 5;
+
+  Position toCenter() => Position.fromOffset(this.toRect().center);
+
+  // maybe abstract to position component?
+  bool moveToCenter(Position goal, double speed, double dt, { double treshold = 0.001 }) {
+    if (goal.x - width / 2 == x && goal.y - height / 2 == y) return true;
+
+    Position displacement = toCenter().minus(goal);
+    double prevDist = displacement.length();
+    if (prevDist < treshold) {
+      x = goal.x - width / 2;
+      y = goal.y - height / 2;
+      return true;
+    }
+
+    Position delta = displacement.scaleTo(speed * dt);
+    x += delta.x;
+    y += delta.y;
+
+    double newDist = toCenter().minus(goal).length();
+    if (newDist < treshold || newDist > prevDist) {
+      // right there or overshoot, correct
+      x = goal.x - width / 2;
+      y = goal.y - height / 2;
+      return true;
+    }
+
+    return false;
+  }
 }
