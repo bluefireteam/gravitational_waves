@@ -484,7 +484,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.6"
+    version: "0.5.6+1"
   shared_preferences_macos:
     dependency: transitive
     description:
@@ -651,13 +651,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-  vibrate:
-    dependency: "direct main"
-    description:
-      name: vibrate
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   watcher:
     dependency: transitive
     description:
