@@ -14,4 +14,7 @@ class Column {
 
   double get topHeight => BLOCK_SIZE * (OFFSET + top);
   double get bottomHeight => BLOCK_SIZE * (OFFSET + bottom);
+
+  int randomY() => OFFSET + top + R.nextInt(8 - bottom - top);
+  double randomYHeight() => BLOCK_SIZE * randomY();
 }

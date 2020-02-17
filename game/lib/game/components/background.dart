@@ -78,9 +78,14 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
       c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _bg);
       c.drawRect(
-          Rect.fromLTWH(px, size.height - column.bottomHeight, BLOCK_SIZE,
-              column.bottomHeight),
-          _bg);
+        Rect.fromLTWH(
+          px,
+          size.height - column.bottomHeight,
+          BLOCK_SIZE,
+          column.bottomHeight,
+        ),
+        _bg,
+      );
 
       double bottomPy = size.height - column.bottomHeight;
       BlockSet bottomSet = Tileset.variant(column.bottomVariant);

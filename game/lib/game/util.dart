@@ -22,7 +22,7 @@ const SHIPS_SPEED = 90.0;
 const PLAYER_SPEED = 170.0;
 const GRAVITY_ACC = 2750.0;
 
-const STARTING_LIVES = 100;
+const STARTING_LIVES = 1;
 const SUCTION_SPEED = 35.0;
 
 class Fonts {

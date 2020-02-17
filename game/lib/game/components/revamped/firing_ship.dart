@@ -60,7 +60,7 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
 
     if (y < -height) {
       shouldDestroy = true;
-      gameRef.powerups.spawnGlassHoles();
+      gameRef.powerups.hasSpaceBattle = false;
     }
   }
 
