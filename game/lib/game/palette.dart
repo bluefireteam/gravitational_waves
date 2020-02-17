@@ -24,4 +24,7 @@ class Palette extends BasicPalette {
   static const PaletteEntry background =
       const PaletteEntry(const Color(0xFF051C24));
   static const PaletteEntry wall = const PaletteEntry(const Color(0xFF003239));
+
+  static const PaletteEntry particles = const PaletteEntry(const Color(0xFF00C37D));
+  static const PaletteEntry particlesJetpack = const PaletteEntry(const Color(0xFFDDB411));
 }

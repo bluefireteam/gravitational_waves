@@ -13,6 +13,7 @@ import '../rumble.dart';
 import '../util.dart';
 import 'background.dart';
 import 'player_particles.dart';
+import 'revamped/jetpack_pickup.dart';
 
 class Player extends PositionComponent with HasGameRef<MyGame> {
   static const HURT_TIMER = 2.0;
@@ -83,6 +84,12 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     c.save();
     c.translate(drawX, drawY);
+
+    if (jetpack) {
+      double dy = shouldFlip ? height : 0.0;
+      JetpackPickup.jetpack.renderPosition(c, Position(-1, dy));
+    }
+
     if (angle == 0) {
       c.translate(0, renderRect.height / 2);
       c.scale(1.0, 1.0 * (shouldFlip ? 1.0 : -1.0));
@@ -108,7 +115,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   void renderParticles(Canvas c) {
     c.save();
     c.translate(x, shouldFlip ? y : y - BLOCK_SIZE);
-    particles.render(c);
+    particles.render(c, !jetpack);
     c.restore();
   }
 
@@ -118,10 +125,12 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   void suck(Position center) {
     this.suctionCenter = center;
+    this.jetpackTimeout = 0.0;
   }
 
   void boost() {
     speedY -= gameRef.gravity.sign * 300;
+    particles.jetpackBoost();
   }
 
   @override
