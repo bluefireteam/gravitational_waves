@@ -5,6 +5,7 @@ import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 
 import '../../game.dart';
+import '../../rumble.dart';
 import '../../spawner.dart';
 import '../../util.dart';
 
@@ -50,6 +51,7 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
       clock += t;
       brokenGlassSpawner.maybeSpawn(t, () {
         int numberToGenerate = R.nextInt(1) + 1;
+        Rumble.rumble();
         gameRef.wall.spawnBrokenGlass(numberToGenerate);
       });
     }
