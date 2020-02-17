@@ -8,6 +8,7 @@ final R = math.Random();
 const ENABLE_AUDIO = true;
 const DEBUG = false;
 const CHECK_PLAYER_ID = false;
+const ENABLE_REVAMP = true;
 
 const BLOCK_SIZE = 16.0;
 const BLOCK_SIZE_INT = 16;

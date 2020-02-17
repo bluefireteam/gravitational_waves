@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../game/audio.dart';
 import '../game/game.dart';
 import '../game/game_data.dart';
+import '../game/util.dart';
 import '../widgets/button.dart';
 import '../widgets/game_over.dart';
 import '../widgets/label.dart';
@@ -93,7 +94,7 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                     PrimaryButton(
                         label: 'Revamped',
-                        onPress: () => startGame(enablePowerups: true),
+                        onPress: ENABLE_REVAMP ? () => startGame(enablePowerups: true) : null,
                     ),
                     SecondaryButton(
                         label: 'Back',
