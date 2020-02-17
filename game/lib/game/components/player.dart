@@ -27,6 +27,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   Position suctionCenter;
   double scale = 1.0;
 
+  double jetpackTimeout = 0.0;
+
   Player() {
     this.x = 0.0;
     this.width = this.height = BLOCK_SIZE;
@@ -44,6 +46,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   bool get shiny => shinyTimer > 0.0;
 
   bool get dead => livesLeft == 0;
+
+  bool get jetpack => jetpackTimeout > 0.0;
 
   Paint get _paint {
     if (shiny) {
@@ -116,6 +120,10 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     this.suctionCenter = center;
   }
 
+  void boost() {
+    speedY -= gameRef.gravity.sign * 300;
+  }
+
   @override
   void update(double dt) {
     if (gameRef.sleeping) {
@@ -128,6 +136,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     }
     if (shiny) {
       shinyTimer -= dt;
+    }
+    if (jetpack) {
+      jetpackTimeout -= dt;
     }
 
     if (suctionCenter != null) {
@@ -160,7 +171,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
       }
     }
 
-    double accY = gameRef.gravity;
+    double accY = gameRef.gravity * (jetpack ? 0.5 : 1.0);
     y += accY * dt * dt / 2 + speedY * dt;
     speedY += accY * dt;
 

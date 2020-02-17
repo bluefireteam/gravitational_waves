@@ -254,7 +254,11 @@ class MyGame extends BaseGame {
       }
     }
     super.onTapUp(details);
-    gravity *= -1;
+    if (player.jetpack) {
+      player.boost();
+    } else {
+      gravity *= -1;
+    }
   }
 
   void pause() {
