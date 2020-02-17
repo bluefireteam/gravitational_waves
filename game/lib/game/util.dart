@@ -18,11 +18,11 @@ const ROTATION_SPEED = 0.075;
 const STARS_SPEED = 5.0;
 const STARS_IDLE_SPEED = 2.0;
 const PLANET_SPEED = 45.0;
-const SHIPS_SPEED = 90.0;
+const SHIPS_SPEED = 45.0;
 const PLAYER_SPEED = 170.0;
 const GRAVITY_ACC = 2750.0;
 
-const STARTING_LIVES = 1;
+const STARTING_LIVES = 20;
 const SUCTION_SPEED = 35.0;
 
 class Fonts {

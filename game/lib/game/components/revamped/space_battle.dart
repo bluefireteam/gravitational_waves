@@ -2,15 +2,17 @@ import 'dart:ui';
 
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components/mixins/resizable.dart';
 
 import '../../game.dart';
 import '../../util.dart';
 
-class SpaceBattle extends AnimationComponent with HasGameRef<MyGame> {
-  static const S = 2.0;
+class SpaceBattle extends AnimationComponent with HasGameRef<MyGame>, Resizable {
+  static const S = 1.0;
   static const TX_W = 112.0;
   static const TX_H = 80.0;
 
+  bool spawnedShip = false;
   bool shouldDestroy = false;
 
   SpaceBattle(Size size)
@@ -30,9 +32,13 @@ class SpaceBattle extends AnimationComponent with HasGameRef<MyGame> {
     super.update(t);
     x -= SHIPS_SPEED * t;
 
+    if (!spawnedShip && x < (size.width - width) / 2) {
+      gameRef.powerups.spawnFiringShip();
+      spawnedShip = true;
+    }
+
     if (x < -width) {
       shouldDestroy = true;
-      gameRef.powerups.spawnFiringShip();
     }
   }
 

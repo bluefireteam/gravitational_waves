@@ -9,7 +9,7 @@ import '../../spawner.dart';
 import '../../util.dart';
 
 class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
-  static Spawner brokenGlassSpawner = Spawner(0.0005);
+  static Spawner brokenGlassSpawner = Spawner(0.000005);
 
   static const S = 2.0;
   static const TX_W = 80.0;
