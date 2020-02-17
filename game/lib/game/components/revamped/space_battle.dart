@@ -17,10 +17,9 @@ class SpaceBattle extends AnimationComponent with HasGameRef<MyGame>, Resizable 
 
   SpaceBattle(Size size)
       : super.sequenced(S * TX_W, S * TX_H, 'spacebattle.png', 12,
-            textureWidth: TX_W, textureHeight: TX_H
-            /*, stepTime: 0.15 // TODO waiting for new flame release */) {
+            textureWidth: TX_W, textureHeight: TX_H, stepTime: 0.15) {
     this.x = size.width + width;
-    this.y = R.nextDouble() * (size.height - height);
+    this.y = (size.height - height) / 2 + (R.nextDouble() - 0.5) * height / 2;
   }
 
   @override

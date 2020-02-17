@@ -10,7 +10,7 @@ import '../../spawner.dart';
 import '../../util.dart';
 
 class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
-  static Spawner brokenGlassSpawner = Spawner(0.000005);
+  static Spawner brokenGlassSpawner = Spawner(0.0002);
 
   static const S = 2.0;
   static const TX_W = 80.0;
@@ -45,10 +45,7 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
     this.scale += (t / APPROXIMATION_TIME);
     this.scale = this.scale.clamp(0.0, 1.0);
 
-    if (this.scale >= 0.8 && clock < FIRING_TIME) {
-      // tick animation
-      super.update(t);
-      clock += t;
+    if (this.scale >= 0.5 && y > height / 2) {
       brokenGlassSpawner.maybeSpawn(t, () {
         int numberToGenerate = R.nextInt(1) + 1;
         Rumble.rumble();
@@ -56,7 +53,10 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
       });
     }
 
-    if (clock >= FIRING_TIME) {
+    if (this.scale >= 0.8) {
+      // tick animation
+      super.update(t);
+      clock += t;
       y -= SHIPS_SPEED * t;
     }
 
