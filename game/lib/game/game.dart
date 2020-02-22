@@ -10,6 +10,7 @@ import 'collections.dart';
 import 'components/background.dart';
 import 'components/coin.dart';
 import 'components/hud.dart';
+import 'components/my_camera.dart';
 import 'components/planet.dart';
 import 'components/player.dart';
 import 'components/stars.dart';
@@ -20,6 +21,7 @@ import 'palette.dart';
 import 'pause_overlay.dart';
 import 'powerups.dart';
 import 'rotation_manager.dart';
+import 'rumble.dart';
 import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
@@ -45,6 +47,7 @@ class MyGame extends BaseGame {
 
   Hud hud;
   Wall wall;
+  MyCamera cameraHandler;
 
   bool sleeping;
   bool paused;
@@ -80,10 +83,11 @@ class MyGame extends BaseGame {
       _addBg(Background.plains(lastGeneratedX));
     }
 
+    add(cameraHandler = MyCamera());
     add(player = Player());
     add(wall = Wall());
     add(Stars(size));
-    fixCamera();
+
     rotationManager = RotationManager();
   }
 
@@ -174,7 +178,6 @@ class MyGame extends BaseGame {
         showTutorial = -1;
       }
     }
-    fixCamera();
 
     if (!sleeping) {
       maybeGeneratePlanet(t);
@@ -186,10 +189,6 @@ class MyGame extends BaseGame {
 
   void maybeGeneratePlanet(double dt) {
     planetSpawner.maybeSpawn(dt, () => addLater(Planet(size)));
-  }
-
-  void fixCamera() {
-    camera.x = player.x - size.width / 3;
   }
 
   @override
@@ -299,5 +298,10 @@ class MyGame extends BaseGame {
   void collectCoin() {
     coins++;
     Audio.coin();
+  }
+
+  void vibrate() {
+    Rumble.rumble();
+    cameraHandler.shake();
   }
 }

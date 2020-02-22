@@ -57,11 +57,9 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
       final pred = (e) => this.scale > e;
       if (beforeHoleScales.popIf(pred) != null) {
         gameRef.wall.spawnBrokenGlass(before: true);
-        Rumble.rumble();
       }
       if (afterHoleScales.popIf(pred) != null) {
         gameRef.wall.spawnBrokenGlass(before: false);
-        Rumble.rumble();
       }
     }
 

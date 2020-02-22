@@ -80,6 +80,10 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
       gameRef.addLater(BrokenGlass(dx, dy));
     });
 
+    if (newBrokenPanes.isNotEmpty) {
+      gameRef.vibrate();
+    }
+
     brokenPanes.addAll(newBrokenPanes);
   }
 
