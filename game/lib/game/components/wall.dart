@@ -59,17 +59,20 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
     brokenPanes.removeWhere((key, value) => currentStartingPane - 1 > key);
   }
 
-  void spawnBrokenGlass(int number) {
+  void spawnBrokenGlass({ bool before, int number = 1 }) {
     final currentRealX = x + gameRef.camera.x;
-    final numberOfPanes = (size.width + w) ~/ w;
+    final startingPane = currentStartingPane + (gameRef.player.x - currentRealX) ~/ w;
+    final numberOfPanes = before ? 4 : size.width ~/ w;
+    final sign = before ? -1 : 1;
+
     Map<int, int> newBrokenPanes = List<int>
       .generate(numberOfPanes, (e) => e)
       .shuffled()
-      .map((e) => currentStartingPane + e)
+      .map((e) => startingPane + sign * e)
       .where((e) => !brokenPanes.containsKey(e))
       .take(number)
       .associate(valueMapper: (_) => Tileset.brokenWalls.randomIdx(R));
-    
+
     newBrokenPanes.forEach((paneIdx, brokenType) {
       final delta = Tileset.brokenWallDeltas[brokenType];
       double dx = currentRealX + (paneIdx - currentStartingPane) * w + delta.first;

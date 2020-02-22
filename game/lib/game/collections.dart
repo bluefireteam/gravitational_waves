@@ -1,5 +1,11 @@
 import 'dart:math';
 
+extension MyRandom on Random {
+  double doubleBetween(double min, double max) {
+    return min + (max - min) * this.nextDouble();
+  }
+}
+
 class Pair<T1, T2> {
     final T1 first;
     final T2 second;
@@ -23,9 +29,22 @@ extension MyList<T> on List<T> {
     final r = random ?? Random();
     return r.nextInt(this.length);
   }
+
+  T popIf(bool Function(T) predicate) {
+    if (this.isEmpty) {
+      return null;
+    }
+    T first = this.first;
+    if (predicate(first)) {
+      return removeAt(0);
+    } else {
+      return null;
+    }
+  }
 }
 
 extension MyIterable<T> on Iterable<T> {
+
   T firstOrNull(bool Function(T) predicate) {
     return this.firstWhere(predicate, orElse: () => null);
   }

@@ -6,11 +6,10 @@ import 'package:flame/components/mixins/has_game_ref.dart';
 
 import '../../game.dart';
 import '../../rumble.dart';
-import '../../spawner.dart';
 import '../../util.dart';
+import '../../collections.dart';
 
 class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
-  static Spawner brokenGlassSpawner = Spawner(0.0002);
 
   static const S = 2.0;
   static const TX_W = 80.0;
@@ -23,6 +22,8 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
   double scale;
   double clock = 0.0;
 
+  List<double> beforeHoleScales, afterHoleScales;
+
   FiringShip(Size size)
       : super.sequenced(S * TX_W, S * TX_H, 'firing-ship.png', 8,
             textureWidth: TX_W, textureHeight: TX_H) {
@@ -31,6 +32,15 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
     this.scale = 0;
     this.anchor = Anchor.center;
     this.animation.loop = true;
+
+    int beforeHoles = R.nextInt(2);
+    int afterHoles = 1 + R.nextInt(2);
+
+    print('bef $beforeHoles, after $afterHoles');
+    
+    final timing = (_) => R.doubleBetween(0.5, 0.85);
+    this.beforeHoleScales = List.generate(beforeHoles, timing)..sort();
+    this.afterHoleScales = List.generate(afterHoles, timing)..sort();
   }
 
   @override double get width => TX_W * scale;
@@ -45,12 +55,16 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
     this.scale += (t / APPROXIMATION_TIME);
     this.scale = this.scale.clamp(0.0, 1.0);
 
-    if (this.scale >= 0.5 && y > height / 2) {
-      brokenGlassSpawner.maybeSpawn(t, () {
-        int numberToGenerate = R.nextInt(1) + 1;
+    if (this.scale >= 0.5) {
+      final pred = (e) => this.scale > e;
+      if (beforeHoleScales.popIf(pred) != null) {
+        gameRef.wall.spawnBrokenGlass(before: true);
         Rumble.rumble();
-        gameRef.wall.spawnBrokenGlass(numberToGenerate);
-      });
+      }
+      if (afterHoleScales.popIf(pred) != null) {
+        gameRef.wall.spawnBrokenGlass(before: false);
+        Rumble.rumble();
+      }
     }
 
     if (this.scale >= 0.8) {

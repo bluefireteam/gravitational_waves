@@ -15,7 +15,11 @@ class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
   }
 
   @override
-  void render(Canvas c) {}
+  void render(Canvas c) {
+    if (gameRef.debugMode()) {
+      c.drawRect(toRect(), Paint()..color = Color(0xFFFF00FF)..style = PaintingStyle.stroke);
+    }
+  }
 
   @override
   void update(double t) {
