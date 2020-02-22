@@ -35,8 +35,6 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
 
     int beforeHoles = R.nextInt(2);
     int afterHoles = 1 + R.nextInt(2);
-
-    print('bef $beforeHoles, after $afterHoles');
     
     final timing = (_) => R.doubleBetween(0.5, 0.85);
     this.beforeHoleScales = List.generate(beforeHoles, timing)..sort();
