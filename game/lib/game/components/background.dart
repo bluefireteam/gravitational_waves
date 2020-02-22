@@ -69,6 +69,10 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
     return targetX >= startX && targetX < endX;
   }
 
+  void drawBg(Canvas c, double x, double y, double w, double h) {
+    c.drawRect(Rect.fromLTWH(x, y, w, h), _bg);
+  }
+
   @override
   void render(Canvas c) {
     columns.asMap().forEach((i, column) {
@@ -76,16 +80,9 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
       Column after = columns.getOrElse(i + 1, column);
       double px = x + i * BLOCK_SIZE;
 
-      c.drawRect(Rect.fromLTWH(px, 0.0, BLOCK_SIZE, column.topHeight), _bg);
-      c.drawRect(
-        Rect.fromLTWH(
-          px,
-          size.height - column.bottomHeight,
-          BLOCK_SIZE,
-          column.bottomHeight,
-        ),
-        _bg,
-      );
+      double ddy = size.height;
+      drawBg(c, px, -ddy, BLOCK_SIZE, column.topHeight + ddy);
+      drawBg(c, px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight + ddy);
 
       double bottomPy = size.height - column.bottomHeight;
       BlockSet bottomSet = Tileset.variant(column.bottomVariant);
