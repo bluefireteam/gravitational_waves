@@ -2,6 +2,7 @@
 SPRITES=(
   "./renders/poofs.png"
   "./renders/airflowing.png"
+  "./renders/glass_breaking.png"
 )
 
 LAST_Y=0

@@ -19,6 +19,14 @@
       "h": 1,
       "length": 6,
       "millis": 150
+    },
+    "glass_breaking": {
+      "x": 0,
+      "y": 2,
+      "w": 3,
+      "h": 3,
+      "length": 6,
+      "millis": 100
     }
   }
 }
