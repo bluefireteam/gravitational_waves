@@ -1,0 +1,24 @@
+{
+  "tileset": {
+    "path": "/home/erick/projects/gamedev/gravitational_waves/art/poofs/poofs.png",
+    "size": 16
+  },
+  "animations": {
+    "poof": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1,
+      "length": 6,
+      "millis": 50
+    },
+    "air_escaping": {
+      "x": 0,
+      "y": 1,
+      "w": 1,
+      "h": 1,
+      "length": 6,
+      "millis": 150
+    }
+  }
+}
