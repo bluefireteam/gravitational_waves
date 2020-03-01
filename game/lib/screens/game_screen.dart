@@ -93,7 +93,7 @@ class _GameScreenState extends State<GameScreen> {
                         onPress: () => startGame(enablePowerups: false),
                     ),
                     PrimaryButton(
-                        label: 'Revamped',
+                        label: ENABLE_REVAMP ? 'Revamped' : 'Revamped (Soon)',
                         onPress: ENABLE_REVAMP ? () => startGame(enablePowerups: true) : null,
                     ),
                     SecondaryButton(
