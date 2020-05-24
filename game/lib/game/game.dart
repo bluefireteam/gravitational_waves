@@ -72,7 +72,8 @@ class MyGame extends BaseGame with TapDetector {
     paused = false;
 
     gravity = GRAVITY_ACC;
-    lastGeneratedX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+    double firstX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+    lastGeneratedX = firstX;
     coins = 0;
 
     components.clear();
@@ -86,7 +87,7 @@ class MyGame extends BaseGame with TapDetector {
 
     add(cameraHandler = MyCamera());
     add(player = Player());
-    add(wall = Wall());
+    add(wall = Wall(firstX - size.width));
     add(Stars(size));
 
     rotationManager = RotationManager();

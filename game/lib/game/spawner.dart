@@ -6,7 +6,6 @@ class Spawner {
   Spawner(this.chance);
 
   bool tossCoin(double dt) {
-    print(R.nextDouble() / dt);
     return R.nextDouble() / dt < chance;
   }
 

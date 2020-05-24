@@ -24,7 +24,11 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   double get startY => (size.height - h) / 2;
 
-  int get currentStartingPane => (x + gameRef.camera.x) ~/ w;
+  int currentStartingPane = 0;
+
+  Wall(double x) {
+    this.x = x;
+  }
 
   @override
   void render(Canvas c) {
@@ -33,16 +37,20 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
   }
 
   void renderColorBg(Canvas c) {
+    c.save();
+    c.translate(gameRef.camera.x, gameRef.camera.y);
     final topBar = Rect.fromLTWH(-size.width / 2, 0.0, 2 * size.width, startY);
     final bottomBar = Rect.fromLTWH(-size.width / 2, (size.height + h) / 2, 2 * size.width, startY);
     c.drawRect(topBar, _wall);
     c.drawRect(bottomBar, _wall);
+    c.restore();
   }
 
   void renderWall(Canvas c) {
     double dx = x;
+    print('dx $dx');
     int currentPane = currentStartingPane;
-    while (dx < size.width + w) {
+    while (dx < gameRef.camera.x + size.width + w) {
       int brokenType = brokenPanes[currentPane];
 
       Sprite sprite = brokenType != null ? Tileset.brokenWalls[brokenType] : wallSprite;
@@ -56,13 +64,16 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
   @override
   void update(double t) {
     super.update(t);
-    x = -w - (gameRef.player.x % w);
+    if (x + size.width < gameRef.player.x - size.width) {
+      int panesToMove = size.width ~/ w;
+      x += panesToMove * w;
+      currentStartingPane += panesToMove;
+    }
     brokenPanes.removeWhere((key, value) => currentStartingPane - 1 > key);
   }
 
   void spawnBrokenGlass({ bool before, int number = 1 }) {
-    final currentRealX = x + gameRef.camera.x;
-    final startingPane = currentStartingPane + (gameRef.player.x - currentRealX) ~/ w;
+    final startingPane = currentStartingPane + (gameRef.player.x - x) ~/ w;
     final numberOfPanes = before ? 4 : size.width ~/ w;
     final sign = before ? -1 : 1;
 
@@ -76,7 +87,7 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
     newBrokenPanes.forEach((paneIdx, brokenType) {
       final delta = Tileset.brokenWallDeltas[brokenType];
-      double dx = currentRealX + (paneIdx - currentStartingPane) * w + delta.first;
+      double dx = x + (paneIdx - currentStartingPane) * w + delta.first;
       double dy = startY + delta.second;
       gameRef.addLater(BrokenGlass(dx, dy));
     });
@@ -87,9 +98,6 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
     brokenPanes.addAll(newBrokenPanes);
   }
-
-  @override
-  bool isHud() => true;
 
   @override
   int priority() => 2;
