@@ -135,6 +135,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void update(double dt) {
+    super.update(dt);
+
     if (gameRef.sleeping) {
       hurtTimer = shinyTimer = 0.0;
       return;

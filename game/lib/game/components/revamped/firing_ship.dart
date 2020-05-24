@@ -5,7 +5,6 @@ import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 
 import '../../game.dart';
-import '../../rumble.dart';
 import '../../util.dart';
 import '../../collections.dart';
 

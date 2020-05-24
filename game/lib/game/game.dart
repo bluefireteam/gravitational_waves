@@ -14,13 +14,13 @@ import 'components/hud.dart';
 import 'components/my_camera.dart';
 import 'components/planet.dart';
 import 'components/player.dart';
+import 'components/revamped/powerups.dart';
 import 'components/stars.dart';
 import 'components/tutorial.dart';
 import 'components/wall.dart';
 import 'game_data.dart';
 import 'palette.dart';
 import 'pause_overlay.dart';
-import 'powerups.dart';
 import 'rotation_manager.dart';
 import 'rumble.dart';
 import 'scoreboard.dart';
@@ -102,6 +102,10 @@ class MyGame extends BaseGame with TapDetector {
   void restart() {
     prepare();
     start();
+  }
+
+  Background findBackgroundForX(double x) {
+    return components.firstWhere((e) => e is Background && e.contains(x));
   }
 
   void generateNextChunck() {

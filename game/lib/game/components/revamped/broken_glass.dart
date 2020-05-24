@@ -23,6 +23,8 @@ class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void update(double t) {
+    super.update(t);
+
     final player = gameRef.player.toRect();
     final rect = toRect();
     if (player.overlaps(rect)) {

@@ -55,6 +55,7 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   @override
   void update(double t) {
+    super.update(t);
     x = -w - (gameRef.player.x % w);
     brokenPanes.removeWhere((key, value) => currentStartingPane - 1 > key);
   }

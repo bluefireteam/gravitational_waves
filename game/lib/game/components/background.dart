@@ -148,9 +148,6 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   }
 
   @override
-  void update(double t) {}
-
-  @override
   bool destroy() => endX < gameRef.camera.x - size.width;
 
   @override

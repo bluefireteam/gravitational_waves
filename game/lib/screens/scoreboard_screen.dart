@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
 
 import '../game/assets/char.dart';
-import '../game/skin.dart';
 import '../game/game.dart';
 import '../game/game_data.dart';
 import '../game/scoreboard.dart';

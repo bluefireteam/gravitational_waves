@@ -40,6 +40,8 @@ class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   @override
   void update(double t) {
+    super.update(t);
+
     double speed = gameRef.sleeping ? STARS_IDLE_SPEED : STARS_SPEED;
     x -= speed * t;
     while (x < -size.width) x += size.width;

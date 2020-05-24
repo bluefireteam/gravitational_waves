@@ -31,6 +31,8 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
   void update(double t) {
     if (shouldDestroy) return;
 
+    super.update(t);
+
     hoverClock = (hoverClock + t / HOVER_TIME) % 1.0;
     double dy = 1 - (2 * hoverClock - 1).abs() * HOVER_DISTANCE;
     y = startY + dy;
