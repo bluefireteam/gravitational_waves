@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/game.dart';
+import 'package:flame/gestures.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
 
@@ -26,7 +27,7 @@ import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
 
-class MyGame extends BaseGame {
+class MyGame extends BaseGame with TapDetector {
   static Spawner planetSpawner = Spawner(0.0001);
 
   // Setup by the flutter components to allow this game instance

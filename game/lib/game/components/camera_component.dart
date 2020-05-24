@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/game/game.dart';
+import 'package:flame/game/base_game.dart';
 import 'package:flame/position.dart';
 
 abstract class CameraComponent<T extends BaseGame> extends Component with Resizable, HasGameRef<T> {
