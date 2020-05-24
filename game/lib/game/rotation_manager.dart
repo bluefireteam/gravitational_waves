@@ -6,7 +6,7 @@ import 'util.dart';
 class RotationManager {
   static final prob = [-1, 0, 0, 1];
 
-  Spawner changeSpeed = Spawner(0.000075);
+  Spawner changeSpeed = Spawner(0.2);
 
   double _clock = 0.0;
   double angle = 0.0;

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flame/animation.dart';
 import 'package:flame/sprite.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -23,6 +24,22 @@ class AnimationElement {
     double w = this.w * _SRC_SIZE;
     double h = this.h * _SRC_SIZE;
     return Sprite('$fileName.png', x: x, y: y, width: w, height: h);
+  }
+
+  Animation animation(String fileName) {
+    double x = this.x * _SRC_SIZE;
+    double y = this.y * _SRC_SIZE;
+    double w = this.w * _SRC_SIZE;
+    double h = this.h * _SRC_SIZE;
+    return Animation.sequenced(
+      '$fileName.png',
+      length,
+      textureX: x,
+      textureY: y,
+      textureWidth: w,
+      textureHeight: h,
+      stepTime: millis / 1000,
+    );
   }
 }
 

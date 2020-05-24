@@ -9,6 +9,7 @@ import 'package:flame/sprite.dart';
 import '../../game.dart';
 import '../../util.dart';
 import '../coin.dart';
+import './poof.dart';
 
 class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
 
@@ -66,7 +67,6 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
   }
 
   void spawnRandomCrystal() {
-    print('span random coin');
     double startX = gameRef.player.x + BLOCK_SIZE;
     double endX = startX + gameRef.size.width / 2;
     double randomX = startX + R.nextDouble() * (endX - startX);
@@ -74,7 +74,10 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
     bool top = R.nextBool();
     double x = column.left + column.size.width / 2;
     double y = top ? column.top + BLOCK_SIZE / 2 : column.bottom - BLOCK_SIZE / 2;
-    gameRef.addLater(Coin(x, y));
+    if (!gameRef.components.any((e) => e is Coin && e.overlaps(x, y))) {
+      gameRef.addLater(Poof(x, y));
+      gameRef.addLater(Coin(x, y));
+    }
   }
 
   @override

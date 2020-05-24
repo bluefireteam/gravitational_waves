@@ -12,6 +12,7 @@ import './screens/join_scoreboard_screen.dart';
 import './screens/options_screen.dart';
 import './screens/scoreboard_screen.dart';
 import './screens/skins_screen.dart';
+import 'game/assets/poofs.dart';
 import 'game/audio.dart';
 import 'game/game_data.dart';
 import 'game/preferences.dart';
@@ -33,7 +34,7 @@ void main() async {
     await Flame.util.fullScreen();
   }
   Size size = await Flame.util.initialDimensions();
-  await Future.wait([Tileset.init(), Char.init()]);
+  await Future.wait([Tileset.init(), Char.init(), Poofs.init()]);
 
   await UITileset.load();
 

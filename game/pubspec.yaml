@@ -49,6 +49,8 @@ flutter:
    - assets/images/firing-ship.png
    - assets/images/jetpack.png
    - assets/images/crystal_container.png
+   - assets/images/poofs.png
+   - assets/images/poofs.json
    - assets/audio/music/dark-moon.mp3
    - assets/audio/music/contemplative-breaks.mp3
    - assets/audio/sfx/coin.wav

@@ -1,12 +1,13 @@
 import 'util.dart';
 
 class Spawner {
-  double chance;
+  double chance; // chance per second
 
   Spawner(this.chance);
 
   bool tossCoin(double dt) {
-    return R.nextDouble() * dt <= chance;
+    print(R.nextDouble() / dt);
+    return R.nextDouble() / dt < chance;
   }
 
   void maybeSpawn(double dt, Function() action) {
