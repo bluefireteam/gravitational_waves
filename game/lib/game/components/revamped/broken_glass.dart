@@ -28,9 +28,6 @@ class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
       initialAnimation.getSprite().renderCentered(c, deltaCenter);
     }
     animation.getSprite().render(c);
-    if (RENDER_GLASS) {
-      c.drawRect(Rect.fromLTWH(0, 0, width, height), Paint()..color = Color(0xFFFF00FF)..style = PaintingStyle.stroke);
-    }
   }
 
   @override

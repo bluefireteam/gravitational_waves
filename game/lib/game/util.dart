@@ -9,7 +9,6 @@ const ENABLE_AUDIO = false;
 const DEBUG = false;
 const CHECK_PLAYER_ID = false;
 const ENABLE_REVAMP = true;
-const RENDER_GLASS = false;
 
 const BLOCK_SIZE = 16.0;
 const BLOCK_SIZE_INT = 16;
