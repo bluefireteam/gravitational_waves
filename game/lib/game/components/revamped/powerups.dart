@@ -11,7 +11,7 @@ import 'jetpack_pickup.dart';
 import 'space_battle.dart';
 
 class Powerups {
-  static Spawner spaceBattleSpawner = Spawner(0.15);
+  static Spawner spaceBattleSpawner = Spawner(0.015);
   static Spawner jetpackSpawner = Spawner(0.15);
   static Spawner crystalContainerSpawner = Spawner(0.15);
 
