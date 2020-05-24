@@ -28,7 +28,7 @@ import 'spawner.dart';
 import 'util.dart';
 
 class MyGame extends BaseGame with TapDetector {
-  static Spawner planetSpawner = Spawner(0.075);
+  static Spawner planetSpawner = Spawner(0.12);
 
   // Setup by the flutter components to allow this game instance
   // to callback to the flutter code and go back to the menu
