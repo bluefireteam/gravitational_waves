@@ -285,6 +285,8 @@ class MyGame extends BaseGame with TapDetector {
   void lifecycleStateChange(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed) {
       pause();
+    } else {
+      Audio.resumeMusic();
     }
   }
 
