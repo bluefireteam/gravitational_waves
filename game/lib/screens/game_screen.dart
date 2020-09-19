@@ -77,7 +77,8 @@ class _GameScreenState extends State<GameScreen> {
                 : GameOverContainer(
                     distance: widget.game.score,
                     gems: widget.game.coins,
-                    showExtraLifeButton: !widget.game.hasUsedExtraLife,
+                    showExtraLifeButton:
+                        !widget.game.hasUsedExtraLife && Ads.adLoaded(),
                     goToMainMenu: () {
                       setState(() {
                         _showGameOver = false;

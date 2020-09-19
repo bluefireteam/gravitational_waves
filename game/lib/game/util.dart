@@ -5,7 +5,7 @@ import 'palette.dart';
 
 final R = math.Random();
 
-const ENABLE_AUDIO = false;
+const ENABLE_AUDIO = true;
 const DEBUG = false;
 const CHECK_PLAYER_ID = false;
 const ENABLE_REVAMP = true;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:flutter/foundation.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'util.dart';
@@ -8,8 +9,16 @@ import 'util.dart';
 class Ads {
   static bool _loaded;
 
+  static bool _adsEnabled() {
+    return ENABLE_ADS && !kIsWeb;
+  }
+
+  static bool adLoaded() {
+    return _adsEnabled() && _loaded;
+  }
+
   static Future<void> init() async {
-    if (ENABLE_ADS) {
+    if (_adsEnabled()) {
       const appId = 'ca-app-pub-1572179540677968~2049628478';
       const adUnitId = 'ca-app-pub-1572179540677968/7034539450';
       final result1 = await FirebaseAdMob.instance.initialize(appId: appId);
@@ -23,7 +32,7 @@ class Ads {
   }
 
   static Future<bool> showAd() async {
-    if (!ENABLE_ADS) {
+    if (!_adsEnabled()) {
       return Future.value(false);
     }
 
