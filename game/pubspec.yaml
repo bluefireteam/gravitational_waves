@@ -1,5 +1,5 @@
 name: gravitational_waves
-description: This is a simple homage to Gravity Square, an old inifinity runner discountinued by Kongregate.
+description: This is a simple homage to Gravity Square, an old infinity runner discontinued by Kongregate.
 version: 0.2.0
 
 environment:
@@ -8,21 +8,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame:
-    path: ../../flame
+  flame: 0.26.0
   audioplayers: 0.15.1
   json_annotation: 3.0.1
   flame_splash_screen: 0.0.1
-  shared_preferences: 0.5.7+3
-  dio: 3.0.9
-  url_launcher: 5.4.10
+  shared_preferences: 0.5.10
+  dio: 3.0.10
+  url_launcher: 5.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: 1.10.0
-  json_serializable: 3.3.0
-  dashbook: 0.0.4
+  build_runner: 1.10.2
+  json_serializable: 3.4.1
+  dashbook: 0.0.7
   flutter_launcher_icons: ^0.7.5
 
 flutter_icons:
