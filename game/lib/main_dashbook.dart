@@ -10,7 +10,7 @@ import './widgets/assets/ui_tileset.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await UITileset.load();
+  await UITileset.init();
   final dashbook = Dashbook();
 
   dashbook
@@ -21,22 +21,30 @@ void main() async {
       .add('secondary', (_) => SecondaryButton(label: 'Play', onPress: () {}));
 
   dashbook.storiesOf('SpritesheetContainer').decorator(CenterDecorator()).add(
-      'default',
-      (ctx) => Container(
-            width: ctx.numberProperty('width', 100),
-            height: ctx.numberProperty('height', 100),
-            child: SpritesheetContainer(
-              spriteSheet: UITileset.tileset,
-              tileSize: 16,
-              destTileSize: 50,
-              child: Center(child: Label(label: 'Cool label')),
-            ),
-          ));
+        'default',
+        (ctx) => Container(
+          width: ctx.numberProperty('width', 100),
+          height: ctx.numberProperty('height', 100),
+          child: SpritesheetContainer(
+            spriteSheet: UITileset.tileset,
+            tileSize: 16,
+            destTileSize: 50,
+            child: Center(child: Label(label: 'Cool label')),
+          ),
+        ),
+      );
 
   dashbook.storiesOf('GameOver').decorator(CenterDecorator()).add(
-      'default',
-      (_) => GameOverContainer(
-          distance: 100, gems: 20, playAgain: () {}, goToMainMenu: () {}));
+        'default',
+        (_) => GameOverContainer(
+          distance: 100,
+          gems: 20,
+          showExtraLifeButton: true,
+          playAgain: () {},
+          goToMainMenu: () {},
+          extraLife: () {},
+        ),
+      );
 
   runApp(dashbook);
 }

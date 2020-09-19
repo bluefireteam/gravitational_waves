@@ -21,28 +21,44 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   double speedY;
   int livesLeft;
-  double hurtTimer, shinyTimer;
+
+  double hurtTimer, shinyTimer, invulnerabilityTimer;
+  double jetpackTimeout;
 
   PlayerParticles particles;
 
   Position suctionCenter;
   double scale = 1.0;
 
-  double jetpackTimeout = 0.0;
-
   Player() {
     this.x = 0.0;
     this.width = this.height = BLOCK_SIZE;
     this.speedY = 0.0;
     this.livesLeft = STARTING_LIVES;
-    this.hurtTimer = 0.0;
-    this.shinyTimer = 0.0;
     this.particles = PlayerParticles();
+    reset();
+  }
+
+  void reset() {
+    scale = 1.0;
+    hurtTimer = 0.0;
+    shinyTimer = 0.0;
+    invulnerabilityTimer = 0;
+    jetpackTimeout = 0.0;
+  }
+
+  void extraLife() {
+    reset();
+    livesLeft++;
+    hurtTimer = 0.5;
+    invulnerabilityTimer = 0.5; // start with half a second of invulnerability
   }
 
   bool get shouldFlip => gameRef.gravity > 0;
 
   bool get hurt => hurtTimer > 0.0;
+
+  bool get invulnerable => invulnerabilityTimer > 0.0;
 
   bool get shiny => shinyTimer > 0.0;
 
@@ -79,7 +95,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     Rect realRect = toRect();
     double drawX = x - (skin.size.x - realRect.width) / 2 + dX;
-    double drawY = y - (shouldFlip ? (skin.size.y - realRect.height) : 0.0) + dY;
+    double drawY =
+        y - (shouldFlip ? (skin.size.y - realRect.height) : 0.0) + dY;
     Rect renderRect = Rect.fromLTWH(0, 0, scaledW, scaledH);
 
     c.save();
@@ -151,6 +168,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     if (jetpack) {
       jetpackTimeout -= dt;
     }
+    if (invulnerable) {
+      invulnerabilityTimer -= dt;
+    }
 
     if (suctionCenter != null) {
       bool isThereYet = moveToCenter(suctionCenter, SUCTION_SPEED, dt);
@@ -172,7 +192,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     final blockRect = getCurrentRect();
 
-    if (y < blockRect.top || y > blockRect.bottom - height) {
+    if (!invulnerable && (y < blockRect.top || y > blockRect.bottom - height)) {
       livesLeft--;
       Rumble.rumble();
       if (livesLeft > 0) {
@@ -211,7 +231,12 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   Position toCenter() => Position.fromOffset(this.toRect().center);
 
   // maybe abstract to position component?
-  bool moveToCenter(Position goal, double speed, double dt, { double treshold = 0.001 }) {
+  bool moveToCenter(
+    Position goal,
+    double speed,
+    double dt, {
+    double treshold = 0.001,
+  }) {
     if (goal.x - width / 2 == x && goal.y - height / 2 == y) return true;
 
     Position displacement = toCenter().minus(goal);

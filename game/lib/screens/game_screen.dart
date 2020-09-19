@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:oktoast/oktoast.dart';
 
+import '../game/ads.dart';
 import '../game/audio.dart';
 import '../game/game.dart';
 import '../game/game_data.dart';
@@ -24,13 +27,12 @@ class _GameScreenState extends State<GameScreen> {
   bool _playing = false;
   bool _playSection = false;
   bool _showGameOver = false;
+  bool _adLoading = false;
 
   _GameScreenState(MyGame game) {
-    game.backToMenu = () => this.setState(() => _playing = false);
-    game.showGameOver = () {
-      setState(() {
-        _showGameOver = true;
-      });
+    game.backToMenu = () => setState(() => _playing = false);
+    game.showGameOver = (bool show) {
+      setState(() => _showGameOver = show);
     };
   }
 
@@ -45,6 +47,19 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  void handleExtraLife() async {
+    if (widget.game.hasUsedExtraLife) {
+      print('You arealdy used your extra life.');
+      return;
+    }
+    setState(() => _adLoading = true);
+    final result = await Ads.showAd();
+    if (result) {
+      widget.game.gainExtraLife();
+    }
+    setState(() => _adLoading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
@@ -52,30 +67,36 @@ class _GameScreenState extends State<GameScreen> {
     children.add(widget.game.widget);
 
     if (_showGameOver) {
-      children.add(Center(
+      children.add(
+        Center(
           child: SlideInContainer(
-              from: Offset(0.0, 1.5),
-              duration: Duration(milliseconds: 500),
-              child: GameOverContainer(
-                  distance: widget.game.score,
-                  gems: widget.game.coins,
-                  goToMainMenu: () {
-                    setState(() {
-                      _showGameOver = false;
-                      _playing = false;
-                      widget.game.prepare();
-                      Audio.menuMusic();
-                    });
-                  },
-                  playAgain: () {
-                    setState(() {
-                      _showGameOver = false;
-                      widget.game.restart();
-                    });
-                  }
-              )
-            )
-          ));
+            from: Offset(0.0, 1.5),
+            duration: Duration(milliseconds: 500),
+            child: _adLoading
+                ? GameOverLoadingContainer()
+                : GameOverContainer(
+                    distance: widget.game.score,
+                    gems: widget.game.coins,
+                    showExtraLifeButton: !widget.game.hasUsedExtraLife,
+                    goToMainMenu: () {
+                      setState(() {
+                        _showGameOver = false;
+                        _playing = false;
+                        widget.game.prepare();
+                        Audio.menuMusic();
+                      });
+                    },
+                    playAgain: () {
+                      setState(() {
+                        _showGameOver = false;
+                        widget.game.restart();
+                      });
+                    },
+                    extraLife: handleExtraLife,
+                  ),
+          ),
+        ),
+      );
     }
 
     if (!_playing) {
@@ -84,30 +105,34 @@ class _GameScreenState extends State<GameScreen> {
       if (_playSection) {
         sectionChildren.addAll([
           SlideInContainer(
-              from: Offset(-2.0, 0.0),
-              duration: Duration(milliseconds:500),
-              child: Column(
-                  children: [
-                    PrimaryButton(
-                        label: 'Classic',
-                        onPress: () => startGame(enablePowerups: false),
-                    ),
-                    PrimaryButton(
-                        label: ENABLE_REVAMP ? 'Revamped' : 'Revamped (Soon)',
-                        onPress: ENABLE_REVAMP ? () => startGame(enablePowerups: true) : null,
-                    ),
-                    SecondaryButton(
-                        label: 'Back',
-                        onPress: () => setState(() => _playSection = false),
-                    ),
-                  ]),
+            from: Offset(-2.0, 0.0),
+            duration: Duration(milliseconds: 500),
+            child: Column(
+              children: [
+                PrimaryButton(
+                  label: 'Classic',
+                  onPress: () => startGame(enablePowerups: false),
+                ),
+                PrimaryButton(
+                  label: ENABLE_REVAMP ? 'Revamped' : 'Revamped (Soon)',
+                  onPress: ENABLE_REVAMP
+                      ? () => startGame(enablePowerups: true)
+                      : null,
+                ),
+                SecondaryButton(
+                  label: 'Back',
+                  onPress: () => setState(() => _playSection = false),
+                ),
+              ],
+            ),
           ),
         ]);
       } else {
         sectionChildren.addAll([
           Label(
-              label:
-                  'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}'),
+            label:
+                'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}',
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -158,21 +183,21 @@ class _GameScreenState extends State<GameScreen> {
           child: Column(
             children: [
               AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  curve: Curves.fastOutSlowIn,
-                  child: SlideInContainer(
-                      from: const Offset(0.0, -1.5),
-                      child: Image.asset('assets/images/game_logo.png', width: 400),
-                  ),
+                duration: Duration(seconds: 1),
+                curve: Curves.fastOutSlowIn,
+                child: SlideInContainer(
+                  from: const Offset(0.0, -1.5),
+                  child: Image.asset('assets/images/game_logo.png', width: 400),
+                ),
               ),
               Expanded(
                 child: SlideInContainer(
-                    from: const Offset(0.0, 1.5),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: sectionChildren,
-                    )
+                  from: const Offset(0.0, 1.5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: sectionChildren,
+                  ),
                 ),
               ),
             ],

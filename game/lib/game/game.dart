@@ -34,13 +34,14 @@ class MyGame extends BaseGame with TapDetector {
   // to callback to the flutter code and go back to the menu
   void Function() backToMenu;
 
-  void Function() showGameOver;
+  void Function(bool) showGameOver;
 
   RotationManager rotationManager;
   double lastGeneratedX;
   Player player;
   double gravity;
   int coins;
+  bool hasUsedExtraLife;
 
   /* -1 : do not show, 0: show first, 1: show second */
   int showTutorial;
@@ -75,6 +76,7 @@ class MyGame extends BaseGame with TapDetector {
     double firstX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
     lastGeneratedX = firstX;
     coins = 0;
+    hasUsedExtraLife = false;
 
     components.clear();
     if (isFirstTime) {
@@ -197,6 +199,14 @@ class MyGame extends BaseGame with TapDetector {
     planetSpawner.maybeSpawn(dt, () => addLater(Planet(size)));
   }
 
+  void gainExtraLife() {
+    hasUsedExtraLife = true;
+    player.extraLife();
+    paused = true;
+    if (showGameOver != null) showGameOver(false);
+    sleeping = false;
+  }
+
   @override
   void render(Canvas c) {
     c.save();
@@ -301,7 +311,7 @@ class MyGame extends BaseGame with TapDetector {
     }
 
     sleeping = true;
-    if (showGameOver != null) showGameOver();
+    if (showGameOver != null) showGameOver(true);
   }
 
   void collectCoin() {

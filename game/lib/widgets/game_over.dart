@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'gr_container.dart';
 import 'label.dart';
@@ -36,20 +37,33 @@ class _Line extends StatelessWidget {
 }
 
 class GameOverContainer extends StatelessWidget {
+  static const WIDTH = 350.0;
+  static const HEIGHT = 320.0;
+
   final int distance;
   final int gems;
+  final bool showExtraLifeButton;
   final void Function() goToMainMenu;
   final void Function() playAgain;
+  final void Function() extraLife;
 
-  GameOverContainer(
-      {this.distance, this.gems, this.goToMainMenu, this.playAgain});
+  GameOverContainer({
+    @required this.distance,
+    @required this.gems,
+    @required this.showExtraLifeButton,
+    @required this.goToMainMenu,
+    @required this.playAgain,
+    @required this.extraLife,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GRContainer(
-        width: 350,
-        height: 280,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      width: WIDTH,
+      height: HEIGHT,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Label(
             label: 'Game Over',
             fontSize: 36,
@@ -59,8 +73,28 @@ class GameOverContainer extends StatelessWidget {
           _Line('Gems', '$gems'),
           _Line('Distance', '$distance'),
           SizedBox(height: 20),
+          if (showExtraLifeButton)
+            PrimaryButton(
+              label: 'Extra life (ad)',
+              onPress: extraLife,
+            ),
           PrimaryButton(label: 'Play again', onPress: playAgain),
           SecondaryButton(label: 'Back to menu', onPress: goToMainMenu),
-        ]));
+        ],
+      ),
+    );
+  }
+}
+
+class GameOverLoadingContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GRContainer(
+      width: GameOverContainer.WIDTH,
+      height: GameOverContainer.HEIGHT,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }

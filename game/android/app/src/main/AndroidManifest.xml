@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application android:label="Gravity Runner" android:icon="@mipmap/launcher_icon">
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-1572179540677968~2049628478"/>
         <activity android:name="io.flutter.embedding.android.FlutterActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
             <meta-data android:name="flutterEmbedding" android:value="2" />
             <meta-data android:name="io.flutter.app.android.SplashScreenUntilFirstFrame" android:value="true" />

@@ -15,6 +15,8 @@ dependencies:
   shared_preferences: 0.5.10
   dio: 3.0.10
   url_launcher: 5.6.0
+  firebase_admob: 0.9.3+4
+  oktoast: ^2.3.2
 
 dev_dependencies:
   flutter_test:
