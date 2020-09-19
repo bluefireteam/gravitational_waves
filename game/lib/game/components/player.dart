@@ -30,6 +30,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   Position suctionCenter;
   double scale = 1.0;
 
+  double deathDt;
+
   Player() {
     this.x = 0.0;
     this.width = this.height = BLOCK_SIZE;
@@ -52,6 +54,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     livesLeft++;
     hurtTimer = 0.5;
     invulnerabilityTimer = 0.5; // start with half a second of invulnerability
+    // run one update just to skip the death cliff
+    updatePosition(deathDt);
   }
 
   bool get shouldFlip => gameRef.gravity > 0;
@@ -187,7 +191,10 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     }
 
     particles.update(dt);
+    updatePosition(dt);
+  }
 
+  void updatePosition(double dt) {
     x += dt * PLAYER_SPEED;
 
     final blockRect = getCurrentRect();
@@ -198,7 +205,11 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
       if (livesLeft > 0) {
         hurtTimer = HURT_TIMER;
       } else {
+        // save the death dt so that we can skip one update if the player gets an extra life
+        deathDt = dt;
+        x -= dt * PLAYER_SPEED; // rollback
         gameRef.gameOver();
+        return;
       }
     }
 
