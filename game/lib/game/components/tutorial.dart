@@ -23,8 +23,13 @@ class Tutorial extends Component with Resizable {
   }
 
   bool destroyed = false;
-  Animation animation = Animation.sequenced('hand.png', 2,
-      textureWidth: 32.0, textureHeight: 48.0, stepTime: 0.6);
+  Animation animation = Animation.sequenced(
+    'hand.png',
+    2,
+    textureWidth: 32.0,
+    textureHeight: 48.0,
+    stepTime: 0.6,
+  );
 
   @override
   void render(Canvas c) {

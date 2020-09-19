@@ -19,7 +19,8 @@ class SlideInContainer extends StatefulWidget {
   createState() => _SlideInContainer();
 }
 
-class _SlideInContainer extends State<SlideInContainer> with SingleTickerProviderStateMixin {
+class _SlideInContainer extends State<SlideInContainer>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Offset> _offsetAnimation;
 
@@ -27,8 +28,8 @@ class _SlideInContainer extends State<SlideInContainer> with SingleTickerProvide
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: widget.duration,
       vsync: this,
+      duration: widget.duration,
     )..forward();
 
     _offsetAnimation = Tween<Offset>(
@@ -54,4 +55,3 @@ class _SlideInContainer extends State<SlideInContainer> with SingleTickerProvide
     );
   }
 }
-

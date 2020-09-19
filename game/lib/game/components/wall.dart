@@ -40,7 +40,8 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
     c.save();
     c.translate(gameRef.camera.x, gameRef.camera.y);
     final topBar = Rect.fromLTWH(-size.width / 2, 0.0, 2 * size.width, startY);
-    final bottomBar = Rect.fromLTWH(-size.width / 2, (size.height + h) / 2, 2 * size.width, startY);
+    final bottomBar = Rect.fromLTWH(
+        -size.width / 2, (size.height + h) / 2, 2 * size.width, startY);
     c.drawRect(topBar, _wall);
     c.drawRect(bottomBar, _wall);
     c.restore();
@@ -48,12 +49,12 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
   void renderWall(Canvas c) {
     double dx = x;
-    print('dx $dx');
     int currentPane = currentStartingPane;
     while (dx < gameRef.camera.x + size.width + w) {
       int brokenType = brokenPanes[currentPane];
 
-      Sprite sprite = brokenType != null ? Tileset.brokenWalls[brokenType] : wallSprite;
+      Sprite sprite =
+          brokenType != null ? Tileset.brokenWalls[brokenType] : wallSprite;
       sprite.renderPosition(c, Position(dx, startY), size: Position(w, h));
 
       dx += w;
@@ -72,18 +73,17 @@ class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {
     brokenPanes.removeWhere((key, value) => currentStartingPane - 1 > key);
   }
 
-  void spawnBrokenGlass({ bool before, int number = 1 }) {
+  void spawnBrokenGlass({bool before, int number = 1}) {
     final startingPane = currentStartingPane + (gameRef.player.x - x) ~/ w;
     final numberOfPanes = before ? 4 : size.width ~/ w;
     final sign = before ? -1 : 1;
 
-    Map<int, int> newBrokenPanes = List<int>
-      .generate(numberOfPanes, (e) => e)
-      .shuffled()
-      .map((e) => startingPane + sign * e)
-      .where((e) => !brokenPanes.containsKey(e))
-      .take(number)
-      .associate(valueMapper: (_) => Tileset.brokenWalls.randomIdx(R));
+    Map<int, int> newBrokenPanes = List<int>.generate(numberOfPanes, (e) => e)
+        .shuffled()
+        .map((e) => startingPane + sign * e)
+        .where((e) => !brokenPanes.containsKey(e))
+        .take(number)
+        .associate(valueMapper: (_) => Tileset.brokenWalls.randomIdx(R));
 
     newBrokenPanes.forEach((paneIdx, brokenType) {
       final delta = Tileset.brokenWallDeltas[brokenType];

@@ -259,6 +259,7 @@ class MyGame extends BaseGame with TapDetector {
       }
     }
     super.onTapUp(details);
+    showTutorial = -1; // if the player jumps don't show the tutorial
     if (player.jetpack) {
       player.boost();
     } else {
