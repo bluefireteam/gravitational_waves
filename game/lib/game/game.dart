@@ -27,6 +27,8 @@ import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
 
+final _black = Palette.black.paint;
+
 class MyGame extends BaseGame with TapDetector {
   static Spawner planetSpawner = Spawner(0.12);
 
@@ -215,23 +217,25 @@ class MyGame extends BaseGame with TapDetector {
     c.translate(resizeOffset.x, resizeOffset.y);
     c.scale(scale, scale);
 
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height),
-        Palette.background.paint);
+    c.drawRect(
+      Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+      Palette.background.paint,
+    );
     renderGame(c);
 
     c.restore();
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, rawSize.width, resizeOffset.y),
-        Palette.black.paint);
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, rawSize.width, resizeOffset.y), _black);
     c.drawRect(
-        Rect.fromLTWH(0.0, resizeOffset.y + scaledSize.height, rawSize.width,
-            resizeOffset.y),
-        Palette.black.paint);
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, resizeOffset.x, rawSize.height),
-        Palette.black.paint);
+      Rect.fromLTWH(0.0, resizeOffset.y + scaledSize.height, rawSize.width,
+          resizeOffset.y),
+      _black,
+    );
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, resizeOffset.x, rawSize.height), _black);
     c.drawRect(
-        Rect.fromLTWH(resizeOffset.x + scaledSize.width, 0.0, resizeOffset.x,
-            rawSize.height),
-        Palette.black.paint);
+      Rect.fromLTWH(resizeOffset.x + scaledSize.width, 0.0, resizeOffset.x,
+          rawSize.height),
+      _black,
+    );
   }
 
   void renderGame(Canvas canvas) {
@@ -271,7 +275,9 @@ class MyGame extends BaseGame with TapDetector {
       }
     }
     super.onTapUp(details);
-    showTutorial = -1; // if the player jumps don't show the tutorial
+    if (showTutorial == 0) {
+      showTutorial = -1; // if the player jumps don't show the tutorial
+    }
     if (player.jetpack) {
       player.boost();
     } else {
