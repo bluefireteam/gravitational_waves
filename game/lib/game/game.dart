@@ -154,8 +154,10 @@ class MyGame extends BaseGame with TapDetector {
     this.rawSize = rawSize;
     this.size = Size(width, height);
     this.scaledSize = Size(scale * width, scale * height);
-    this.resizeOffset = Position((rawSize.width - scaledSize.width) / 2,
-        (rawSize.height - scaledSize.height) / 2);
+    this.resizeOffset = Position(
+      (rawSize.width - scaledSize.width) / 2,
+      (rawSize.height - scaledSize.height) / 2,
+    );
   }
 
   int get score => player.x ~/ 100;
