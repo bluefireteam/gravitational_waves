@@ -48,6 +48,7 @@ flutter:
    - assets/images/hand.png
    - assets/images/spacebattle.png
    - assets/images/firing-ship.png
+   - assets/images/pulser.png
    - assets/images/jetpack.png
    - assets/images/crystal_container.png
    - assets/images/poofs.png

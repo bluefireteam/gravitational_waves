@@ -15,6 +15,7 @@ cp ./art/animated-props/spacebattle/spacebattle.png ./game/assets/images/
 cp ./art/firing-ship/firing-ship.png ./game/assets/images/
 
 cp ./art/jetpack/jetpack.png ./game/assets/images/jetpack.png
+cp ./art/pulser/pulser.png ./game/assets/images/pulser.png
 cp ./art/crystal/crystal_container.png ./game/assets/images/crystal_container.png
 
 cp ./art/poofs/poofs.png ./game/assets/images/poofs.png
