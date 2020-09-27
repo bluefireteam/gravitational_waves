@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/animation.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/position.dart';
@@ -23,6 +24,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   int livesLeft;
 
   double hurtTimer, shinyTimer, invulnerabilityTimer;
+
+  JetpackType jetpackType;
+  Animation jetpackAnimation;
   double jetpackTimeout;
 
   PlayerParticles particles;
@@ -108,7 +112,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     if (jetpack) {
       double dy = shouldFlip ? height : 0.0;
-      JetpackPickup.jetpack.renderPosition(c, Position(-1, dy));
+      jetpackAnimation.getSprite().renderPosition(c, Position(-1, dy));
     }
 
     if (angle == 0) {
@@ -152,6 +156,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   void boost() {
     speedY -= gameRef.gravity.sign * 300;
     particles.jetpackBoost();
+    jetpackAnimation?.reset();
   }
 
   @override
@@ -169,11 +174,12 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     if (shiny) {
       shinyTimer -= dt;
     }
-    if (jetpack) {
-      jetpackTimeout -= dt;
-    }
     if (invulnerable) {
       invulnerabilityTimer -= dt;
+    }
+    if (jetpack) {
+      jetpackTimeout -= dt;
+      jetpackAnimation.update(dt);
     }
 
     if (suctionCenter != null) {

@@ -12,7 +12,7 @@ import 'space_battle.dart';
 
 class Powerups {
   static Spawner spaceBattleSpawner = Spawner(0.015);
-  static Spawner jetpackSpawner = Spawner(0.15);
+  static Spawner jetpackSpawner = Spawner(0.3 * 4.5);
   static Spawner crystalContainerSpawner = Spawner(0.15);
 
   MyGame game;
@@ -41,7 +41,8 @@ class Powerups {
     jetpackSpawner.maybeSpawn(dt, () {
       Position p = maybeGetOffscreenPosition();
       if (p != null) {
-        game.addLater(JetpackPickup(p.x, p.y));
+        final type = JetpackType.values.sample(R);
+        game.addLater(JetpackPickup(type, p.x, p.y));
       }
     });
 
@@ -55,7 +56,8 @@ class Powerups {
 
   Position maybeGetOffscreenPosition() {
     double offscreenX = game.camera.x + game.size.width + 1;
-    Background firstOffscreen = game.components.firstOrNull((c) => c is Background && c.x > offscreenX);
+    Background firstOffscreen =
+        game.components.firstOrNull((c) => c is Background && c.x > offscreenX);
     if (firstOffscreen == null) {
       return null;
     }
