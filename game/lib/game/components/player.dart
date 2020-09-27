@@ -28,6 +28,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   JetpackType jetpackType;
   Animation jetpackAnimation;
   double jetpackTimeout;
+  bool hovering;
 
   PlayerParticles particles;
 
@@ -51,6 +52,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     shinyTimer = 0.0;
     invulnerabilityTimer = 0;
     jetpackTimeout = 0.0;
+    hovering = false;
   }
 
   void extraLife() {
@@ -73,6 +75,10 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   bool get dead => livesLeft == 0;
 
   bool get jetpack => jetpackTimeout > 0.0;
+
+  bool get pulserJetpack => jetpack && jetpackType == JetpackType.PULSER;
+
+  bool get regularJetpack => jetpack && jetpackType == JetpackType.REGULAR;
 
   Paint get _paint {
     if (shiny) {
@@ -154,9 +160,16 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   }
 
   void boost() {
-    speedY -= gameRef.gravity.sign * 300;
+    hovering = false;
+    if (pulserJetpack) {
+      speedY -= gameRef.gravity.sign * 300;
+    }
     particles.jetpackBoost();
     jetpackAnimation?.reset();
+  }
+
+  void hoverStart() {
+    hovering = true;
   }
 
   @override
@@ -180,6 +193,9 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     if (jetpack) {
       jetpackTimeout -= dt;
       jetpackAnimation.update(dt);
+    }
+    if (!jetpack) {
+      hovering = false;
     }
 
     if (suctionCenter != null) {
@@ -219,7 +235,14 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
       }
     }
 
-    double accY = gameRef.gravity * (jetpack ? 0.5 : 1.0);
+    double accY;
+    if (regularJetpack) {
+      accY = (hovering ? -0.3 : 1) * gameRef.gravity;
+    } else if (pulserJetpack) {
+      accY = 0.5 * gameRef.gravity;
+    } else {
+      accY = gameRef.gravity;
+    }
     y += accY * dt * dt / 2 + speedY * dt;
     speedY += accY * dt;
 

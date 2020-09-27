@@ -62,6 +62,7 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
       gameRef.player.jetpackType = type;
       gameRef.player.jetpackAnimation = getAnimationForType(type);
       gameRef.player.jetpackTimeout = JETPACK_DURATION;
+      gameRef.player.hovering = false;
       shouldDestroy = true;
     }
   }

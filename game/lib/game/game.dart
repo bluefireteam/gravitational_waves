@@ -263,6 +263,13 @@ class MyGame extends BaseGame with TapDetector {
   }
 
   @override
+  void onTapDown(TapDownDetails details) {
+    if (player.regularJetpack) {
+      player.hoverStart();
+    }
+  }
+
+  @override
   void onTapUp(TapUpDetails details) {
     if (sleeping) {
       return;
