@@ -1,6 +1,6 @@
 name: gravitational_waves
 description: This is a simple homage to Gravity Square, an old infinity runner discontinued by Kongregate.
-version: 0.2.0
+version: 0.3.0
 
 environment:
   sdk: ">=2.8.0 <3.0.0"
