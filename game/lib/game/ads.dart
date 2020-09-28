@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:wasm';
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 
 import 'util.dart';
@@ -20,15 +22,28 @@ class Ads {
   static Future<void> init() async {
     if (_adsEnabled()) {
       const appId = 'ca-app-pub-1572179540677968~2049628478';
-      const adUnitId = 'ca-app-pub-1572179540677968/7034539450';
-      final result1 = await FirebaseAdMob.instance.initialize(appId: appId);
-      if (!result1) {
-        _loaded = false;
-        return;
-      }
-      final result2 = await RewardedVideoAd.instance.load(adUnitId: adUnitId);
-      _loaded = result2;
+      _loaded = await FirebaseAdMob.instance.initialize(appId: appId);
+      _loadAd(); // pre-loads an ad for the first time
     }
+  }
+
+  static _loadAd() async {
+    const adUnitId = 'ca-app-pub-1572179540677968/7034539450';
+    await RewardedVideoAd.instance.load(
+      adUnitId: adUnitId,
+      targetingInfo: MobileAdTargetingInfo(
+        keywords: [
+          'game',
+          'gravity',
+          'runner',
+          'platformer',
+          'action',
+          'fast',
+        ],
+        // temporarily add your test devices' id here to debug
+        testDevices: [],
+      ),
+    );
   }
 
   static Future<bool> showAd() async {
@@ -37,11 +52,12 @@ class Ads {
     }
 
     if (!_loaded) {
-      showToast('There was an error while loading the ad.');
+      showToast('There was an error while loading ads for the app.');
       return Future.value(false);
     }
 
     final promise = Completer<bool>();
+    bool wasRewarded = false;
 
     RewardedVideoAd.instance.listener = (
       RewardedVideoAdEvent event, {
@@ -49,20 +65,29 @@ class Ads {
       int rewardAmount,
     }) {
       if (event == RewardedVideoAdEvent.rewarded) {
-        promise.complete(true);
-      } else {
-        print('Error rewarding ad: $event');
-        showToast('You did not finish watching the ad.');
-        promise.complete(false);
+        wasRewarded = true;
+      } else if (event == RewardedVideoAdEvent.closed) {
+        _loadAd(); // loads a new ad for next time
+        promise.complete(wasRewarded);
       }
     };
 
     try {
       final result = await RewardedVideoAd.instance.show();
       if (!result) {
-        showToast('There was an error while loading the ad.');
+        showToast('There was an error while showing the ad.');
         promise.complete(false);
       }
+    } on PlatformException catch (ex) {
+      if (ex.code == 'ad_not_loaded') {
+        showToast(
+          'The ad was still loading, please wait a few seconds and try again.',
+        );
+      } else {
+        print('Unexpected error while loading ad: $ex');
+        showToast('Unexpected error while loading the ad.');
+      }
+      promise.complete(false);
     } catch (ex) {
       print('Unexpected error while loading ad: $ex');
       showToast('Unexpected error while loading the ad.');
