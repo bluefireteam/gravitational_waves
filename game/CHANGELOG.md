@@ -1,3 +1,6 @@
+# 0.3.1
+- Fix ads
+
 # 0.3.0
 - Final polishing
 
