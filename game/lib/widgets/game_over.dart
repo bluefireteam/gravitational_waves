@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'button.dart';
 import 'gr_container.dart';
 import 'label.dart';
 import 'palette.dart';
-import 'button.dart';
 
 class _Line extends StatelessWidget {
   final String leftLabel;

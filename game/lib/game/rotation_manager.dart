@@ -1,6 +1,5 @@
-import 'spawner.dart';
-
 import 'collections.dart';
+import 'spawner.dart';
 import 'util.dart';
 
 class RotationManager {

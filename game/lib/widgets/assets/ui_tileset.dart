@@ -1,5 +1,6 @@
-import 'package:flame/flame.dart';
 import 'dart:ui';
+
+import 'package:flame/flame.dart';
 
 class UITileset {
   static Image tileset;

@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
-import '../util.dart';
-import './spritesheet.dart';
 import '../collections.dart';
+import '../util.dart';
+import 'spritesheet.dart';
 
 enum OuterTilePosition {
   TOP_LEFT,

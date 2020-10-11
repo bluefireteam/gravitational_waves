@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import './palette.dart';
+import 'palette.dart';
 
 class Label extends Text {
   Label(

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:dashbook/dashbook.dart';
+import 'package:flutter/material.dart';
 
-import './widgets/button.dart';
-import './widgets/label.dart';
-import './widgets/spritesheet_container.dart';
-import './widgets/game_over.dart';
-import './widgets/assets/ui_tileset.dart';
+import 'widgets/assets/ui_tileset.dart';
+import 'widgets/button.dart';
+import 'widgets/game_over.dart';
+import 'widgets/label.dart';
+import 'widgets/spritesheet_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,8 +1,9 @@
 import 'dart:convert';
+
 import 'package:flame/animation.dart';
 import 'package:flame/sprite.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:json_annotation/json_annotation.dart';
 
 part 'spritesheet.g.dart';
 

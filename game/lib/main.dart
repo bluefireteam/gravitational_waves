@@ -15,6 +15,7 @@ import './screens/options_screen.dart';
 import './screens/scoreboard_screen.dart';
 import './screens/skins_screen.dart';
 import 'game/ads.dart';
+import 'game/analytics.dart';
 import 'game/assets/poofs.dart';
 import 'game/audio.dart';
 import 'game/game_data.dart';
@@ -42,6 +43,8 @@ void main() async {
   });
 
   await setup;
+
+  Analytics.log(EventName.APP_OPEN);
   Audio.menuMusic();
   MyGame game = MyGame(size);
 

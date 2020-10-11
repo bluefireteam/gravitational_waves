@@ -4,12 +4,11 @@ import 'package:flame/anchor.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/components/mixins/has_game_ref.dart';
 
+import '../../collections.dart';
 import '../../game.dart';
 import '../../util.dart';
-import '../../collections.dart';
 
 class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
-
   static const S = 2.0;
   static const TX_W = 80.0;
   static const TX_H = 48.0;
@@ -34,14 +33,16 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
 
     int beforeHoles = R.nextInt(2);
     int afterHoles = 1 + R.nextInt(2);
-    
+
     final timing = (_) => R.doubleBetween(0.5, 0.85);
     this.beforeHoleScales = List.generate(beforeHoles, timing)..sort();
     this.afterHoleScales = List.generate(afterHoles, timing)..sort();
   }
 
-  @override double get width => TX_W * scale;
-  @override double get height => TX_H * scale;
+  @override
+  double get width => TX_W * scale;
+  @override
+  double get height => TX_H * scale;
 
   @override
   void update(double t) {

@@ -9,14 +9,14 @@ import 'package:flame/sprite.dart';
 import '../../game.dart';
 import '../../util.dart';
 import '../coin.dart';
-import './poof.dart';
+import 'poof.dart';
 
 class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
-
   static const SPAWN_TIMER = 0.05;
   static const TOTAL_TIMER = 4;
 
-  final Animation animation = Animation.sequenced('crystal_container.png', 16, textureWidth: 16, textureHeight: 32, stepTime: 0.150);
+  final Animation animation = Animation.sequenced('crystal_container.png', 16,
+      textureWidth: 16, textureHeight: 32, stepTime: 0.150);
 
   // 0 idle, 1 spawning, 2 destroy
   int _state = 0;
@@ -70,10 +70,12 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
     double startX = gameRef.player.x + BLOCK_SIZE;
     double endX = startX + gameRef.size.width / 2;
     double randomX = startX + R.nextDouble() * (endX - startX);
-    Rect column = gameRef.findBackgroundForX(randomX).findRectContaining(randomX);
+    Rect column =
+        gameRef.findBackgroundForX(randomX).findRectContaining(randomX);
     bool top = R.nextBool();
     double x = column.left + column.size.width / 2;
-    double y = top ? column.top + BLOCK_SIZE / 2 : column.bottom - BLOCK_SIZE / 2;
+    double y =
+        top ? column.top + BLOCK_SIZE / 2 : column.bottom - BLOCK_SIZE / 2;
     if (!gameRef.components.any((e) => e is Coin && e.overlaps(x, y))) {
       gameRef.addLater(Poof(x, y));
       gameRef.addLater(Coin(x, y));

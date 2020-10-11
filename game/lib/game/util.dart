@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flame/text_config.dart';
 
 import 'palette.dart';

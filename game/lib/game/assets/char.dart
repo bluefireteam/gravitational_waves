@@ -1,7 +1,7 @@
 import 'package:flame/sprite.dart';
 
 import '../skin.dart';
-import './spritesheet.dart';
+import 'spritesheet.dart';
 
 class Char {
   static Spritesheet _sheet;

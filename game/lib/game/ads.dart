@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:wasm';
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
 
+import 'analytics.dart';
 import 'util.dart';
 
 class Ads {
@@ -56,6 +56,7 @@ class Ads {
       return Future.value(false);
     }
 
+    Analytics.log(EventName.REWARD);
     final promise = Completer<bool>();
     bool wasRewarded = false;
 

@@ -5,8 +5,8 @@ import '../game/game_data.dart';
 import '../game/scoreboard.dart';
 import '../game/util.dart';
 import '../widgets/button.dart';
-import '../widgets/label.dart';
 import '../widgets/gr_container.dart';
+import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class JoinScoreboardScreen extends StatefulWidget {

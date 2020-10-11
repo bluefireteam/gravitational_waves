@@ -1,8 +1,8 @@
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-import './game_data.dart';
 import 'collections.dart';
+import 'game_data.dart';
 import 'skin.dart';
 
 Skin parseSkin(String value) {

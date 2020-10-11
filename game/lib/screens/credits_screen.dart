@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../game/game.dart';
+import '../widgets/button.dart';
 import '../widgets/gr_container.dart';
 import '../widgets/label.dart';
 import '../widgets/palette.dart';
-import '../widgets/button.dart';
 
 class CreditsScreen extends StatelessWidget {
   final MyGame game;

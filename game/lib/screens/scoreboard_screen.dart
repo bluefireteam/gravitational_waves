@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flame/flame.dart';
+import 'package:flutter/material.dart';
 
 import '../game/assets/char.dart';
 import '../game/game.dart';

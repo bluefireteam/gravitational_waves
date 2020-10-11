@@ -5,12 +5,12 @@ import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/resizable.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
-import '../game.dart';
 
-import '../palette.dart';
 import '../assets/tileset.dart';
-import '../util.dart';
 import '../collections.dart';
+import '../game.dart';
+import '../palette.dart';
+import '../util.dart';
 import 'revamped/broken_glass.dart';
 
 class Wall extends PositionComponent with Resizable, HasGameRef<MyGame> {

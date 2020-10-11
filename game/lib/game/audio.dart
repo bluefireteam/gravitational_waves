@@ -1,8 +1,8 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/flame.dart';
-import 'package:gravitational_waves/game/preferences.dart';
 
+import 'preferences.dart';
 import 'util.dart';
 
 class Audio {

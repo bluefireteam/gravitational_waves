@@ -6,6 +6,7 @@ import 'package:flame/gestures.dart';
 import 'package:flame/position.dart';
 import 'package:flutter/gestures.dart';
 
+import 'analytics.dart';
 import 'audio.dart';
 import 'collections.dart';
 import 'components/background.dart';
@@ -98,6 +99,9 @@ class MyGame extends BaseGame with TapDetector {
   }
 
   void start() {
+    Analytics.log(
+      powerups.enabled ? EventName.START_REVAMPED : EventName.START_CLASSIC,
+    );
     sleeping = false;
     powerups.reset();
     generateNextChunck();

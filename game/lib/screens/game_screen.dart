@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:oktoast/oktoast.dart';
 
 import '../game/ads.dart';
 import '../game/audio.dart';
@@ -36,8 +34,7 @@ class _GameScreenState extends State<GameScreen> {
     };
   }
 
-  void startGame({bool enablePowerups}) {
-    widget.game.start();
+  void startGame({@required bool enablePowerups}) {
     setState(() {
       _playSection = false;
       _playing = true;

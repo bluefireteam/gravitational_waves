@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../game/game.dart';
 import '../game/preferences.dart';
-
 import '../widgets/button.dart';
+import '../widgets/gr_container.dart';
 import '../widgets/label.dart';
 import '../widgets/palette.dart';
-import '../widgets/gr_container.dart';
 
 class OptionsScreen extends StatefulWidget {
   final MyGame game;

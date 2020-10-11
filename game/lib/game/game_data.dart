@@ -1,6 +1,6 @@
-import 'dart:math' as math;
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
