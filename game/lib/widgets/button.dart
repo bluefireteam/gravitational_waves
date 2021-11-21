@@ -5,7 +5,7 @@ import 'palette.dart';
 typedef OnPress = void Function();
 
 class PrimaryButton extends Button {
-  PrimaryButton({String label, OnPress onPress})
+  PrimaryButton({required String label, OnPress? onPress})
       : super(
           label: label,
           onPress: onPress,
@@ -15,7 +15,7 @@ class PrimaryButton extends Button {
 }
 
 class SecondaryButton extends Button {
-  SecondaryButton({String label, OnPress onPress})
+  SecondaryButton({required String label, OnPress? onPress})
       : super(
           label: label,
           onPress: onPress,
@@ -26,18 +26,19 @@ class SecondaryButton extends Button {
 
 class Button extends StatelessWidget {
   final String label;
-  final OnPress onPress;
+  final OnPress? onPress;
   final double minWidth;
 
-  final Color fontColor;
-  final Color backgroundColor;
+  final Color? fontColor;
+  final Color? backgroundColor;
 
-  Button(
-      {this.label,
-      this.onPress,
-      this.fontColor,
-      this.backgroundColor,
-      this.minWidth = 250});
+  Button({
+    required this.label,
+    this.onPress,
+    this.fontColor,
+    this.backgroundColor,
+    this.minWidth = 250,
+  });
 
   @override
   Widget build(BuildContext context) {

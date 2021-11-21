@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flame/text_config.dart';
+import 'package:flame/game.dart';
 
 import 'palette.dart';
 
@@ -29,15 +29,22 @@ const STARTING_LIVES = 1;
 const SUCTION_SPEED = 35.0;
 
 class Fonts {
-  static final TextConfig _base = TextConfig(fontFamily: 'Quantum');
-  static final TextConfig menuTitle =
-      _base.withFontSize(64.0).withColor(Palette.menuTitleText.color);
-  static final TextConfig menuItems =
-      _base.withFontSize(28.0).withColor(Palette.menuItemsText.color);
-  static final TextConfig gameOverItems =
-      _base.withFontSize(16.0).withColor(Palette.menuItemsText.color);
-  static final TextConfig hud =
-      _base.withFontSize(16.0).withColor(Palette.hud.color);
-  static final TextConfig tutorial =
-      _base.withFontSize(24.0).withColor(Palette.hud.color);
+  static final TextPaint _base = TextPaint(
+    config: TextPaintConfig(fontFamily: 'Quantum'),
+  );
+  static final TextPaint menuTitle = _base.copyWith(
+    (it) => it.withFontSize(64.0).withColor(Palette.menuTitleText.color),
+  );
+  static final TextPaint menuItems = _base.copyWith(
+    (it) => it.withFontSize(28.0).withColor(Palette.menuItemsText.color),
+  );
+  static final TextPaint gameOverItems = _base.copyWith(
+    (it) => it.withFontSize(16.0).withColor(Palette.menuItemsText.color),
+  );
+  static final TextPaint hud = _base.copyWith(
+    (it) => it.withFontSize(16.0).withColor(Palette.hud.color),
+  );
+  static final TextPaint tutorial = _base.copyWith(
+    (it) => it.withFontSize(24.0).withColor(Palette.hud.color),
+  );
 }

@@ -23,10 +23,7 @@ import 'game/preferences.dart';
 import 'widgets/assets/ui_tileset.dart';
 
 void main() async {
-  Flame.initializeWidget();
-
   await setMobileOrientation();
-  Size size = await Flame.util.initialDimensions();
 
   final setup = Future.wait([
     Preferences.init(),
@@ -46,7 +43,7 @@ void main() async {
 
   Analytics.log(EventName.APP_OPEN);
   Audio.menuMusic();
-  MyGame game = MyGame(size);
+  MyGame game = MyGame();
 
   GameScreen mainMenu = GameScreen(game: game);
   OptionsScreen options = OptionsScreen(game: game);
@@ -68,7 +65,7 @@ void main() async {
                   );
                 },
                 onFinish: (BuildContext context) {
-                  game.prepare();
+                  game.preStart();
                   Navigator.pushNamed(context, '/game');
                 },
               ),
@@ -96,8 +93,8 @@ void main() async {
 Future<void> setMobileOrientation() async {
   if (!kIsWeb) {
     if (debugDefaultTargetPlatformOverride != TargetPlatform.fuchsia) {
-      await Flame.util.setLandscape();
+      await Flame.device.setLandscape();
     }
-    await Flame.util.fullScreen();
+    await Flame.device.fullScreen();
   }
 }

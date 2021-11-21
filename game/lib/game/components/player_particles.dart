@@ -1,38 +1,36 @@
 import 'dart:ui';
-
-import 'package:flame/particle.dart';
-import 'package:flame/particles/circle_particle.dart';
-import 'package:flame/particles/moving_particle.dart';
+import 'package:flame/extensions.dart';
+import 'package:flame/particles.dart';
 
 import '../palette.dart';
 import '../util.dart';
 
 class PlayerParticles {
-  Particle particle;
-  List<Particle> jetpackParticles = [];
+  late Particle particle;
+  late List<Particle> jetpackParticles = [];
 
   PlayerParticles() {
     reset();
   }
 
   void update(double dt) {
-    if (particle.destroy()) {
+    if (particle.shouldRemove) {
       reset();
     } else {
       particle.update(dt);
     }
     jetpackParticles.removeWhere((p) {
       p.update(dt);
-      return p.destroy();
+      return p.shouldRemove;
     });
   }
 
   void render(Canvas c, bool renderParticles) {
-    if (!particle.destroy() && renderParticles) {
+    if (!particle.shouldRemove && renderParticles) {
       particle.render(c);
     }
     jetpackParticles.forEach((p) {
-      if (!p.destroy()) {
+      if (!p.shouldRemove) {
         p.render(c);
       }
     });
@@ -44,18 +42,21 @@ class PlayerParticles {
       paint: Paint()..color = Palette.particlesJetpack.color,
     );
     this.jetpackParticles.add(
-      Particle.generate(
-        count: 2 + R.nextInt(6),
-        generator: (_) {
-          return MovingParticle(
-            from: Offset(0, BLOCK_SIZE),
-            to: Offset(-R.nextDouble() * 10, BLOCK_SIZE - 3 + R.nextDouble() * 5),
-            child: child,
-            lifespan: 0.025 * R.nextInt(4),
-          );
-        },
-      ),
-    );
+          Particle.generate(
+            count: 2 + R.nextInt(6),
+            generator: (_) {
+              return MovingParticle(
+                from: Vector2(0, BLOCK_SIZE),
+                to: Vector2(
+                  -R.nextDouble() * 10,
+                  BLOCK_SIZE - 3 + R.nextDouble() * 5,
+                ),
+                child: child,
+                lifespan: 0.025 * R.nextInt(4),
+              );
+            },
+          ),
+        );
   }
 
   void reset() {
@@ -67,8 +68,11 @@ class PlayerParticles {
       count: R.nextInt(6),
       generator: (_) {
         return MovingParticle(
-          from: Offset(0, BLOCK_SIZE),
-          to: Offset(-R.nextDouble() * 10, BLOCK_SIZE - 3 + R.nextDouble() * 5),
+          from: Vector2(0, BLOCK_SIZE),
+          to: Vector2(
+            -R.nextDouble() * 10,
+            BLOCK_SIZE - 3 + R.nextDouble() * 5,
+          ),
           child: child,
           lifespan: 0.025 * R.nextInt(4),
         );

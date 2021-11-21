@@ -1,8 +1,6 @@
-import 'dart:convert';
-
-import 'package:flame/animation.dart';
+import 'package:flame/extensions.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'spritesheet.g.dart';
@@ -11,44 +9,49 @@ const double _SRC_SIZE = 16.0;
 
 @JsonSerializable()
 class AnimationElement {
-  int x, y, w, h, length, millis;
+  final int x, y, w, h, length, millis;
 
-  AnimationElement();
+  AnimationElement(this.x, this.y, this.w, this.h, this.length, this.millis);
 
   factory AnimationElement.fromJson(Map<String, dynamic> json) =>
       _$AnimationElementFromJson(json);
+
   Map<String, dynamic> toJson() => _$AnimationElementToJson(this);
 
-  Sprite sprite(String fileName) {
+  Sprite sprite(Image image) {
     double x = this.x * _SRC_SIZE;
     double y = this.y * _SRC_SIZE;
     double w = this.w * _SRC_SIZE;
     double h = this.h * _SRC_SIZE;
-    return Sprite('$fileName.png', x: x, y: y, width: w, height: h);
+    return Sprite(
+      image,
+      srcPosition: Vector2(x, y),
+      srcSize: Vector2(w, h),
+    );
   }
 
-  Animation animation(String fileName) {
+  SpriteAnimation animation(Image image) {
     double x = this.x * _SRC_SIZE;
     double y = this.y * _SRC_SIZE;
     double w = this.w * _SRC_SIZE;
     double h = this.h * _SRC_SIZE;
-    return Animation.sequenced(
-      '$fileName.png',
-      length,
-      textureX: x,
-      textureY: y,
-      textureWidth: w,
-      textureHeight: h,
-      stepTime: millis / 1000,
+    return SpriteAnimation.fromFrameData(
+      image,
+      SpriteAnimationData.sequenced(
+        amount: 2,
+        texturePosition: Vector2(x, y),
+        textureSize: Vector2(w, h),
+        stepTime: millis / 1000,
+      ),
     );
   }
 }
 
 @JsonSerializable()
 class AnimationsJson {
-  Map<String, AnimationElement> animations;
+  final Map<String, AnimationElement> animations;
 
-  AnimationsJson();
+  AnimationsJson(this.animations);
 
   factory AnimationsJson.fromJson(Map<String, dynamic> json) =>
       _$AnimationsJsonFromJson(json);
@@ -56,28 +59,35 @@ class AnimationsJson {
 }
 
 class Spritesheet {
-  String fileName;
-  AnimationsJson animations;
+  final Image _image;
+  final AnimationsJson _animations;
 
-  Spritesheet._(this.fileName, this.animations);
+  Spritesheet._(this._image, this._animations);
 
-  static Future<Spritesheet> parse(fileName) async {
-    String content =
-        await rootBundle.loadString('assets/images/$fileName.json');
-    AnimationsJson animations = AnimationsJson.fromJson(json.decode(content));
-    return Spritesheet._(fileName, animations);
+  static Future<Spritesheet> parse(String fileName) async {
+    final content = await Flame.assets.readJson('images/$fileName.json');
+    AnimationsJson animations = AnimationsJson.fromJson(content);
+    final image = await Flame.images.load('$fileName.png');
+    return Spritesheet._(image, animations);
+  }
+
+  SpriteAnimation animation(String name) {
+    return _animations.animations[name]!.animation(_image);
   }
 
   Sprite sprite(String name) {
-    return animations.animations[name].sprite(fileName);
+    return _animations.animations[name]!.sprite(_image);
   }
 
   Sprite blockGn(String name, int dx, int dy) {
-    AnimationElement animation = animations.animations[name];
+    final animation = _animations.animations[name]!;
     double x = (animation.x + dx) * _SRC_SIZE;
     double y = (animation.y + dy) * _SRC_SIZE;
-    return Sprite('$fileName.png',
-        x: x, y: y, width: _SRC_SIZE, height: _SRC_SIZE);
+    return Sprite(
+      _image,
+      srcPosition: Vector2(x, y),
+      srcSize: Vector2.all(_SRC_SIZE),
+    );
   }
 
   List<Sprite> generate(String name) {
@@ -85,7 +95,7 @@ class Spritesheet {
     int i = 1;
     while (true) {
       String key = '$name-$i';
-      if (!animations.animations.containsKey(key)) {
+      if (!_animations.animations.containsKey(key)) {
         break;
       }
       list.add(sprite(key));

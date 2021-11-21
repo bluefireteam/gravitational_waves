@@ -10,19 +10,18 @@ part 'preferences.g.dart';
 
 @JsonSerializable()
 class Preferences {
-  static Preferences instance;
+  static late Preferences instance;
 
   bool musicOn;
   bool soundOn;
   bool rumbleOn;
   String language;
 
-  Preferences() {
-    this.musicOn = true;
-    this.soundOn = true;
-    this.rumbleOn = true;
-    this.language = 'en_US';
-  }
+  Preferences()
+      : this.musicOn = true,
+        this.soundOn = true,
+        this.rumbleOn = true,
+        this.language = 'en_US';
 
   Future toggleMusic() async {
     this.musicOn = !this.musicOn;
@@ -50,12 +49,12 @@ class Preferences {
   }
 
   static Future<Preferences> init() async {
-    return instance ??= await load();
+    return instance = await load();
   }
 
   static Future<Preferences> load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String pref = prefs.getString('gravitational_waves.prefs');
+    String? pref = prefs.getString('gravitational_waves.prefs');
     if (pref != null) {
       return Preferences.fromJson(json.decode(pref));
     } else {

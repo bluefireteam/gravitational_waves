@@ -1,35 +1,38 @@
-import 'dart:ui';
-
-import 'package:flame/anchor.dart';
-import 'package:flame/components/animation_component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components.dart';
 
 import '../../collections.dart';
 import '../../game.dart';
 import '../../util.dart';
 
-class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
+class FiringShip extends SpriteAnimationComponent with HasGameRef<MyGame> {
   static const S = 2.0;
   static const TX_W = 80.0;
   static const TX_H = 48.0;
   static const APPROXIMATION_TIME = 2.0;
   static const FIRING_TIME = 4.0;
 
-  bool shouldDestroy = false;
-
-  double scale;
+  double myScale = 0;
   double clock = 0.0;
 
-  List<double> beforeHoleScales, afterHoleScales;
+  late List<double> beforeHoleScales, afterHoleScales;
 
-  FiringShip(Size size)
-      : super.sequenced(S * TX_W, S * TX_H, 'firing-ship.png', 8,
-            textureWidth: TX_W, textureHeight: TX_H) {
-    this.x = (size.width) / 2;
-    this.y = (size.height) / 2;
-    this.scale = 0;
-    this.anchor = Anchor.center;
-    this.animation.loop = true;
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await SpriteAnimation.load(
+      'firing-ship.png',
+      SpriteAnimationData.sequenced(
+        amount: 8,
+        textureSize: Vector2(TX_W, TX_H),
+        stepTime: 0.15,
+      ),
+    )
+      ..loop = true;
+
+    size = Vector2(S * TX_W, S * TX_H);
+    position = gameRef.size / 2;
+    anchor = Anchor.center;
 
     int beforeHoles = R.nextInt(2);
     int afterHoles = 1 + R.nextInt(2);
@@ -40,21 +43,18 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
   }
 
   @override
-  double get width => TX_W * scale;
+  double get width => TX_W * myScale;
+
   @override
-  double get height => TX_H * scale;
+  double get height => TX_H * myScale;
 
   @override
   void update(double t) {
-    if (shouldDestroy) {
-      return;
-    }
+    this.myScale += (t / APPROXIMATION_TIME);
+    this.myScale = this.myScale.clamp(0.0, 1.0);
 
-    this.scale += (t / APPROXIMATION_TIME);
-    this.scale = this.scale.clamp(0.0, 1.0);
-
-    if (this.scale >= 0.5) {
-      final pred = (e) => this.scale > e;
+    if (this.myScale >= 0.5) {
+      final pred = (e) => this.myScale > e;
       if (beforeHoleScales.popIf(pred) != null) {
         gameRef.wall.spawnBrokenGlass(before: true);
       }
@@ -63,7 +63,7 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
       }
     }
 
-    if (this.scale >= 0.8) {
+    if (this.myScale >= 0.8) {
       // tick animation
       super.update(t);
       clock += t;
@@ -71,17 +71,14 @@ class FiringShip extends AnimationComponent with HasGameRef<MyGame> {
     }
 
     if (y < -height) {
-      shouldDestroy = true;
+      removeFromParent();
       gameRef.powerups.hasSpaceBattle = false;
     }
   }
 
   @override
-  int priority() => 1;
+  int get priority => 1;
 
   @override
-  bool isHud() => true;
-
-  @override
-  bool destroy() => shouldDestroy;
+  bool get isHud => true;
 }

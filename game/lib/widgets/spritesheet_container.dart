@@ -1,39 +1,72 @@
 import 'dart:ui';
 
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/widgets.dart' as Widgets;
 
 class _Painter extends Widgets.CustomPainter {
-  final spriteSheet;
+  final Image spriteSheet;
   final double tileSize;
   final double destTileSize;
 
-  _Painter({this.spriteSheet, this.tileSize, this.destTileSize});
+  _Painter({
+    required this.spriteSheet,
+    required this.tileSize,
+    required this.destTileSize,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final topLeftCorner = Sprite.fromImage(spriteSheet,
-        x: 0, y: 0, width: tileSize, height: tileSize);
-    final topRightCorner = Sprite.fromImage(spriteSheet,
-        x: tileSize * 2, y: 0, width: tileSize, height: tileSize);
+    final srcSize = Vector2.all(tileSize);
+    final topLeftCorner = Sprite(
+      spriteSheet,
+      srcPosition: Vector2.zero(),
+      srcSize: srcSize,
+    );
+    final topRightCorner = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(tileSize * 2, 0),
+      srcSize: srcSize,
+    );
 
-    final bottomLeftCorner = Sprite.fromImage(spriteSheet,
-        x: 0, y: 2 * tileSize, width: tileSize, height: tileSize);
-    final bottomRightCorner = Sprite.fromImage(spriteSheet,
-        x: tileSize * 2, y: 2 * tileSize, width: tileSize, height: tileSize);
+    final bottomLeftCorner = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(0, 2 * tileSize),
+      srcSize: srcSize,
+    );
+    final bottomRightCorner = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(tileSize * 2, 2 * tileSize),
+      srcSize: srcSize,
+    );
 
-    final topSide = Sprite.fromImage(spriteSheet,
-        x: tileSize, y: 0, width: tileSize, height: tileSize);
-    final bottomSide = Sprite.fromImage(spriteSheet,
-        x: tileSize, y: tileSize * 2, width: tileSize, height: tileSize);
+    final topSide = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(tileSize, 0),
+      srcSize: srcSize,
+    );
+    final bottomSide = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(tileSize, tileSize * 2),
+      srcSize: srcSize,
+    );
 
-    final leftSide = Sprite.fromImage(spriteSheet,
-        x: 0, y: tileSize, width: tileSize, height: tileSize);
-    final rightSide = Sprite.fromImage(spriteSheet,
-        x: tileSize * 2, y: tileSize, width: tileSize, height: tileSize);
+    final leftSide = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(0, tileSize),
+      srcSize: srcSize,
+    );
+    final rightSide = Sprite(
+      spriteSheet,
+      srcPosition: Vector2(tileSize * 2, tileSize),
+      srcSize: srcSize,
+    );
 
-    final middle = Sprite.fromImage(spriteSheet,
-        x: tileSize, y: tileSize, width: tileSize, height: tileSize);
+    final middle = Sprite(
+      spriteSheet,
+      srcPosition: Vector2.all(tileSize),
+      srcSize: srcSize,
+    );
 
     // Middle
     for (var y = destTileSize;
@@ -43,7 +76,14 @@ class _Painter extends Widgets.CustomPainter {
           x < size.width - destTileSize;
           x = x + destTileSize) {
         middle.renderRect(
-            canvas, Rect.fromLTWH(x, y, destTileSize, destTileSize));
+          canvas,
+          Rect.fromLTWH(
+            x,
+            y,
+            destTileSize,
+            destTileSize,
+          ),
+        );
       }
     }
 
@@ -52,11 +92,23 @@ class _Painter extends Widgets.CustomPainter {
         i < size.width - destTileSize;
         i = i + destTileSize) {
       topSide.renderRect(
-          canvas, Rect.fromLTWH(i, 0, destTileSize, destTileSize));
+        canvas,
+        Rect.fromLTWH(
+          i,
+          0,
+          destTileSize,
+          destTileSize,
+        ),
+      );
       bottomSide.renderRect(
-          canvas,
-          Rect.fromLTWH(
-              i, size.height - destTileSize, destTileSize, destTileSize));
+        canvas,
+        Rect.fromLTWH(
+          i,
+          size.height - destTileSize,
+          destTileSize,
+          destTileSize,
+        ),
+      );
     }
 
     // Left and right side
@@ -64,29 +116,63 @@ class _Painter extends Widgets.CustomPainter {
         i < size.height - destTileSize;
         i = i + destTileSize) {
       leftSide.renderRect(
-          canvas, Rect.fromLTWH(0, i, destTileSize, destTileSize));
+        canvas,
+        Rect.fromLTWH(
+          0,
+          i,
+          destTileSize,
+          destTileSize,
+        ),
+      );
       rightSide.renderRect(
-          canvas,
-          Rect.fromLTWH(
-              size.width - destTileSize, i, destTileSize, destTileSize));
+        canvas,
+        Rect.fromLTWH(
+          size.width - destTileSize,
+          i,
+          destTileSize,
+          destTileSize,
+        ),
+      );
     }
 
     // Corners
     topLeftCorner.renderRect(
-        canvas, Rect.fromLTWH(0, 0, destTileSize, destTileSize));
+      canvas,
+      Rect.fromLTWH(
+        0,
+        0,
+        destTileSize,
+        destTileSize,
+      ),
+    );
     topRightCorner.renderRect(
-        canvas,
-        Rect.fromLTWH(
-            size.width - destTileSize, 0, destTileSize, destTileSize));
+      canvas,
+      Rect.fromLTWH(
+        size.width - destTileSize,
+        0,
+        destTileSize,
+        destTileSize,
+      ),
+    );
 
     bottomLeftCorner.renderRect(
-        canvas,
-        Rect.fromLTWH(
-            0, size.height - destTileSize, destTileSize, destTileSize));
+      canvas,
+      Rect.fromLTWH(
+        0,
+        size.height - destTileSize,
+        destTileSize,
+        destTileSize,
+      ),
+    );
     bottomRightCorner.renderRect(
-        canvas,
-        Rect.fromLTWH(size.width - destTileSize, size.height - destTileSize,
-            destTileSize, destTileSize));
+      canvas,
+      Rect.fromLTWH(
+        size.width - destTileSize,
+        size.height - destTileSize,
+        destTileSize,
+        destTileSize,
+      ),
+    );
   }
 
   @override
@@ -94,21 +180,20 @@ class _Painter extends Widgets.CustomPainter {
 }
 
 class SpritesheetContainer extends Widgets.StatelessWidget {
+  final Widgets.Widget child;
   final Image spriteSheet;
   final double tileSize;
   final double destTileSize;
-  final double width;
-  final double height;
 
-  final Widgets.Widget child;
-
-  final Widgets.EdgeInsetsGeometry padding;
+  final double? width;
+  final double? height;
+  final Widgets.EdgeInsetsGeometry? padding;
 
   SpritesheetContainer({
-    this.spriteSheet,
-    this.tileSize,
-    this.destTileSize,
-    this.child,
+    required this.child,
+    required this.spriteSheet,
+    required this.tileSize,
+    required this.destTileSize,
     this.width,
     this.height,
     this.padding,

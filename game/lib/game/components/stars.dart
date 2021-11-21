@@ -1,41 +1,48 @@
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 
 import '../assets/tileset.dart';
 import '../collections.dart';
 import '../game.dart';
 import '../util.dart';
 
-class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
-  List<int> repeats;
+class Stars extends PositionComponent with HasGameRef<MyGame> {
+  late List<int> repeats;
 
-  Stars(Size size) {
-    int amount = (size.width / w).ceil();
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    int amount = (gameRef.size.x / w).ceil();
     repeats = List.generate(amount, (_) => Tileset.stars.randomIdx(R));
 
     x = 0;
   }
 
   // assumes all stars are the same dimensions
-  double get w => Tileset.stars[0].size.x;
-  double get h => Tileset.stars[0].size.y;
+  double get w => Tileset.stars[0].srcSize.x;
+  double get h => Tileset.stars[0].srcSize.y;
 
   @override
-  double get y => (size.height - h) / 2;
+  double get y => (gameRef.size.y - h) / 2;
 
   @override
   void render(Canvas c) {
+    super.render(c);
+
     renderOnce(c, x);
-    renderOnce(c, x + size.width);
+    renderOnce(c, x + gameRef.size.x);
   }
 
   void renderOnce(Canvas c, double x) {
-    repeats.map((v) => Tileset.stars[v]).toList().asMap().forEach(
-        (idx, sprite) => sprite.renderPosition(c, Position(x + w * idx, y)));
+    repeats
+        .map((v) => Tileset.stars[v])
+        .toList()
+        .asMap()
+        .forEach((idx, sprite) => sprite.render(
+              c,
+              position: Vector2(x + w * idx, y),
+            ));
   }
 
   @override
@@ -44,12 +51,12 @@ class Stars extends PositionComponent with Resizable, HasGameRef<MyGame> {
 
     double speed = gameRef.sleeping ? STARS_IDLE_SPEED : STARS_SPEED;
     x -= speed * t;
-    while (x < -size.width) x += size.width;
+    while (x < -gameRef.size.x) x += gameRef.size.x;
   }
 
   @override
-  int priority() => 0;
+  int get priority => 0;
 
   @override
-  bool isHud() => true;
+  bool get isHud => true;
 }

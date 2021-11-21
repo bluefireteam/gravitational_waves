@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import '../game/ads.dart';
@@ -15,7 +16,7 @@ import '../widgets/slide_in_container.dart';
 class GameScreen extends StatefulWidget {
   final MyGame game;
 
-  GameScreen({this.game});
+  GameScreen({required this.game});
 
   @override
   _GameScreenState createState() => _GameScreenState(game);
@@ -34,7 +35,7 @@ class _GameScreenState extends State<GameScreen> {
     };
   }
 
-  void startGame({@required bool enablePowerups}) {
+  void startGame({required bool enablePowerups}) {
     setState(() {
       _playSection = false;
       _playing = true;
@@ -61,7 +62,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     List<Widget> children = [];
 
-    children.add(widget.game.widget);
+    children.add(GameWidget(game: widget.game));
 
     if (_showGameOver) {
       children.add(
@@ -80,7 +81,7 @@ class _GameScreenState extends State<GameScreen> {
                       setState(() {
                         _showGameOver = false;
                         _playing = false;
-                        widget.game.prepare();
+                        widget.game.preStart();
                         Audio.menuMusic();
                       });
                     },

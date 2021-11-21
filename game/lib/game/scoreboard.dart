@@ -1,37 +1,40 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flame/flame.dart';
 
-import 'collections.dart';
 import 'game_data.dart';
 import 'skin.dart';
 
 Skin parseSkin(String value) {
-  return Skin.values.firstOrNull((h) => h.toString() == value);
+  return Skin.values.firstWhere((h) => h.toString() == value);
 }
 
 class ScoreBoardEntry {
-  String playerId;
-  int score;
-  Skin skin;
+  final String playerId;
+  final int score;
+  final Skin skin;
+
+  ScoreBoardEntry({
+    required this.playerId,
+    required this.score,
+    required this.skin,
+  });
 
   static ScoreBoardEntry fromJson(Map<String, dynamic> json) {
-    return ScoreBoardEntry()
-      ..skin = parseSkin(json['metadata'])
-      ..score = (json['score'] as double).toInt()
-      ..playerId = json['playerId'];
+    return ScoreBoardEntry(
+      skin: parseSkin(json['metadata']),
+      score: (json['score'] as double).toInt(),
+      playerId: json['playerId'],
+    );
   }
 }
 
 class ScoreBoard {
-  static String uuid;
+  static String? uuid;
   static const String host = 'https://api.score.fireslime.xyz';
 
   static Future<String> getUuid() async {
-    if (uuid == null) {
-      uuid = (await rootBundle.loadString('assets/firescore_uuid'))
-          .replaceAll('\n', '');
-    }
-    return uuid;
+    return uuid ??=
+        (await Flame.assets.readFile('firescore_uuid')).replaceAll('\n', '');
   }
 
   static Future<List<ScoreBoardEntry>> fetchScoreboard() async {
@@ -67,7 +70,9 @@ class ScoreBoard {
 
     await data.addScore(score);
 
-    if (forceSubmission || score > lastSubmittedScore) {
+    if (forceSubmission ||
+        lastSubmittedScore == null ||
+        score > lastSubmittedScore) {
       // Get the token
       final _uuid = await getUuid();
       final tokenResponse = await Dio().get('$host/scores/token/$_uuid');

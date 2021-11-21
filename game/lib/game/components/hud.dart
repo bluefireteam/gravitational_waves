@@ -1,25 +1,29 @@
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
-import '../assets/nine_box.dart';
 import '../game.dart';
 import '../util.dart';
 import 'coin.dart';
 
-class Hud extends Component {
-  static final NineBox bg =
-      NineBox(Sprite('container-tileset.png'), tileSize: 16);
+class Hud extends Component with HasGameRef<MyGame> {
   static const double MARGIN = 8.0;
 
-  MyGame gameRef;
+  late Sprite coin;
+  late NineTileBox bg;
 
-  Hud(this.gameRef);
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    coin = await Coin.loadSprite();
+    bg = NineTileBox(await Sprite.load('container-tileset.png'), tileSize: 16);
+  }
 
   @override
   void render(Canvas c) {
+    super.render(c);
     final p1 = "${gameRef.score}m";
     final p2 = "x${gameRef.coins}";
 
@@ -31,28 +35,25 @@ class Hud extends Component {
     final width = tp1.width + tp2.width + coinSpace + 2 * MARGIN;
     final height = tp1.height + 2 * MARGIN;
 
-    final x = (gameRef.size.width - width) / 2.0;
+    final x = (gameRef.size.x - width) / 2.0;
     final x1 = x + MARGIN;
     final x2 = x1 + tp1.width + MARGIN;
     final x3 = x2 + Coin.SIZE;
 
-    bg.draw(c, x, 0.0, width, height);
+    bg.draw(c, Vector2(x, 0), Vector2(width, height));
 
-    Fonts.hud.render(c, p1, Position(x1, MARGIN));
+    Fonts.hud.render(c, p1, Vector2(x1, MARGIN));
 
-    Position p = Position(x2, (height - Coin.SIZE) / 2);
-    Position size = Position(Coin.SIZE, Coin.SIZE);
-    Coin.still.renderPosition(c, p, size: size);
+    Vector2 p = Vector2(x2, (height - Coin.SIZE) / 2);
+    Vector2 size = Vector2(Coin.SIZE, Coin.SIZE);
+    coin.render(c, position: p, size: size);
 
-    Fonts.hud.render(c, p2, Position(x3, MARGIN));
+    Fonts.hud.render(c, p2, Vector2(x3, MARGIN));
   }
 
   @override
-  void update(double t) {}
+  bool get isHud => true;
 
   @override
-  bool isHud() => true;
-
-  @override
-  int priority() => 6;
+  int get priority => 6;
 }

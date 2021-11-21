@@ -1,9 +1,6 @@
 import 'dart:ui';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/animation.dart';
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
 import '../../game.dart';
@@ -15,8 +12,7 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
   static const SPAWN_TIMER = 0.05;
   static const TOTAL_TIMER = 4;
 
-  final Animation animation = Animation.sequenced('crystal_container.png', 16,
-      textureWidth: 16, textureHeight: 32, stepTime: 0.150);
+  late final SpriteAnimation animation;
 
   // 0 idle, 1 spawning, 2 destroy
   int _state = 0;
@@ -32,6 +28,20 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
     this.anchor = Anchor.center;
   }
 
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await SpriteAnimation.load(
+      'crystal_container.png',
+      SpriteAnimationData.sequenced(
+        amount: 16,
+        textureSize: Vector2(16, 32),
+        stepTime: 0.150,
+      ),
+    );
+  }
+
   Sprite get sprite => animation.getSprite();
 
   @override
@@ -43,7 +53,10 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
 
   @override
   void update(double t) {
-    if (_state >= 2) return;
+    if (_state >= 2) {
+      removeFromParent();
+      return;
+    }
 
     if (_state == 0) {
       super.update(t);
@@ -68,7 +81,7 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
 
   void spawnRandomCrystal() {
     double startX = gameRef.player.x + BLOCK_SIZE;
-    double endX = startX + gameRef.size.width / 2;
+    double endX = startX + gameRef.size.x / 2;
     double randomX = startX + R.nextDouble() * (endX - startX);
     Rect column =
         gameRef.findBackgroundForX(randomX).findRectContaining(randomX);
@@ -76,15 +89,12 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
     double x = column.left + column.size.width / 2;
     double y =
         top ? column.top + BLOCK_SIZE / 2 : column.bottom - BLOCK_SIZE / 2;
-    if (!gameRef.components.any((e) => e is Coin && e.overlaps(x, y))) {
-      gameRef.addLater(Poof(x, y));
-      gameRef.addLater(Coin(x, y));
+    if (!gameRef.children.any((e) => e is Coin && e.overlaps(x, y))) {
+      gameRef.add(Poof(x, y));
+      gameRef.add(Coin(x, y));
     }
   }
 
   @override
-  int priority() => 4;
-
-  @override
-  bool destroy() => _state == 2;
+  int get priority => 4;
 }

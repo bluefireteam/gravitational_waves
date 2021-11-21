@@ -9,7 +9,7 @@ import 'analytics.dart';
 import 'util.dart';
 
 class Ads {
-  static bool _loaded;
+  static bool _loaded = false;
 
   static bool _adsEnabled() {
     return ENABLE_ADS && !kIsWeb;
@@ -62,8 +62,8 @@ class Ads {
 
     RewardedVideoAd.instance.listener = (
       RewardedVideoAdEvent event, {
-      String rewardType,
-      int rewardAmount,
+      String? rewardType,
+      int? rewardAmount,
     }) {
       if (event == RewardedVideoAdEvent.rewarded) {
         wasRewarded = true;

@@ -4,15 +4,15 @@ import 'assets/ui_tileset.dart';
 import 'spritesheet_container.dart';
 
 class GRContainer extends StatelessWidget {
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   final Widget child;
 
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
 
   GRContainer({
-    this.child,
+    required this.child,
     this.width,
     this.height,
     this.padding,

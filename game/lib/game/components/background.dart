@@ -1,21 +1,19 @@
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/components/mixins/resizable.dart';
+import 'package:dartlin/collections.dart';
+import 'package:flame/components.dart';
 
 import '../assets/tileset.dart';
-import '../collections.dart';
 import '../column.dart';
 import '../game.dart';
 import '../palette.dart';
 import '../util.dart';
 import 'tutorial.dart';
 
-class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
-  static final Paint _bg = Palette.background.paint;
+class Background extends PositionComponent with HasGameRef<MyGame> {
+  static final Paint _bg = Palette.background.paint();
 
-  List<Column> columns;
+  late final List<Column> columns;
 
   Background(double x) {
     this.x = x;
@@ -37,7 +35,7 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   }
 
   static Iterable<Column> _generateChunck(int size) sync* {
-    int beforeTop, beforeBottom;
+    int? beforeTop, beforeBottom;
     int changesTop = 0, changesBottom = 0;
     for (int i = 0; i < size; i++) {
       if (i < 3 || i >= size - 3) {
@@ -65,7 +63,7 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   double get startX => x;
   double get endX => x + BLOCK_SIZE * columns.length;
 
-  bool contains(double targetX) {
+  bool containsX(double targetX) {
     return targetX >= startX && targetX < endX;
   }
 
@@ -75,16 +73,18 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   @override
   void render(Canvas c) {
+    super.render(c);
     columns.asMap().forEach((i, column) {
-      Column before = columns.getOrElse(i - 1, column);
-      Column after = columns.getOrElse(i + 1, column);
+      Column before = columns.getOrNull(i - 1) ?? column;
+      Column after = columns.getOrNull(i + 1) ?? column;
       double px = x + i * BLOCK_SIZE;
 
-      double ddy = size.height;
+      double ddy = gameRef.size.y;
       drawBg(c, px, -ddy, BLOCK_SIZE, column.topHeight + ddy);
-      drawBg(c, px, size.height - column.bottomHeight, BLOCK_SIZE, column.bottomHeight + ddy);
+      drawBg(c, px, gameRef.size.y - column.bottomHeight, BLOCK_SIZE,
+          column.bottomHeight + ddy);
 
-      double bottomPy = size.height - column.bottomHeight;
+      double bottomPy = gameRef.size.y - column.bottomHeight;
       BlockSet bottomSet = Tileset.variant(column.bottomVariant);
       if (before.bottom < column.bottom) {
         int diff = column.bottom - before.bottom;
@@ -139,7 +139,7 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
 
   void renderDebug(Canvas c) {
     c.drawRect(
-      Rect.fromLTWH(startX, 0.0, endX - startX, size.height),
+      Rect.fromLTWH(startX, 0.0, endX - startX, gameRef.size.y),
       Paint()
         ..color = Color(0xFFFF00FF)
         ..strokeWidth = 2.0
@@ -148,10 +148,10 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   }
 
   @override
-  bool destroy() => endX < gameRef.camera.x - size.width;
+  bool destroy() => endX < gameRef.camera.position.x - gameRef.size.x;
 
   @override
-  int priority() => 3;
+  int get priority => 3;
 
   Rect findRectContaining(double targetX) {
     int idx = ((targetX - x) / BLOCK_SIZE).floor();
@@ -161,7 +161,11 @@ class Background extends PositionComponent with HasGameRef<MyGame>, Resizable {
   Rect findRectFor(int idx) {
     Column column = columns[idx];
     double px = x + idx * BLOCK_SIZE;
-    return Rect.fromLTWH(px, column.topHeight, BLOCK_SIZE,
-        size.height - column.topHeight - column.bottomHeight);
+    return Rect.fromLTWH(
+      px,
+      column.topHeight,
+      BLOCK_SIZE,
+      gameRef.size.y - column.topHeight - column.bottomHeight,
+    );
   }
 }

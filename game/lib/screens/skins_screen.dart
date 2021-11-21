@@ -1,5 +1,7 @@
 import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
+import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../game/assets/char.dart';
@@ -14,20 +16,20 @@ import '../widgets/palette.dart';
 class SkinsScreen extends StatefulWidget {
   final MyGame game;
 
-  const SkinsScreen({Key key, this.game}) : super(key: key);
+  const SkinsScreen({Key? key, required this.game}) : super(key: key);
 
   @override
   _SkinsScreenState createState() => _SkinsScreenState();
 }
 
 class _SkinsScreenState extends State<SkinsScreen> {
-  Skin _skinToBuy;
+  Skin? _skinToBuy;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget.game.widget,
+        GameWidget(game: widget.game),
         skins(context),
       ],
     );
@@ -42,8 +44,9 @@ class _SkinsScreenState extends State<SkinsScreen> {
         children: [
           SizedBox(height: 20),
           Label(
-              label: 'Current gems: ${GameData.instance.coins}',
-              fontColor: PaletteColors.blues.light),
+            label: 'Current gems: ${GameData.instance.coins}',
+            fontColor: PaletteColors.blues.light,
+          ),
           SizedBox(height: 20),
           Container(
               height: 100,
@@ -54,8 +57,10 @@ class _SkinsScreenState extends State<SkinsScreen> {
                   bool isSelected = GameData.instance.selectedSkin == v;
                   final price = skinPrice(v);
                   Sprite sprite = Char.fromSkin(v);
-                  Widget flameWidget =
-                      Flame.util.spriteAsWidget(Size(100.0, 80.0), sprite);
+                  Widget flameWidget = SpriteWidget(
+                    sprite: sprite,
+                    srcSize: Vector2(100.0, 80.0),
+                  );
                   Widget widget = isOwned
                       ? flameWidget
                       : Stack(
@@ -73,7 +78,7 @@ class _SkinsScreenState extends State<SkinsScreen> {
                             ),
                           ],
                         );
-                  Color color = isSelected ? PaletteColors.blues.light : null;
+                  Color? color = isSelected ? PaletteColors.blues.light : null;
 
                   return GRContainer(
                     padding: EdgeInsets.all(12.0),
@@ -97,37 +102,46 @@ class _SkinsScreenState extends State<SkinsScreen> {
       ),
     ));
 
-    if (_skinToBuy != null) {
-      children.add(Column(children: [
-        Label(
-            label: "Are you sure you want to buy this skin",
-            fontColor: PaletteColors.blues.light,
-            fontSize: 20),
-        Label(
-            label: "for ${skinPrice(_skinToBuy)} gems?",
-            fontColor: PaletteColors.blues.light,
-            fontSize: 20),
-        PrimaryButton(
-          label: 'Yes',
-          onPress: () async {
-            await GameData.instance.buyAndSetSkin(_skinToBuy);
-            setState(() {
-              _skinToBuy = null;
-            });
-          },
+    final skin = _skinToBuy;
+    if (skin != null) {
+      children.add(
+        Column(
+          children: [
+            Label(
+              label: "Are you sure you want to buy this skin",
+              fontColor: PaletteColors.blues.light,
+              fontSize: 20,
+            ),
+            Label(
+              label: "for ${skinPrice(skin)} gems?",
+              fontColor: PaletteColors.blues.light,
+              fontSize: 20,
+            ),
+            PrimaryButton(
+              label: 'Yes',
+              onPress: () async {
+                await GameData.instance.buyAndSetSkin(skin);
+                setState(() {
+                  _skinToBuy = null;
+                });
+              },
+            ),
+            SecondaryButton(
+              label: 'Cancel',
+              onPress: () => setState(() {
+                _skinToBuy = null;
+              }),
+            )
+          ],
         ),
-        SecondaryButton(
-          label: 'Cancel',
-          onPress: () => setState(() {
-            _skinToBuy = null;
-          }),
-        )
-      ]));
+      );
     } else {
-      children.add(SecondaryButton(
-        label: 'Back',
-        onPress: () => Navigator.of(context).pop(),
-      ));
+      children.add(
+        SecondaryButton(
+          label: 'Back',
+          onPress: () => Navigator.of(context).pop(),
+        ),
+      );
     }
 
     return Align(

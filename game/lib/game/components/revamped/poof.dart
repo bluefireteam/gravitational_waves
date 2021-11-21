@@ -1,18 +1,19 @@
-import 'package:flame/components/animation_component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components.dart';
 
 import '../../assets/poofs.dart';
 import '../../game.dart';
 
-class Poof extends AnimationComponent with HasGameRef<MyGame> {
+class Poof extends SpriteAnimationComponent with HasGameRef<MyGame> {
   static const double SIZE = 16.0;
 
-  Poof(double x, double y) : super(SIZE, SIZE, Poofs.poof()) {
-    this.destroyOnFinish = true;
-    this.x = x - SIZE / 2;
-    this.y = y - SIZE / 2;
-  }
+  Poof(double x, double y)
+      : super(
+          animation: Poofs.poof(),
+          removeOnFinish: true,
+          size: Vector2.all(SIZE),
+          position: Vector2(x, y) - Vector2.all(SIZE) / 2,
+        );
 
   @override
-  int priority() => 5;
+  int get priority => 5;
 }

@@ -1,19 +1,17 @@
 import 'dart:ui';
 
-import 'package:flame/animation.dart';
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
 import '../../assets/poofs.dart';
 import '../../game.dart';
 import '../../util.dart';
 
 class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
-  static final Position deltaCenter = Position(BLOCK_SIZE, BLOCK_SIZE).div(2);
+  static final Vector2 deltaCenter = Vector2.all(BLOCK_SIZE) / 2;
 
-  Animation animation = Poofs.airEscaping();
-  Animation initialAnimation = Poofs.glassBreaking();
+  SpriteAnimation animation = Poofs.airEscaping();
+  SpriteAnimation initialAnimation = Poofs.glassBreaking();
 
   BrokenGlass(double x, double y) {
     this.x = x;
@@ -23,9 +21,11 @@ class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
-    prepareCanvas(c);
+    super.render(c);
     if (!initialAnimation.done()) {
-      initialAnimation.getSprite().renderCentered(c, deltaCenter);
+      initialAnimation
+          .getSprite()
+          .render(c, position: deltaCenter, anchor: Anchor.center);
     }
     animation.getSprite().render(c);
   }
@@ -39,10 +39,11 @@ class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
     final player = gameRef.player.toRect();
     final rect = toRect();
     if (player.overlaps(rect)) {
-      gameRef.player.suck(Position.fromOffset(rect.center));
+      gameRef.player.suck(rect.center.toVector2());
+    }
+
+    if (x < gameRef.camera.position.x) {
+      removeFromParent();
     }
   }
-
-  @override
-  bool destroy() => x < gameRef.camera.x;
 }

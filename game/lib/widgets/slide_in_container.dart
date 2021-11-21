@@ -8,7 +8,7 @@ class SlideInContainer extends StatefulWidget {
   final Curve curve;
 
   SlideInContainer({
-    this.child,
+    required this.child,
     this.from = const Offset(0.0, 0.0),
     this.to = const Offset(0.0, 0.0),
     this.duration = const Duration(seconds: 1),
@@ -21,8 +21,8 @@ class SlideInContainer extends StatefulWidget {
 
 class _SlideInContainer extends State<SlideInContainer>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Offset> _offsetAnimation;
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
 
   @override
   void initState() {
