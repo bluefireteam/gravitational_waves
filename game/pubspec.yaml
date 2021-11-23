@@ -17,6 +17,7 @@ dependencies:
   url_launcher: 6.0.15
   google_mobile_ads: 1.0.0
   oktoast: 3.1.5
+  firebase_core: 1.10.0
   firebase_analytics: 8.3.4
   dartlin: 0.6.1
 

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_splash_screen/flame_splash_screen.dart';
 import 'package:flutter/foundation.dart'
@@ -24,6 +25,15 @@ import 'widgets/assets/ui_tileset.dart';
 
 void main() async {
   await setMobileOrientation();
+
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      appId: 'TODO fill in',
+      apiKey: 'TODO fill in',
+      messagingSenderId: 'TODO fill in',
+      projectId: 'fireslime-gravity-runner',
+    ),
+  );
 
   final setup = Future.wait([
     Preferences.init(),
