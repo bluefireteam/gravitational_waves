@@ -15,7 +15,7 @@ dependencies:
   shared_preferences: 2.0.9
   dio: 4.0.3
   url_launcher: 6.0.15
-  firebase_admob: 0.11.2
+  google_mobile_ads: 1.0.0
   oktoast: 3.1.5
   firebase_analytics: 8.3.4
   dartlin: 0.6.1
