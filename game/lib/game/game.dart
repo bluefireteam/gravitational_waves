@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/extensions.dart';
+import 'package:gravitational_waves/game/palette.dart';
 
 import 'analytics.dart';
 import 'audio.dart';
@@ -55,8 +56,10 @@ class MyGame extends FlameGame with TapDetector {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    this.camera.viewport =
-        FixedResolutionViewport(Vector2(32, 18) * BLOCK_SIZE);
+    this.camera.viewport = FixedResolutionViewport(
+      Vector2(32, 18) * BLOCK_SIZE,
+      noClip: true,
+    );
     this.camera.speed = 50.0;
 
     powerups = Powerups();
@@ -151,17 +154,16 @@ class MyGame extends FlameGame with TapDetector {
 
   int get score => player.x ~/ 100;
 
-  void doShowTutorial() {
-    add(tutorial = Tutorial());
+  Future<void> doShowTutorial() async {
     pause();
+    await add(tutorial = Tutorial());
+    children.updateComponentList();
   }
 
   @override
   void update(double t) {
     if (paused) {
-      if (tutorial?.isMounted == true) {
-        tutorial?.update(t);
-      }
+      tutorial?.update(t);
       return;
     }
 
@@ -198,16 +200,17 @@ class MyGame extends FlameGame with TapDetector {
 
   @override
   void render(Canvas canvas) {
+    canvas.drawRect(Vector2.zero() & canvasSize, Palette.background.paint());
     canvas.save();
-    canvas.translate(size.x / 2, size.y / 2);
+    canvas.translate(canvasSize.x / 2, canvasSize.y / 2);
     canvas.rotate(rotationManager.angle);
-    canvas.translate(-size.x / 2, -size.y / 2);
+    canvas.translate(-canvasSize.x / 2, -canvasSize.y / 2);
     super.render(canvas);
     canvas.restore();
 
     if (paused) {
       bool showMessage = tutorial == null;
-      PauseOverlay.render(canvas, size, showMessage);
+      PauseOverlay.render(canvas, canvasSize, showMessage);
     }
   }
 

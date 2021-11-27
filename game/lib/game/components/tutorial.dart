@@ -19,7 +19,7 @@ class Tutorial extends Component with HasGameRef<MyGame> {
         List.generate(8, (_) => Column(0, 0));
   }
 
-  late SpriteAnimation animation;
+  SpriteAnimation? animation;
 
   @override
   Future<void> onLoad() async {
@@ -48,13 +48,13 @@ class Tutorial extends Component with HasGameRef<MyGame> {
     Fonts.tutorial.render(c, 'gravity', p2, anchor: Anchor.bottomCenter);
 
     Vector2 p3 = Vector2(gameSize.x / 2, gameSize.y - 16.0 - 48.0);
-    animation.getSprite().render(c, position: p3);
+    animation?.getSprite().render(c, position: p3);
   }
 
   @override
   void update(double t) {
     super.update(t);
-    animation.update(t);
+    animation?.update(t);
   }
 
   @override

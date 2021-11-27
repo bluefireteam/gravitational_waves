@@ -7,6 +7,12 @@ extension MyRandom on Random {
 }
 
 extension MyList<T> on List<T> {
+  void forEachIndexed(void Function(int, T) consumer) {
+    for (final pair in asMap().entries) {
+      consumer(pair.key, pair.value);
+    }
+  }
+
   T sample([Random? random]) {
     final r = random ?? Random();
     return this[this.randomIdx(r)];

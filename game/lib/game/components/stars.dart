@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:dartlin/dartlin.dart';
 
 import '../assets/tileset.dart';
 import '../collections.dart';
@@ -34,7 +33,7 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
   }
 
   void renderOnce(Canvas c, double x) {
-    repeats.mapIndexed((idx, value) {
+    repeats.forEachIndexed((idx, value) {
       final sprite = Tileset.stars[value];
       sprite.render(c, position: Vector2(x + w * idx, 0));
     });
@@ -44,9 +43,11 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
   void update(double t) {
     super.update(t);
 
-    double speed = gameRef.sleeping ? STARS_IDLE_SPEED : STARS_SPEED;
+    final speed = gameRef.sleeping ? STARS_IDLE_SPEED : STARS_SPEED;
     x -= speed * t;
-    while (x < -gameRef.size.x) x += gameRef.size.x;
+    while (x < -gameRef.size.x) {
+      x += gameRef.size.x;
+    }
   }
 
   @override

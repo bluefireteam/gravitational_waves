@@ -77,14 +77,14 @@ class ScoreBoard {
     int score, {
     bool forceSubmission = false,
   }) async {
-    if (!ENABLE_SCOREBOARD) {
-      return;
-    }
-
     final GameData data = GameData.instance;
     final lastSubmittedScore = data.highScore;
 
     await data.addScore(score);
+
+    if (!ENABLE_SCOREBOARD) {
+      return;
+    }
 
     if (forceSubmission ||
         lastSubmittedScore == null ||

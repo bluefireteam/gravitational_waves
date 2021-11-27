@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
-import 'package:flame/sprite.dart';
 
 import '../assets/char.dart';
 import '../game.dart';
@@ -39,7 +38,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
       : this.speedY = 0.0,
         this.livesLeft = STARTING_LIVES,
         this.particles = PlayerParticles(),
-        super(size: Vector2.all(BLOCK_SIZE), priority: 5) {
+        super(size: Vector2.all(BLOCK_SIZE)) {
     reset();
   }
 
