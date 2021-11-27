@@ -4,6 +4,9 @@ import 'package:flame/flame.dart';
 import 'game_data.dart';
 import 'skin.dart';
 
+// does not work rn
+const ENABLE_SCOREBOARD = false;
+
 Skin parseSkin(String value) {
   return Skin.values.firstWhere((h) => h.toString() == value);
 }
@@ -38,6 +41,9 @@ class ScoreBoard {
   }
 
   static Future<List<ScoreBoardEntry>> fetchScoreboard() async {
+    if (!ENABLE_SCOREBOARD) {
+      return [];
+    }
     final _uuid = await getUuid();
     Response resp = await Dio().get('$host/scores/$_uuid?sortOrder=DESC');
 
@@ -50,6 +56,10 @@ class ScoreBoard {
   }
 
   static Future<bool> isPlayerIdAvailable(String playerId) async {
+    if (!ENABLE_SCOREBOARD) {
+      return false;
+    }
+
     final _uuid = await getUuid();
     Response resp = await Dio()
         .get('$host/scores/$_uuid?sortOrder=DESC&playerId=$playerId');
@@ -63,8 +73,14 @@ class ScoreBoard {
     throw 'Could not check player id availability';
   }
 
-  static Future<void> submitScore(int score,
-      {bool forceSubmission = false}) async {
+  static Future<void> submitScore(
+    int score, {
+    bool forceSubmission = false,
+  }) async {
+    if (!ENABLE_SCOREBOARD) {
+      return;
+    }
+
     final GameData data = GameData.instance;
     final lastSubmittedScore = data.highScore;
 

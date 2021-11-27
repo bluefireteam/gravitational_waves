@@ -39,7 +39,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
       : this.speedY = 0.0,
         this.livesLeft = STARTING_LIVES,
         this.particles = PlayerParticles(),
-        super(size: Vector2.all(BLOCK_SIZE)) {
+        super(size: Vector2.all(BLOCK_SIZE), priority: 5) {
     reset();
   }
 
@@ -105,10 +105,8 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     double dX = (skin.srcSize.x - scaledW) / 2;
     double dY = (skin.srcSize.y - scaledH) / 2;
 
-    Rect realRect = toRect();
-    double drawX = x - (skin.srcSize.x - realRect.width) / 2 + dX;
-    double drawY =
-        y - (shouldFlip ? (skin.srcSize.y - realRect.height) : 0.0) + dY;
+    double drawX = -(skin.srcSize.x - size.x) / 2 + dX;
+    double drawY = -(shouldFlip ? (skin.srcSize.y - size.y) : 0.0) + dY;
     Rect renderRect = Rect.fromLTWH(0, 0, scaledW, scaledH);
 
     c.save();

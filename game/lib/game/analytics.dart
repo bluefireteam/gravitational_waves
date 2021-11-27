@@ -12,11 +12,9 @@ String enumName(EventName enumVal) {
 }
 
 class Analytics {
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
-
   static void log(EventName eventName) {
     try {
-      analytics.logEvent(name: enumName(eventName).toLowerCase());
+      FirebaseAnalytics().logEvent(name: enumName(eventName).toLowerCase());
     } catch (ex) {
       print('Unexpected error sending alalytics:');
       print(ex);

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/extensions.dart';
@@ -55,15 +54,17 @@ class MyGame extends FlameGame with TapDetector {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
     this.camera.viewport =
         FixedResolutionViewport(Vector2(32, 18) * BLOCK_SIZE);
     this.camera.speed = 50.0;
 
-    hud = Hud();
     powerups = Powerups();
+
+    await preStart();
   }
 
-  void preStart() {
+  Future<void> preStart() async {
     final isFirstTime = GameData.instance.isFirstTime();
 
     sleeping = true;
@@ -78,19 +79,23 @@ class MyGame extends FlameGame with TapDetector {
     children.clear();
     if (isFirstTime) {
       showTutorial = 0;
-      _addBg(Background.tutorial(lastGeneratedX));
+      await _addBg(Background.tutorial(lastGeneratedX));
     } else {
       showTutorial = -1;
-      _addBg(Background.plains(lastGeneratedX));
+      await _addBg(Background.plains(lastGeneratedX));
     }
 
-    add(player = Player());
-    camera.followComponent(player, relativeOffset: Anchor(1 / 3, 0));
+    await add(player = Player());
+    updateCamera();
 
-    add(wall = Wall(firstX - size.x));
-    add(Stars());
+    await add(wall = Wall(firstX - size.x));
+    await add(Stars());
 
     rotationManager = RotationManager();
+  }
+
+  void updateCamera() {
+    camera.snapTo(Vector2(player.position.x - size.x / 3, 0));
   }
 
   void start() {
@@ -98,13 +103,14 @@ class MyGame extends FlameGame with TapDetector {
       powerups.enabled ? EventName.START_REVAMPED : EventName.START_CLASSIC,
     );
     sleeping = false;
+    add(hud = Hud());
     powerups.reset();
     generateNextChunck();
     Audio.gameMusic();
   }
 
-  void restart() {
-    preStart();
+  Future<void> restart() async {
+    await preStart();
     start();
   }
 
@@ -112,10 +118,10 @@ class MyGame extends FlameGame with TapDetector {
     return children.whereType<Background>().firstWhere((e) => e.containsX(x));
   }
 
-  void generateNextChunck() {
+  Future<void> generateNextChunck() async {
     while (lastGeneratedX < player.x + size.x) {
       Background bg = Background(lastGeneratedX);
-      _addBg(bg);
+      await _addBg(bg);
 
       int amountCoints = 2 + R.nextInt(3);
       final List<Coin> coins = [];
@@ -130,14 +136,17 @@ class MyGame extends FlameGame with TapDetector {
         }
         Coin c = Coin(x, y);
         coins.add(c);
-        add(c);
+        await add(c);
       }
     }
   }
 
-  void _addBg(Background bg) {
-    add(bg);
+  Future<void> _addBg(Background bg) async {
+    await add(bg);
     lastGeneratedX = bg.endX;
+    // we need to make sure the bg is actually added so
+    // it can be found by other components
+    children.updateComponentList();
   }
 
   int get score => player.x ~/ 100;
@@ -150,11 +159,15 @@ class MyGame extends FlameGame with TapDetector {
   @override
   void update(double t) {
     if (paused) {
-      tutorial?.update(t);
+      if (tutorial?.isMounted == true) {
+        tutorial?.update(t);
+      }
       return;
     }
 
     super.update(t);
+    updateCamera();
+
     if (showTutorial > -1 && player.x >= Tutorial.positions[showTutorial]) {
       doShowTutorial();
       showTutorial++;
@@ -185,23 +198,17 @@ class MyGame extends FlameGame with TapDetector {
 
   @override
   void render(Canvas canvas) {
-    renderComponents(canvas);
-    if (!sleeping) {
-      hud.render(canvas);
-    }
-    if (paused) {
-      bool showMessage = tutorial == null;
-      PauseOverlay.render(canvas, size, showMessage);
-    }
-  }
-
-  void renderComponents(Canvas canvas) {
     canvas.save();
     canvas.translate(size.x / 2, size.y / 2);
     canvas.rotate(rotationManager.angle);
     canvas.translate(-size.x / 2, -size.y / 2);
     super.render(canvas);
     canvas.restore();
+
+    if (paused) {
+      bool showMessage = tutorial == null;
+      PauseOverlay.render(canvas, size, showMessage);
+    }
   }
 
   @override
@@ -262,10 +269,8 @@ class MyGame extends FlameGame with TapDetector {
     Audio.die();
     Audio.stopMusic();
 
-    if (score != null && coins != null) {
-      GameData.instance.addCoins(coins);
-      ScoreBoard.submitScore(score);
-    }
+    GameData.instance.addCoins(coins);
+    ScoreBoard.submitScore(score);
 
     sleeping = true;
     showGameOver?.call(true);

@@ -1,4 +1,3 @@
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
@@ -119,12 +118,10 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     SizedBox(width: 5),
-                    entry.value.skin != null
-                        ? SpriteWidget(
-                            sprite: Char.fromSkin(entry.value.skin),
-                            srcSize: Vector2(60.0, 40.0),
-                          )
-                        : SizedBox(width: 60, height: 40),
+                    SpriteWidget(
+                      sprite: Char.fromSkin(entry.value.skin),
+                      srcSize: Vector2(60.0, 40.0),
+                    ),
                     Label(
                       fontColor: fontColor(entry.value),
                       label: '#${entry.key + 1}',

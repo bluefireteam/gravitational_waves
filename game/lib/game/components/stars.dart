@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
+import 'package:dartlin/dartlin.dart';
 
 import '../assets/tileset.dart';
 import '../collections.dart';
@@ -17,6 +18,7 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
     repeats = List.generate(amount, (_) => Tileset.stars.randomIdx(R));
 
     x = 0;
+    y = (gameRef.size.y - h) / 2;
   }
 
   // assumes all stars are the same dimensions
@@ -24,25 +26,18 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
   double get h => Tileset.stars[0].srcSize.y;
 
   @override
-  double get y => (gameRef.size.y - h) / 2;
-
-  @override
   void render(Canvas c) {
     super.render(c);
 
-    renderOnce(c, x);
-    renderOnce(c, x + gameRef.size.x);
+    renderOnce(c, 0);
+    renderOnce(c, gameRef.size.x);
   }
 
   void renderOnce(Canvas c, double x) {
-    repeats
-        .map((v) => Tileset.stars[v])
-        .toList()
-        .asMap()
-        .forEach((idx, sprite) => sprite.render(
-              c,
-              position: Vector2(x + w * idx, y),
-            ));
+    repeats.mapIndexed((idx, value) {
+      final sprite = Tileset.stars[value];
+      sprite.render(c, position: Vector2(x + w * idx, 0));
+    });
   }
 
   @override

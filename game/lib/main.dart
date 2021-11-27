@@ -24,16 +24,24 @@ import 'game/preferences.dart';
 import 'widgets/assets/ui_tileset.dart';
 
 void main() async {
-  await setMobileOrientation();
+  print('Starting app...');
+
+  WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      appId: 'TODO fill in',
-      apiKey: 'TODO fill in',
-      messagingSenderId: 'TODO fill in',
+      apiKey: 'AIzaSyAwyHBokdzuZcW_iQ6hu_7DCrP6_DclSqg',
+      authDomain: 'fireslime-gravity-runner.firebaseapp.com',
+      databaseURL: 'https://fireslime-gravity-runner.firebaseio.com',
       projectId: 'fireslime-gravity-runner',
+      storageBucket: 'fireslime-gravity-runner.appspot.com',
+      messagingSenderId: '107315711863',
+      appId: '1:107315711863:web:1c84176903b93eb824db72',
+      measurementId: 'G-E1SGKDJLF4',
     ),
   );
+
+  await setMobileOrientation();
 
   final setup = Future.wait([
     Preferences.init(),
@@ -75,7 +83,6 @@ void main() async {
                   );
                 },
                 onFinish: (BuildContext context) {
-                  game.preStart();
                   Navigator.pushNamed(context, '/game');
                 },
               ),

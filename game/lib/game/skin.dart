@@ -26,5 +26,4 @@ int skinPrice(Skin skin) {
     case Skin.ALIEN:
       return 50;
   }
-  throw 'Unknown skin $skin!';
 }

@@ -30,9 +30,9 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
-    super.render(c);
     renderColorBg(c);
     renderWall(c);
+    super.render(c);
   }
 
   void renderColorBg(Canvas c) {

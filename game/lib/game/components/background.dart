@@ -77,7 +77,7 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
     columns.asMap().forEach((i, column) {
       Column before = columns.getOrNull(i - 1) ?? column;
       Column after = columns.getOrNull(i + 1) ?? column;
-      double px = x + i * BLOCK_SIZE;
+      double px = i * BLOCK_SIZE;
 
       double ddy = gameRef.size.y;
       drawBg(c, px, -ddy, BLOCK_SIZE, column.topHeight + ddy);
@@ -148,7 +148,12 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
   }
 
   @override
-  bool destroy() => endX < gameRef.camera.position.x - gameRef.size.x;
+  void update(double dt) {
+    super.update(dt);
+    if (endX < gameRef.camera.position.x - gameRef.size.x) {
+      removeFromParent();
+    }
+  }
 
   @override
   int get priority => 3;

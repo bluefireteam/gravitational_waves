@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 
 import '../game.dart';
 import '../util.dart';
@@ -23,6 +22,10 @@ class Hud extends Component with HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
+    if (gameRef.paused) {
+      return;
+    }
+
     super.render(c);
     final p1 = "${gameRef.score}m";
     final p2 = "x${gameRef.coins}";
