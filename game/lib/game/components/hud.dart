@@ -55,7 +55,7 @@ class Hud extends Component with HasGameRef<MyGame> {
   }
 
   @override
-  bool get isHud => true;
+  bool get respectCamera => false;
 
   @override
   int get priority => 6;

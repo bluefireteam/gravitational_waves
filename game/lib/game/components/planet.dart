@@ -33,5 +33,5 @@ class Planet extends SpriteComponent with HasGameRef<MyGame> {
   int get priority => 1;
 
   @override
-  bool get isHud => true;
+  bool get respectCamera => false;
 }

@@ -46,5 +46,5 @@ class SpaceBattle extends SpriteAnimationComponent with HasGameRef<MyGame> {
   int get priority => 1;
 
   @override
-  bool get isHud => true;
+  bool get respectCamera => false;
 }

@@ -54,5 +54,5 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
   int get priority => 0;
 
   @override
-  bool get isHud => true;
+  bool get respectCamera => false;
 }

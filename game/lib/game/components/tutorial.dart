@@ -61,5 +61,5 @@ class Tutorial extends Component with HasGameRef<MyGame> {
   int get priority => 7;
 
   @override
-  bool get isHud => true;
+  bool get respectCamera => false;
 }
