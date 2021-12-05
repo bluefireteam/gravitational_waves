@@ -62,8 +62,6 @@ class MyGame extends FlameGame with TapDetector {
     );
     this.camera.speed = 50.0;
 
-    powerups = Powerups();
-
     await preStart();
   }
 
@@ -88,6 +86,7 @@ class MyGame extends FlameGame with TapDetector {
       await _addBg(Background.plains(lastGeneratedX));
     }
 
+    add(powerups = Powerups());
     await add(player = Player());
     updateCamera();
 
@@ -180,7 +179,6 @@ class MyGame extends FlameGame with TapDetector {
 
     if (!sleeping) {
       maybeGeneratePlanet(t);
-      powerups.update(t);
       generateNextChunck();
       rotationManager.tick(t);
     }

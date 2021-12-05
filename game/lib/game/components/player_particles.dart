@@ -6,8 +6,8 @@ import '../palette.dart';
 import '../util.dart';
 
 class PlayerParticles {
+  final List<Particle> jetpackParticles = [];
   late Particle particle;
-  late List<Particle> jetpackParticles = [];
 
   PlayerParticles() {
     reset();
@@ -41,22 +41,22 @@ class PlayerParticles {
       radius: 0.55,
       paint: Paint()..color = Palette.particlesJetpack.color,
     );
-    this.jetpackParticles.add(
-          Particle.generate(
-            count: 2 + R.nextInt(6),
-            generator: (_) {
-              return MovingParticle(
-                from: Vector2(0, BLOCK_SIZE),
-                to: Vector2(
-                  -R.nextDouble() * 10,
-                  BLOCK_SIZE - 3 + R.nextDouble() * 5,
-                ),
-                child: child,
-                lifespan: 0.025 * R.nextInt(4),
-              );
-            },
-          ),
-        );
+    jetpackParticles.add(
+      Particle.generate(
+        count: 2 + R.nextInt(6),
+        generator: (_) {
+          return MovingParticle(
+            from: Vector2(0, BLOCK_SIZE),
+            to: Vector2(
+              -R.nextDouble() * 10,
+              BLOCK_SIZE - 3 + R.nextDouble() * 5,
+            ),
+            child: child,
+            lifespan: 0.025 * R.nextInt(4),
+          );
+        },
+      ),
+    );
   }
 
   void reset() {
@@ -64,7 +64,7 @@ class PlayerParticles {
       radius: 0.45,
       paint: Paint()..color = Palette.particles.color,
     );
-    this.particle = Particle.generate(
+    particle = Particle.generate(
       count: R.nextInt(6),
       generator: (_) {
         return MovingParticle(

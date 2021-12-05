@@ -28,6 +28,9 @@ class Powerups extends Component with HasGameRef<MyGame> {
 
   @override
   void update(double dt) {
+    if (gameRef.sleeping) {
+      return;
+    }
     super.update(dt);
     _maybeGeneratePowerups(dt);
   }

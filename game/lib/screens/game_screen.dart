@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../game/ads.dart';
@@ -167,10 +168,11 @@ class _GameScreenState extends State<GameScreen> {
                 label: 'Credits',
                 onPress: () => Navigator.of(context).pushNamed('/credits'),
               ),
-              SecondaryButton(
-                label: 'Quit',
-                onPress: () => exit(0),
-              ),
+              if (!kIsWeb)
+                SecondaryButton(
+                  label: 'Quit',
+                  onPress: () => exit(0),
+                ),
             ],
           ),
         ]);

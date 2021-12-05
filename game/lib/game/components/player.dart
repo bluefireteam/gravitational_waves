@@ -140,7 +140,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
   void renderParticles(Canvas c) {
     c.save();
-    c.translate(x, shouldFlip ? y : y - BLOCK_SIZE);
+    c.translate(0, shouldFlip ? 0 : -BLOCK_SIZE);
     particles.render(c, !jetpack);
     c.restore();
   }
