@@ -26,6 +26,7 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
 
   Wall(double x) {
     this.x = x;
+    this.y = 0;
   }
 
   @override
@@ -36,29 +37,28 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
   }
 
   void renderColorBg(Canvas c) {
-    c.save();
-    c.translateVector(gameRef.camera.position);
-    final topBar = Rect.fromLTWH(
-      -gameRef.size.x / 2,
-      0.0,
-      2 * gameRef.size.x,
-      startY,
-    );
-    final bottomBar = Rect.fromLTWH(
-      -gameRef.size.x / 2,
-      (gameRef.size.y + h) / 2,
-      2 * gameRef.size.x,
-      startY,
-    );
-    c.drawRect(topBar, _wall);
-    c.drawRect(bottomBar, _wall);
-    c.restore();
+    c.renderAt(gameRef.camera.position - position, (c) {
+      final topBar = Rect.fromLTWH(
+        -gameRef.size.x / 2,
+        0.0,
+        2 * gameRef.size.x,
+        startY,
+      );
+      final bottomBar = Rect.fromLTWH(
+        -gameRef.size.x / 2,
+        (gameRef.size.y + h) / 2,
+        2 * gameRef.size.x,
+        startY,
+      );
+      c.drawRect(topBar, _wall);
+      c.drawRect(bottomBar, _wall);
+    });
   }
 
   void renderWall(Canvas c) {
-    double dx = x;
+    double dx = 0;
     int currentPane = currentStartingPane;
-    while (dx < gameRef.camera.position.x + gameRef.size.x + w) {
+    while (dx < gameRef.camera.position.x + gameRef.size.x + w - x) {
       int? brokenType = brokenPanes[currentPane];
 
       Sprite sprite =
