@@ -20,7 +20,7 @@ class GameData {
   int? highScore;
 
   GameData()
-      : this.coins = 0,
+      : this.coins = 100,
         this.highScore = null,
         this.selectedSkin = Skin.ASTRONAUT,
         this.ownedSkins = [Skin.ASTRONAUT],

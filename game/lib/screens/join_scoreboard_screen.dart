@@ -11,9 +11,7 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class JoinScoreboardScreen extends StatefulWidget {
-  final MyGame game;
-
-  const JoinScoreboardScreen({Key? key, required this.game}) : super(key: key);
+  const JoinScoreboardScreen({Key? key}) : super(key: key);
 
   @override
   _JoinScoreboardScreenState createState() => _JoinScoreboardScreenState();
@@ -76,7 +74,7 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GameWidget(game: widget.game),
+        GameWidget(game: MyGame()),
         joinScoreboard(context),
       ],
     );

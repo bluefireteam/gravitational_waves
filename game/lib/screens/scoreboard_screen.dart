@@ -11,9 +11,7 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class ScoreboardScreen extends StatefulWidget {
-  final MyGame game;
-
-  const ScoreboardScreen({Key? key, required this.game}) : super(key: key);
+  const ScoreboardScreen({Key? key}) : super(key: key);
 
   @override
   _ScoreboardScreenState createState() => _ScoreboardScreenState();
@@ -24,7 +22,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GameWidget(game: widget.game),
+        GameWidget(game: MyGame()),
         scoreboard(context),
       ],
     );
@@ -45,38 +43,45 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   fontColor: PaletteColors.blues.light,
                   fontSize: 36,
                 ),
-                FutureBuilder(
-                  future: Future.wait([
-                    ScoreBoard.fetchScoreboard(),
-                  ]),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                      case ConnectionState.active:
-                        {
-                          return Center(
-                            child: Label(label: 'Loading results...'),
-                          );
-                        }
-                      case ConnectionState.done:
-                        {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
+                if (!ENABLE_SCOREBOARD)
+                  Label(
+                    label: 'Scoreboard is disabeld for this build.',
+                    fontColor: PaletteColors.blues.light,
+                    fontSize: 24,
+                  )
+                else
+                  FutureBuilder(
+                    future: Future.wait([
+                      ScoreBoard.fetchScoreboard(),
+                    ]),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                        case ConnectionState.active:
+                          {
                             return Center(
-                              child:
-                                  Label(label: 'Could not fetch scoreboard.'),
+                              child: Label(label: 'Loading results...'),
                             );
                           }
-                          return showScoreboard(
-                            context,
-                            GameData.instance.playerId!,
-                            snapshot.data[0] as List<ScoreBoardEntry>,
-                          );
-                        }
-                    }
-                  },
-                ),
+                        case ConnectionState.done:
+                          {
+                            if (snapshot.hasError) {
+                              print(snapshot.error);
+                              return Center(
+                                child:
+                                    Label(label: 'Could not fetch scoreboard.'),
+                              );
+                            }
+                            return showScoreboard(
+                              context,
+                              GameData.instance.playerId!,
+                              snapshot.data[0] as List<ScoreBoardEntry>,
+                            );
+                          }
+                      }
+                    },
+                  ),
                 PrimaryButton(
                   label: 'Back',
                   onPress: () => Navigator.of(context).pop(),

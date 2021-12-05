@@ -8,15 +8,13 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class CreditsScreen extends StatelessWidget {
-  final MyGame game;
-
-  const CreditsScreen({Key? key, required this.game}) : super(key: key);
+  const CreditsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GameWidget(game: game),
+        GameWidget(game: MyGame()),
         Column(
           children: [
             SizedBox(height: 40),

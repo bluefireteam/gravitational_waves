@@ -13,9 +13,7 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class SkinsScreen extends StatefulWidget {
-  final MyGame game;
-
-  const SkinsScreen({Key? key, required this.game}) : super(key: key);
+  const SkinsScreen({Key? key}) : super(key: key);
 
   @override
   _SkinsScreenState createState() => _SkinsScreenState();
@@ -28,7 +26,7 @@ class _SkinsScreenState extends State<SkinsScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GameWidget(game: widget.game),
+        GameWidget(game: MyGame()),
         skins(context),
       ],
     );
@@ -37,9 +35,10 @@ class _SkinsScreenState extends State<SkinsScreen> {
   Widget skins(BuildContext context) {
     List<Widget> children = [];
 
-    children.add(Expanded(
-      child: Column(
+    children.add(
+      Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: 20),
           Label(
@@ -56,9 +55,13 @@ class _SkinsScreenState extends State<SkinsScreen> {
                   bool isSelected = GameData.instance.selectedSkin == v;
                   final price = skinPrice(v);
                   Sprite sprite = Char.fromSkin(v);
-                  Widget flameWidget = SpriteWidget(
-                    sprite: sprite,
-                    srcSize: Vector2(100.0, 80.0),
+                  Widget flameWidget = SizedBox(
+                    child: SpriteWidget(
+                      sprite: sprite,
+                      srcSize: Vector2(100.0, 80.0),
+                    ),
+                    width: 100.0,
+                    height: 100.0,
                   );
                   Widget widget = isOwned
                       ? flameWidget
@@ -70,8 +73,9 @@ class _SkinsScreenState extends State<SkinsScreen> {
                             ),
                             Positioned(
                               child: Label(
-                                  label: '$price gems',
-                                  fontColor: PaletteColors.blues.light),
+                                label: '$price gems',
+                                fontColor: PaletteColors.blues.light,
+                              ),
                               right: 2.0,
                               top: 2.0,
                             ),
@@ -81,6 +85,8 @@ class _SkinsScreenState extends State<SkinsScreen> {
 
                   return GRContainer(
                     padding: EdgeInsets.all(12.0),
+                    width: 128,
+                    height: 128,
                     child: GestureDetector(
                       onTap: () async {
                         if (isOwned) {
@@ -99,7 +105,7 @@ class _SkinsScreenState extends State<SkinsScreen> {
               )),
         ],
       ),
-    ));
+    );
 
     final skin = _skinToBuy;
     if (skin != null) {
@@ -146,6 +152,8 @@ class _SkinsScreenState extends State<SkinsScreen> {
     return Align(
       alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: children,
       ),
     );

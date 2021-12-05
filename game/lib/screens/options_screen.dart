@@ -9,9 +9,7 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class OptionsScreen extends StatefulWidget {
-  final MyGame game;
-
-  const OptionsScreen({Key? key, required this.game}) : super(key: key);
+  const OptionsScreen({Key? key}) : super(key: key);
 
   @override
   _OptionsScreenState createState() => _OptionsScreenState();
@@ -22,7 +20,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GameWidget(game: widget.game),
+        GameWidget(game: MyGame()),
         options(context),
       ],
     );

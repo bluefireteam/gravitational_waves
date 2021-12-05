@@ -40,7 +40,7 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
         stepTime: 0.15,
       ),
     )
-      ..currentIndex = 5; // TODO(luan) poor man's set to last frame
+      ..setToLast();
   }
 
   Sprite get sprite => getSpriteForType();
@@ -52,7 +52,7 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
   SpriteAnimation getAnimationForType(JetpackType type) {
     return type == JetpackType.REGULAR
         ? SpriteAnimation.spriteList([jetpack], stepTime: 0)
-        : pulser.reversed().reversed(); // TODO(luan) poor man's clone
+        : pulser.clone();
   }
 
   @override

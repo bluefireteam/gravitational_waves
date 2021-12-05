@@ -15,55 +15,68 @@ import '../widgets/label.dart';
 import '../widgets/slide_in_container.dart';
 
 class GameScreen extends StatefulWidget {
-  final MyGame game;
-
-  GameScreen({required this.game});
-
   @override
-  _GameScreenState createState() => _GameScreenState(game);
+  State<StatefulWidget> createState() {
+    return _GameScreenState();
+  }
 }
 
 class _GameScreenState extends State<GameScreen> {
+  MyGame? game;
   bool _playing = false;
   bool _playSection = false;
   bool _showGameOver = false;
   bool _adLoading = false;
 
-  _GameScreenState(MyGame game) {
+  @override
+  void initState() {
+    super.initState();
+    game = setupGame();
+  }
+
+  MyGame setupGame() {
+    final game = MyGame();
     game.backToMenu = () => setState(() => _playing = false);
     game.showGameOver = (bool show) {
       setState(() => _showGameOver = show);
     };
+    return game;
   }
 
   void startGame({required bool enablePowerups}) {
+    game!.powerups.enabled = enablePowerups;
+    game!.start();
+
     setState(() {
       _playSection = false;
       _playing = true;
-
-      widget.game.powerups.enabled = enablePowerups;
-      widget.game.start();
+      this.game = game;
     });
   }
 
   void handleExtraLife() async {
-    if (widget.game.hasUsedExtraLife) {
+    if (game!.hasUsedExtraLife) {
       print('You arealdy used your extra life.');
       return;
     }
     setState(() => _adLoading = true);
     final result = await Ads.showAd();
     if (result) {
-      widget.game.gainExtraLife();
+      game!.gainExtraLife();
     }
     setState(() => _adLoading = false);
   }
 
   @override
   Widget build(BuildContext context) {
+    final game = this.game;
+    if (game == null) {
+      return Container();
+    }
+
     List<Widget> children = [];
 
-    children.add(GameWidget(game: widget.game));
+    children.add(GameWidget(game: game));
 
     if (_showGameOver) {
       children.add(
@@ -74,22 +87,22 @@ class _GameScreenState extends State<GameScreen> {
             child: _adLoading
                 ? GameOverLoadingContainer()
                 : GameOverContainer(
-                    distance: widget.game.score,
-                    gems: widget.game.coins,
+                    distance: game.score,
+                    gems: game.coins,
                     showExtraLifeButton:
-                        !widget.game.hasUsedExtraLife && Ads.adLoaded(),
+                        !game.hasUsedExtraLife && Ads.adLoaded(),
                     goToMainMenu: () {
                       setState(() {
                         _showGameOver = false;
                         _playing = false;
-                        widget.game.preStart();
+                        game.preStart();
                         Audio.menuMusic();
                       });
                     },
                     playAgain: () {
                       setState(() {
                         _showGameOver = false;
-                        widget.game.restart();
+                        game.restart();
                       });
                     },
                     extraLife: handleExtraLife,

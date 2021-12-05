@@ -8,12 +8,10 @@ import 'package:oktoast/oktoast.dart';
 
 import './game/assets/char.dart';
 import './game/assets/tileset.dart';
-import './game/game.dart';
 import './screens/credits_screen.dart';
 import './screens/game_screen.dart';
 import './screens/join_scoreboard_screen.dart';
 import './screens/options_screen.dart';
-import './screens/scoreboard_screen.dart';
 import './screens/skins_screen.dart';
 import 'game/ads.dart';
 import 'game/analytics.dart';
@@ -21,6 +19,7 @@ import 'game/assets/poofs.dart';
 import 'game/audio.dart';
 import 'game/game_data.dart';
 import 'game/preferences.dart';
+import 'screens/scoreboard_screen.dart';
 import 'widgets/assets/ui_tileset.dart';
 
 void main() async {
@@ -61,14 +60,6 @@ void main() async {
 
   Analytics.log(EventName.APP_OPEN);
   Audio.menuMusic();
-  MyGame game = MyGame();
-
-  GameScreen mainMenu = GameScreen(game: game);
-  OptionsScreen options = OptionsScreen(game: game);
-  ScoreboardScreen scoreboard = ScoreboardScreen(game: game);
-  JoinScoreboardScreen joinScoreboard = JoinScoreboardScreen(game: game);
-  SkinsScreen skins = SkinsScreen(game: game);
-  CreditsScreen credits = CreditsScreen(game: game);
 
   runApp(
     OKToast(
@@ -86,20 +77,19 @@ void main() async {
                   Navigator.pushNamed(context, '/game');
                 },
               ),
-          '/options': (BuildContext ctx) => Scaffold(body: options),
-          '/skins': (BuildContext ctx) => Scaffold(body: skins),
-          '/scoreboard': (BuildContext ctx) => Scaffold(body: scoreboard),
-          '/join-scoreboard': (BuildContext ctx) =>
-              Scaffold(body: joinScoreboard),
-          '/credits': (BuildContext ctx) => Scaffold(body: credits),
+          '/options': (BuildContext ctx) => Scaffold(body: OptionsScreen()),
+          '/skins': (BuildContext ctx) => Scaffold(body: SkinsScreen()),
+          '/scoreboard': (BuildContext ctx) => Scaffold(
+                body: ScoreboardScreen(),
+              ),
+          '/join-scoreboard': (BuildContext ctx) => Scaffold(
+                body: JoinScoreboardScreen(),
+              ),
+          '/credits': (BuildContext ctx) => Scaffold(
+                body: CreditsScreen(),
+              ),
           '/game': (BuildContext ctx) => Scaffold(
-                body: WillPopScope(
-                  onWillPop: () async {
-                    game.pause();
-                    return false;
-                  },
-                  child: mainMenu,
-                ),
+                body: GameScreen(),
               ),
         },
       ),
