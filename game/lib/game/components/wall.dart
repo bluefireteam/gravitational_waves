@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:dartlin/dartlin.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
-import 'package:dartlin/dartlin.dart';
 
 import '../assets/tileset.dart';
 import '../collections.dart';
@@ -26,7 +26,7 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
 
   Wall(double x) {
     this.x = x;
-    this.y = 0;
+    y = 0;
   }
 
   @override
@@ -56,12 +56,12 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
   }
 
   void renderWall(Canvas c) {
-    double dx = 0;
-    int currentPane = currentStartingPane;
+    var dx = 0.0;
+    var currentPane = currentStartingPane;
     while (dx < gameRef.camera.position.x + gameRef.size.x + w - x) {
-      int? brokenType = brokenPanes[currentPane];
+      final brokenType = brokenPanes[currentPane];
 
-      Sprite sprite =
+      final sprite =
           brokenType != null ? Tileset.brokenWalls[brokenType] : wallSprite;
       sprite.render(c, position: Vector2(dx, startY), size: Vector2(w, h));
 
@@ -74,7 +74,7 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
   void update(double t) {
     super.update(t);
     if (x + gameRef.size.x < gameRef.player.x - gameRef.size.x) {
-      int panesToMove = gameRef.size.x ~/ w;
+      final panesToMove = gameRef.size.x ~/ w;
       x += panesToMove * w;
       currentStartingPane += panesToMove;
     }
@@ -86,7 +86,7 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
     final numberOfPanes = before ? 4 : gameRef.size.x ~/ w;
     final sign = before ? -1 : 1;
 
-    Map<int, int> newBrokenPanes = List<int>.generate(numberOfPanes, (e) => e)
+    final newBrokenPanes = List<int>.generate(numberOfPanes, (e) => e)
         .shuffled()
         .map((e) => startingPane + sign * e)
         .where((e) => !brokenPanes.containsKey(e))
@@ -95,8 +95,8 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
 
     newBrokenPanes.forEach((paneIdx, brokenType) {
       final delta = Tileset.brokenWallDeltas[brokenType];
-      double dx = x + (paneIdx - currentStartingPane) * w + delta.key;
-      double dy = startY + delta.value;
+      final dx = x + (paneIdx - currentStartingPane) * w + delta.key;
+      final dy = startY + delta.value;
       gameRef.add(BrokenGlass(dx, dy));
     });
 

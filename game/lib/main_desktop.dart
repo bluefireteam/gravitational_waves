@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 
 import './main.dart' as game;
 
-main() async {
+void main() async {
   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   game.main();
 }

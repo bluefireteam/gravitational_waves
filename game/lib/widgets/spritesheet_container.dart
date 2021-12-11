@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/widgets.dart' as Widgets;
+import 'package:flutter/widgets.dart' as widgets;
 
-class _Painter extends Widgets.CustomPainter {
+class _Painter extends widgets.CustomPainter {
   final Image spriteSheet;
   final double tileSize;
   final double destTileSize;
@@ -179,17 +177,17 @@ class _Painter extends Widgets.CustomPainter {
   bool shouldRepaint(_) => false;
 }
 
-class SpritesheetContainer extends Widgets.StatelessWidget {
-  final Widgets.Widget child;
+class SpritesheetContainer extends widgets.StatelessWidget {
+  final widgets.Widget child;
   final Image spriteSheet;
   final double tileSize;
   final double destTileSize;
 
   final double? width;
   final double? height;
-  final Widgets.EdgeInsetsGeometry? padding;
+  final widgets.EdgeInsetsGeometry? padding;
 
-  SpritesheetContainer({
+  const SpritesheetContainer({
     required this.child,
     required this.spriteSheet,
     required this.tileSize,
@@ -200,17 +198,17 @@ class SpritesheetContainer extends Widgets.StatelessWidget {
   });
 
   @override
-  Widgets.Widget build(Widgets.BuildContext context) {
-    return Widgets.Container(
+  widgets.Widget build(widgets.BuildContext context) {
+    return widgets.Container(
       width: width,
       height: height,
-      child: Widgets.CustomPaint(
+      child: widgets.CustomPaint(
         painter: _Painter(
           spriteSheet: spriteSheet,
           tileSize: tileSize,
           destTileSize: destTileSize,
         ),
-        child: Widgets.Container(
+        child: widgets.Container(
           child: child,
           padding: padding,
         ),

@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:dartlin/dartlin.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'palette.dart';
 
@@ -29,9 +32,20 @@ const GRAVITY_ACC = 2750.0;
 const STARTING_LIVES = 1;
 const SUCTION_SPEED = 35.0;
 
+Future<Map<String, dynamic>?> readPrefs(String name) async {
+  final prefs = await SharedPreferences.getInstance();
+  final pref = prefs.getString(name);
+  return pref?.let((it) => json.decode(it) as Map<String, dynamic>);
+}
+
+Future<bool> writePrefs(String name, Map<String, dynamic> value) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.setString(name, json.encode(value));
+}
+
 class Fonts {
   static final TextPaint _base = TextPaint(
-    style: TextStyle(fontFamily: 'Quantum'),
+    style: const TextStyle(fontFamily: 'Quantum'),
   );
   static final TextPaint menuTitle = _base.copyWith(
     (it) => it.copyWith(fontSize: 64.0, color: Palette.menuTitleText.color),

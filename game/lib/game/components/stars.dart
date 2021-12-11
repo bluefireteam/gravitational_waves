@@ -13,7 +13,7 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    int amount = (gameRef.size.x / w).ceil();
+    final amount = (gameRef.size.x / w).ceil();
     repeats = List.generate(amount, (_) => Tileset.stars.randomIdx(R));
 
     x = 0;
@@ -54,5 +54,5 @@ class Stars extends PositionComponent with HasGameRef<MyGame> {
   int get priority => 0;
 
   @override
-  bool get respectCamera => false;
+  PositionType get positionType => PositionType.viewport;
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'button.dart';
 import 'gr_container.dart';
@@ -10,7 +9,7 @@ class _Line extends StatelessWidget {
   final String leftLabel;
   final String rightLabel;
 
-  _Line(this.leftLabel, this.rightLabel);
+  const _Line(this.leftLabel, this.rightLabel);
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +17,16 @@ class _Line extends StatelessWidget {
       children: [
         Expanded(
           child: Label(
-            label: '$leftLabel',
+            label: leftLabel,
             fontSize: 22,
             fontColor: PaletteColors.blues.dark,
             textAlign: TextAlign.end,
           ),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
           child: Label(
-            label: '$rightLabel',
+            label: rightLabel,
             fontSize: 22,
             fontColor: PaletteColors.blues.light,
           ),
@@ -48,7 +47,7 @@ class GameOverContainer extends StatelessWidget {
   final void Function() playAgain;
   final void Function() extraLife;
 
-  GameOverContainer({
+  const GameOverContainer({
     required this.distance,
     required this.gems,
     required this.showExtraLifeButton,
@@ -70,10 +69,10 @@ class GameOverContainer extends StatelessWidget {
             fontSize: 36,
             fontColor: PaletteColors.blues.dark,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _Line('Gems', '$gems'),
           _Line('Distance', '$distance'),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           if (showExtraLifeButton)
             PrimaryButton(
               label: 'Extra life (ad)',
@@ -90,7 +89,7 @@ class GameOverContainer extends StatelessWidget {
 class GameOverLoadingContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GRContainer(
+    return const GRContainer(
       width: GameOverContainer.WIDTH,
       height: GameOverContainer.HEIGHT,
       child: Center(

@@ -37,7 +37,7 @@ class Ads {
     final promise = Completer<RewardedAd?>();
     await RewardedAd.load(
       adUnitId: adUnitId,
-      request: AdRequest(
+      request: const AdRequest(
         keywords: [
           'game',
           'gravity',
@@ -48,7 +48,7 @@ class Ads {
         ],
       ),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (RewardedAd ad) => promise.complete(ad),
+        onAdLoaded: promise.complete,
         onAdFailedToLoad: (LoadAdError error) {
           print('RewardedAd failed to load: $error');
           promise.complete(null);

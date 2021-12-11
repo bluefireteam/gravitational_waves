@@ -11,7 +11,7 @@ class GRContainer extends StatelessWidget {
 
   final EdgeInsetsGeometry? padding;
 
-  GRContainer({
+  const GRContainer({
     required this.child,
     this.width,
     this.height,

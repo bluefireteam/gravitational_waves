@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:dartlin/dartlin.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
@@ -9,22 +7,22 @@ import '../util.dart';
 import 'spritesheet.dart';
 
 enum OuterTilePosition {
-  TOP_LEFT,
-  TOP,
-  TOP_RIGHT,
-  LEFT,
-  CENTER,
-  RIGHT,
-  BOTTOM_LEFT,
-  BOTTOM,
-  BOTTOM_RIGHT
+  topLeft,
+  top,
+  topRight,
+  left,
+  center,
+  right,
+  bottomLeft,
+  bottom,
+  bottomRight
 }
 
 enum InnerTilePosition {
-  TOP_LEFT,
-  TOP_RIGHT,
-  BOTTOM_LEFT,
-  BOTTOM_RIGHT,
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight,
 }
 
 class BlockSet {
@@ -32,24 +30,25 @@ class BlockSet {
   late final Map<InnerTilePosition, Sprite> _inner;
 
   BlockSet(Spritesheet sheet, int group) {
-    final outerGn = (dx, dy) => sheet.blockGn('back-group-$group', dx, dy);
-    final innerGn = (dx, dy) => sheet.blockGn('corners-$group', dx, dy);
+    Sprite outerGn(int dx, int dy) =>
+        sheet.blockGn('back-group-$group', dx, dy);
+    Sprite innerGn(int dx, int dy) => sheet.blockGn('corners-$group', dx, dy);
     _outer = {
-      OuterTilePosition.TOP_LEFT: outerGn(0, 0),
-      OuterTilePosition.TOP: outerGn(1, 0),
-      OuterTilePosition.TOP_RIGHT: outerGn(2, 0),
-      OuterTilePosition.LEFT: outerGn(0, 1),
-      OuterTilePosition.CENTER: outerGn(1, 1),
-      OuterTilePosition.RIGHT: outerGn(2, 1),
-      OuterTilePosition.BOTTOM_LEFT: outerGn(0, 2),
-      OuterTilePosition.BOTTOM: outerGn(1, 2),
-      OuterTilePosition.BOTTOM_RIGHT: outerGn(2, 2),
+      OuterTilePosition.topLeft: outerGn(0, 0),
+      OuterTilePosition.top: outerGn(1, 0),
+      OuterTilePosition.topRight: outerGn(2, 0),
+      OuterTilePosition.left: outerGn(0, 1),
+      OuterTilePosition.center: outerGn(1, 1),
+      OuterTilePosition.right: outerGn(2, 1),
+      OuterTilePosition.bottomLeft: outerGn(0, 2),
+      OuterTilePosition.bottom: outerGn(1, 2),
+      OuterTilePosition.bottomRight: outerGn(2, 2),
     };
     _inner = {
-      InnerTilePosition.TOP_LEFT: innerGn(0, 0),
-      InnerTilePosition.TOP_RIGHT: innerGn(1, 0),
-      InnerTilePosition.BOTTOM_LEFT: innerGn(0, 1),
-      InnerTilePosition.BOTTOM_RIGHT: innerGn(1, 1),
+      InnerTilePosition.topLeft: innerGn(0, 0),
+      InnerTilePosition.topRight: innerGn(1, 0),
+      InnerTilePosition.bottomLeft: innerGn(0, 1),
+      InnerTilePosition.bottomRight: innerGn(1, 1),
     };
   }
 
@@ -69,7 +68,10 @@ class Tileset {
 
   static late final Sprite wall;
   static late final List<Sprite> brokenWalls;
-  static late final List<Pair<int, int>> brokenWallDeltas;
+  static const List<Pair<int, int>> brokenWallDeltas = [
+    Pair(3 * BLOCK_SIZE_INT, 2 * BLOCK_SIZE_INT),
+    Pair(1 * BLOCK_SIZE_INT, 3 * BLOCK_SIZE_INT),
+  ];
 
   static late final List<Sprite> planets;
   static late final List<Sprite> stars;
@@ -79,10 +81,6 @@ class Tileset {
 
     wall = _sheet.sprite('wall-pattern');
     brokenWalls = _sheet.generate('broken-wall-pattern');
-    brokenWallDeltas = [
-      Pair(3 * BLOCK_SIZE_INT, 2 * BLOCK_SIZE_INT),
-      Pair(1 * BLOCK_SIZE_INT, 3 * BLOCK_SIZE_INT),
-    ];
 
     blocks = [1, 2].map((i) => BlockSet(_sheet, i)).toList();
     planets = _sheet.generate('back-props');

@@ -24,9 +24,9 @@ class ScoreBoardEntry {
 
   static ScoreBoardEntry fromJson(Map<String, dynamic> json) {
     return ScoreBoardEntry(
-      skin: parseSkin(json['metadata']),
+      skin: parseSkin(json['metadata'] as String),
       score: (json['score'] as double).toInt(),
-      playerId: json['playerId'],
+      playerId: json['playerId'] as String,
     );
   }
 }
@@ -45,11 +45,11 @@ class ScoreBoard {
       return [];
     }
     final _uuid = await getUuid();
-    Response resp = await Dio().get('$host/scores/$_uuid?sortOrder=DESC');
+    final resp = await Dio().get<List>('$host/scores/$_uuid?sortOrder=DESC');
 
     final data = resp.data;
-    if (data is List) {
-      return data.map((entry) => ScoreBoardEntry.fromJson(entry)).toList();
+    if (data is List<Map<String, dynamic>>) {
+      return data.map(ScoreBoardEntry.fromJson).toList();
     }
 
     return [];
@@ -61,13 +61,13 @@ class ScoreBoard {
     }
 
     final _uuid = await getUuid();
-    Response resp = await Dio()
-        .get('$host/scores/$_uuid?sortOrder=DESC&playerId=$playerId');
+    final resp = await Dio()
+        .get<List>('$host/scores/$_uuid?sortOrder=DESC&playerId=$playerId');
 
     final data = resp.data;
 
     if (data is List) {
-      return data.length == 0;
+      return data.isEmpty;
     }
 
     throw 'Could not check player id availability';
@@ -77,7 +77,7 @@ class ScoreBoard {
     int score, {
     bool forceSubmission = false,
   }) async {
-    final GameData data = GameData.instance;
+    final data = GameData.instance;
     final lastSubmittedScore = data.highScore;
 
     await data.addScore(score);
@@ -91,20 +91,22 @@ class ScoreBoard {
         score > lastSubmittedScore) {
       // Get the token
       final _uuid = await getUuid();
-      final tokenResponse = await Dio().get('$host/scores/token/$_uuid');
-      final token = tokenResponse.data['token'] as String;
+      final tokenResponse = await Dio().get<Map>('$host/scores/token/$_uuid');
+      final token = tokenResponse.data?['token'] as String;
 
       final playerId = data.playerId;
 
       if (playerId != null) {
-        final submitResponse = await Dio().put(
+        final submitResponse = await Dio().put<void>(
           '$host/scores',
           data: {
             'playerId': playerId,
             'score': score,
             'metadata': data.selectedSkin.toString(),
           },
-          options: Options(headers: {'Authorization': 'Bearer $token'}),
+          options: Options(
+            headers: <String, String>{'Authorization': 'Bearer $token'},
+          ),
         );
 
         if (submitResponse.statusCode != 204) {

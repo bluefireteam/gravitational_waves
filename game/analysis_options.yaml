@@ -1,1 +1,9 @@
 include: package:flame_lint/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+
+linter:
+  rules:
+    constant_identifier_names: false

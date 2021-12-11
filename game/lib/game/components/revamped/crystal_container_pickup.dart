@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 
 import '../../game.dart';
 import '../../util.dart';
@@ -23,9 +22,9 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
   CrystalContainerPickup(double x, double y) {
     this.x = x;
     this.y = y;
-    this.width = BLOCK_SIZE / 2;
-    this.height = BLOCK_SIZE;
-    this.anchor = Anchor.center;
+    width = BLOCK_SIZE / 2;
+    height = BLOCK_SIZE;
+    anchor = Anchor.center;
   }
 
   @override
@@ -42,6 +41,7 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
     );
   }
 
+  @override
   Sprite get sprite => animation.getSprite();
 
   @override
@@ -80,14 +80,14 @@ class CrystalContainerPickup extends SpriteComponent with HasGameRef<MyGame> {
   }
 
   void spawnRandomCrystal() {
-    double startX = gameRef.player.x + BLOCK_SIZE;
-    double endX = startX + gameRef.size.x / 2;
-    double randomX = startX + R.nextDouble() * (endX - startX);
-    Rect column =
+    final startX = gameRef.player.x + BLOCK_SIZE;
+    final endX = startX + gameRef.size.x / 2;
+    final randomX = startX + R.nextDouble() * (endX - startX);
+    final column =
         gameRef.findBackgroundForX(randomX).findRectContaining(randomX);
-    bool top = R.nextBool();
-    double x = column.left + column.size.width / 2;
-    double y =
+    final top = R.nextBool();
+    final x = column.left + column.size.width / 2;
+    final y =
         top ? column.top + BLOCK_SIZE / 2 : column.bottom - BLOCK_SIZE / 2;
     if (!gameRef.children.any((e) => e is Coin && e.overlaps(x, y))) {
       gameRef.add(Poof(x, y));

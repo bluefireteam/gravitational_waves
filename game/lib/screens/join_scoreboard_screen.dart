@@ -20,7 +20,7 @@ class JoinScoreboardScreen extends StatefulWidget {
 class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
   final playerIdTextController = TextEditingController();
 
-  String _status = "";
+  String _status = '';
 
   @override
   void dispose() {
@@ -66,7 +66,7 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
         forceSubmission: true,
       );
 
-      Navigator.pushReplacementNamed(context, "/scoreboard");
+      Navigator.pushReplacementNamed(context, '/scoreboard');
     }
   }
 
@@ -88,7 +88,7 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
           width: 500,
           child: Column(
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Label(
                 label: 'Choose your player ID:',
                 fontSize: 22,
@@ -116,17 +116,16 @@ class _JoinScoreboardScreenState extends State<JoinScoreboardScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Label(
-                fontSize: 12,
                 label:
-                    """By joining the scoreboard you agree that we collect your score,
+                    '''By joining the scoreboard you agree that we collect your score,
 your selected player skin and the choosen player id on the field above.
 Those informations are only used for the display of the scoreboard.
-                      """,
+                      ''',
                 fontColor: PaletteColors.blues.light,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -140,16 +139,19 @@ Those informations are only used for the display of the scoreboard.
               label: 'Check availability',
               onPress: _checkPlayerIdAvailability,
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              PrimaryButton(
-                label: 'Join',
-                onPress: _join,
-              ),
-              SecondaryButton(
-                label: 'Cancel',
-                onPress: () => Navigator.of(context).pop(),
-              ),
-            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrimaryButton(
+                  label: 'Join',
+                  onPress: _join,
+                ),
+                SecondaryButton(
+                  label: 'Cancel',
+                  onPress: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
           ],
         ),
       ],

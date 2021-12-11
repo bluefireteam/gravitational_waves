@@ -19,10 +19,10 @@ class AnimationElement {
   Map<String, dynamic> toJson() => _$AnimationElementToJson(this);
 
   Sprite sprite(Image image) {
-    double x = this.x * _SRC_SIZE;
-    double y = this.y * _SRC_SIZE;
-    double w = this.w * _SRC_SIZE;
-    double h = this.h * _SRC_SIZE;
+    final x = this.x * _SRC_SIZE;
+    final y = this.y * _SRC_SIZE;
+    final w = this.w * _SRC_SIZE;
+    final h = this.h * _SRC_SIZE;
     return Sprite(
       image,
       srcPosition: Vector2(x, y),
@@ -31,10 +31,10 @@ class AnimationElement {
   }
 
   SpriteAnimation animation(Image image) {
-    double x = this.x * _SRC_SIZE;
-    double y = this.y * _SRC_SIZE;
-    double w = this.w * _SRC_SIZE;
-    double h = this.h * _SRC_SIZE;
+    final x = this.x * _SRC_SIZE;
+    final y = this.y * _SRC_SIZE;
+    final w = this.w * _SRC_SIZE;
+    final h = this.h * _SRC_SIZE;
     return SpriteAnimation.fromFrameData(
       image,
       SpriteAnimationData.sequenced(
@@ -66,7 +66,7 @@ class Spritesheet {
 
   static Future<Spritesheet> parse(String fileName) async {
     final content = await Flame.assets.readJson('images/$fileName.json');
-    AnimationsJson animations = AnimationsJson.fromJson(content);
+    final animations = AnimationsJson.fromJson(content);
     final image = await Flame.images.load('$fileName.png');
     return Spritesheet._(image, animations);
   }
@@ -81,8 +81,8 @@ class Spritesheet {
 
   Sprite blockGn(String name, int dx, int dy) {
     final animation = _animations.animations[name]!;
-    double x = (animation.x + dx) * _SRC_SIZE;
-    double y = (animation.y + dy) * _SRC_SIZE;
+    final x = (animation.x + dx) * _SRC_SIZE;
+    final y = (animation.y + dy) * _SRC_SIZE;
     return Sprite(
       _image,
       srcPosition: Vector2(x, y),
@@ -91,10 +91,10 @@ class Spritesheet {
   }
 
   List<Sprite> generate(String name) {
-    List<Sprite> list = [];
-    int i = 1;
+    final list = <Sprite>[];
+    var i = 1;
     while (true) {
-      String key = '$name-$i';
+      final key = '$name-$i';
       if (!_animations.animations.containsKey(key)) {
         break;
       }

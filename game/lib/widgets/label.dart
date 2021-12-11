@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'palette.dart';
@@ -25,7 +24,7 @@ class Link extends StatelessWidget {
   final String link;
   final double fontSize;
 
-  Link({required this.link, required this.fontSize});
+  const Link({required this.link, required this.fontSize});
 
   @override
   Widget build(BuildContext context) => GestureDetector(

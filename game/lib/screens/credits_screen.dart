@@ -17,9 +17,9 @@ class CreditsScreen extends StatelessWidget {
         GameWidget(game: MyGame()),
         Column(
           children: [
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Label(
-              label: "Credits",
+              label: 'Credits',
               fontSize: 28,
               fontColor: PaletteColors.blues.light,
             ),
@@ -36,12 +36,12 @@ class CreditsScreen extends StatelessWidget {
                             width: 200,
                           ),
                           Label(
-                            label: "Game made by Fireslime",
+                            label: 'Game made by Fireslime',
                             fontSize: 18,
                             fontColor: PaletteColors.blues.light,
                           ),
-                          Link(
-                            link: "https://fireslime.xyz",
+                          const Link(
+                            link: 'https://fireslime.xyz',
                             fontSize: 18,
                           )
                         ],
@@ -54,17 +54,17 @@ class CreditsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Label(
-                            label: "Music by ©2019 Joshua McLean",
+                            label: 'Music by ©2019 Joshua McLean',
                             fontSize: 16,
                             fontColor: PaletteColors.blues.light,
                           ),
                           Label(
-                            label: "Licensed under CC BY 4.0",
+                            label: 'Licensed under CC BY 4.0',
                             fontSize: 16,
                             fontColor: PaletteColors.blues.light,
                           ),
-                          Link(
-                            link: "http://mrjoshuamclean.com",
+                          const Link(
+                            link: 'http://mrjoshuamclean.com',
                             fontSize: 16,
                           ),
                         ],

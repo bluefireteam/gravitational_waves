@@ -41,13 +41,13 @@ class Tutorial extends Component with HasGameRef<MyGame> {
 
     final gameSize = gameRef.size;
 
-    Vector2 p1 = Vector2(gameSize.x / 2, gameSize.y - 48.0 - 48.0);
+    final p1 = Vector2(gameSize.x / 2, gameSize.y - 48.0 - 48.0);
     Fonts.tutorial.render(c, 'Tap to change', p1, anchor: Anchor.bottomCenter);
 
-    Vector2 p2 = Vector2(gameSize.x / 2, gameSize.y - 32.0 - 48.0);
+    final p2 = Vector2(gameSize.x / 2, gameSize.y - 32.0 - 48.0);
     Fonts.tutorial.render(c, 'gravity', p2, anchor: Anchor.bottomCenter);
 
-    Vector2 p3 = Vector2(gameSize.x / 2, gameSize.y - 16.0 - 48.0);
+    final p3 = Vector2(gameSize.x / 2, gameSize.y - 16.0 - 48.0);
     animation?.getSprite().render(c, position: p3);
   }
 
@@ -61,5 +61,5 @@ class Tutorial extends Component with HasGameRef<MyGame> {
   int get priority => 7;
 
   @override
-  bool get respectCamera => false;
+  PositionType get positionType => PositionType.viewport;
 }

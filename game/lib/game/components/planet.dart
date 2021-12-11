@@ -7,22 +7,22 @@ import '../util.dart';
 
 class Planet extends SpriteComponent with HasGameRef<MyGame> {
   Planet() {
-    this.sprite = Tileset.planets.sample(R);
-    this.width = sprite!.srcSize.x;
-    this.height = sprite!.srcSize.y;
+    sprite = Tileset.planets.sample(R);
+    width = sprite!.srcSize.x;
+    height = sprite!.srcSize.y;
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    this.x = gameRef.size.x + width;
-    this.y = R.nextDouble() * (gameRef.size.y - height);
+    x = gameRef.size.x + width;
+    y = R.nextDouble() * (gameRef.size.y - height);
   }
 
   @override
   void update(double t) {
     super.update(t);
-    this.x -= PLANET_SPEED * t;
+    x -= PLANET_SPEED * t;
 
     if (x < -width) {
       removeFromParent();
@@ -33,5 +33,5 @@ class Planet extends SpriteComponent with HasGameRef<MyGame> {
   int get priority => 1;
 
   @override
-  bool get respectCamera => false;
+  PositionType get positionType => PositionType.viewport;
 }

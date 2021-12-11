@@ -22,15 +22,15 @@ class Hud extends Component with HasGameRef<MyGame> {
 
   @override
   void render(Canvas c) {
-    if (gameRef.paused) {
+    if (gameRef.gamePaused) {
       return;
     }
 
     super.render(c);
-    final p1 = "${gameRef.score}m";
-    final p2 = "x${gameRef.coins}";
+    final p1 = '${gameRef.score}m';
+    final p2 = 'x${gameRef.coins}';
 
-    double coinSpace = MARGIN + Coin.SIZE;
+    const coinSpace = MARGIN + Coin.SIZE;
 
     final tp1 = Fonts.hud.toTextPainter(p1);
     final tp2 = Fonts.hud.toTextPainter(p2);
@@ -47,15 +47,15 @@ class Hud extends Component with HasGameRef<MyGame> {
 
     Fonts.hud.render(c, p1, Vector2(x1, MARGIN));
 
-    Vector2 p = Vector2(x2, (height - Coin.SIZE) / 2);
-    Vector2 size = Vector2(Coin.SIZE, Coin.SIZE);
+    final p = Vector2(x2, (height - Coin.SIZE) / 2);
+    final size = Vector2(Coin.SIZE, Coin.SIZE);
     coin.render(c, position: p, size: size);
 
     Fonts.hud.render(c, p2, Vector2(x3, MARGIN));
   }
 
   @override
-  bool get respectCamera => false;
+  PositionType get positionType => PositionType.viewport;
 
   @override
   int get priority => 6;
