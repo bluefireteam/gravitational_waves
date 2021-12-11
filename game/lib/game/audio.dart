@@ -1,6 +1,5 @@
-import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flame/flame.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import 'preferences.dart';
 import 'util.dart';
@@ -8,14 +7,13 @@ import 'util.dart';
 class Audio {
   static final AudioCache musicPlayer = _createLoopingPlayer(prefix: 'audio/');
 
-  static AudioCache _createLoopingPlayer({String prefix}) {
+  static AudioCache _createLoopingPlayer({required String prefix}) {
     AudioPlayer player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.LOOP);
     return AudioCache(prefix: prefix, fixedPlayer: player);
   }
 
   static Future init() async {
-    Flame.audio.disableLog();
     if (!ENABLE_AUDIO) return;
   }
 
@@ -31,7 +29,7 @@ class Audio {
     if (!ENABLE_AUDIO) return;
     if (!Preferences.instance.soundOn) return;
 
-    Flame.audio.play('sfx/$sound');
+    FlameAudio.play('sfx/$sound');
   }
 
   static void music(String song) async {
@@ -41,15 +39,15 @@ class Audio {
   }
 
   static void stopMusic() async {
-    await musicPlayer.fixedPlayer.stop();
+    await musicPlayer.fixedPlayer?.stop();
   }
 
   static void pauseMusic() async {
-    await musicPlayer.fixedPlayer.pause();
+    await musicPlayer.fixedPlayer?.pause();
   }
 
   static void resumeMusic() async {
-    await musicPlayer.fixedPlayer.resume();
+    await musicPlayer.fixedPlayer?.resume();
   }
 
   static void gameMusic() async {

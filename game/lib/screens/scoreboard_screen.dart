@@ -1,4 +1,5 @@
-import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../game/assets/char.dart';
@@ -10,9 +11,7 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class ScoreboardScreen extends StatefulWidget {
-  final MyGame game;
-
-  const ScoreboardScreen({Key key, this.game}) : super(key: key);
+  const ScoreboardScreen({Key? key}) : super(key: key);
 
   @override
   _ScoreboardScreenState createState() => _ScoreboardScreenState();
@@ -23,7 +22,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget.game.widget,
+        GameWidget(game: MyGame()),
         scoreboard(context),
       ],
     );
@@ -40,41 +39,49 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
               children: [
                 SizedBox(height: 10),
                 Label(
-                    label: "Scoreboard",
+                  label: "Scoreboard",
+                  fontColor: PaletteColors.blues.light,
+                  fontSize: 36,
+                ),
+                if (!ENABLE_SCOREBOARD)
+                  Label(
+                    label: 'Scoreboard is disabeld for this build.',
                     fontColor: PaletteColors.blues.light,
-                    fontSize: 36),
-                FutureBuilder(
-                  future: Future.wait([
-                    ScoreBoard.fetchScoreboard(),
-                  ]),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                      case ConnectionState.active:
-                        {
-                          return Center(
-                            child: Label(label: 'Loading results...'),
-                          );
-                        }
-                      case ConnectionState.done:
-                        {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
+                    fontSize: 24,
+                  )
+                else
+                  FutureBuilder(
+                    future: Future.wait([
+                      ScoreBoard.fetchScoreboard(),
+                    ]),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                        case ConnectionState.active:
+                          {
                             return Center(
-                              child:
-                                  Label(label: 'Could not fetch scoreboard.'),
+                              child: Label(label: 'Loading results...'),
                             );
                           }
-                          return showScoreboard(
+                        case ConnectionState.done:
+                          {
+                            if (snapshot.hasError) {
+                              print(snapshot.error);
+                              return Center(
+                                child:
+                                    Label(label: 'Could not fetch scoreboard.'),
+                              );
+                            }
+                            return showScoreboard(
                               context,
-                              GameData.instance.playerId,
-                              snapshot.data[0] as List<ScoreBoardEntry>);
-                        }
-                    }
-                    throw 'Invalid connection state ${snapshot.connectionState}';
-                  },
-                ),
+                              GameData.instance.playerId!,
+                              snapshot.data[0] as List<ScoreBoardEntry>,
+                            );
+                          }
+                      }
+                    },
+                  ),
                 PrimaryButton(
                   label: 'Back',
                   onPress: () => Navigator.of(context).pop(),
@@ -89,7 +96,10 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
   }
 
   Widget showScoreboard(
-      BuildContext context, String playerId, List<ScoreBoardEntry> entries) {
+    BuildContext context,
+    String? playerId,
+    List<ScoreBoardEntry>? entries,
+  ) {
     Color fontColor(ScoreBoardEntry entry) => entry.playerId == playerId
         ? PaletteColors.pinks.dark
         : PaletteColors.blues.light;
@@ -113,10 +123,10 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     SizedBox(width: 5),
-                    entry.value.skin != null
-                        ? (Flame.util.spriteAsWidget(
-                            Size(60.0, 40.0), Char.fromSkin(entry.value.skin)))
-                        : SizedBox(width: 60, height: 40),
+                    SpriteWidget(
+                      sprite: Char.fromSkin(entry.value.skin),
+                      srcSize: Vector2(60.0, 40.0),
+                    ),
                     Label(
                       fontColor: fontColor(entry.value),
                       label: '#${entry.key + 1}',

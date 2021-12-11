@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:flame/position.dart';
+import 'package:dartlin/dartlin.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/sprite.dart';
 
 import '../collections.dart';
@@ -27,8 +28,8 @@ enum InnerTilePosition {
 }
 
 class BlockSet {
-  Map<OuterTilePosition, Sprite> _outer;
-  Map<InnerTilePosition, Sprite> _inner;
+  late final Map<OuterTilePosition, Sprite> _outer;
+  late final Map<InnerTilePosition, Sprite> _inner;
 
   BlockSet(Spritesheet sheet, int group) {
     final outerGn = (dx, dy) => sheet.blockGn('back-group-$group', dx, dy);
@@ -53,25 +54,25 @@ class BlockSet {
   }
 
   void renderOuter(Canvas c, OuterTilePosition pos, double dx, double dy) {
-    _outer[pos].renderPosition(c, Position(dx, dy));
+    _outer[pos]!.render(c, position: Vector2(dx, dy));
   }
 
   void renderInner(Canvas c, InnerTilePosition pos, double dx, double dy) {
-    _inner[pos].renderPosition(c, Position(dx, dy));
+    _inner[pos]!.render(c, position: Vector2(dx, dy));
   }
 }
 
 class Tileset {
-  static Spritesheet _sheet;
+  static late final Spritesheet _sheet;
 
-  static List<BlockSet> blocks;
+  static late final List<BlockSet> blocks;
 
-  static Sprite wall;
-  static List<Sprite> brokenWalls;
-  static List<Pair<int, int>> brokenWallDeltas;
+  static late final Sprite wall;
+  static late final List<Sprite> brokenWalls;
+  static late final List<Pair<int, int>> brokenWallDeltas;
 
-  static List<Sprite> planets;
-  static List<Sprite> stars;
+  static late final List<Sprite> planets;
+  static late final List<Sprite> stars;
 
   static Future init() async {
     _sheet = await Spritesheet.parse('tileset');

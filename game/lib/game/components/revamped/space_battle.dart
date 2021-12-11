@@ -1,52 +1,50 @@
-import 'dart:ui';
-
-import 'package:flame/components/animation_component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/components/mixins/resizable.dart';
+import 'package:flame/components.dart';
 
 import '../../game.dart';
 import '../../util.dart';
 
-class SpaceBattle extends AnimationComponent with HasGameRef<MyGame>, Resizable {
+class SpaceBattle extends SpriteAnimationComponent with HasGameRef<MyGame> {
   static const S = 1.0;
   static const TX_W = 112.0;
   static const TX_H = 80.0;
 
   bool spawnedShip = false;
-  bool shouldDestroy = false;
 
-  SpaceBattle(Size size)
-      : super.sequenced(S * TX_W, S * TX_H, 'spacebattle.png', 12,
-            textureWidth: TX_W, textureHeight: TX_H, stepTime: 0.15) {
-    this.x = size.width + width;
-    this.y = (size.height - height) / 2 + (R.nextDouble() - 0.5) * height / 2;
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await SpriteAnimation.load(
+      'spacebattle.png',
+      SpriteAnimationData.sequenced(
+        amount: 12,
+        textureSize: Vector2(TX_W, TX_H),
+        stepTime: 0.15,
+      ),
+    );
+    size = Vector2(S * TX_W, S * TX_H);
+    x = gameRef.size.x + width;
+    y = (gameRef.size.y - height) / 2 + (R.nextDouble() - 0.5) * height / 2;
   }
 
   @override
   void update(double t) {
-    if (shouldDestroy) {
-      return;
-    }
-
     super.update(t);
     x -= SHIPS_SPEED * t;
 
-    if (!spawnedShip && x < (size.width - width) / 2) {
+    if (!spawnedShip && x < (gameRef.size.x - width) / 2) {
       gameRef.powerups.spawnFiringShip();
       spawnedShip = true;
     }
 
     if (x < -width) {
-      shouldDestroy = true;
+      removeFromParent();
     }
   }
 
   @override
-  int priority() => 1;
+  int get priority => 1;
 
   @override
-  bool isHud() => true;
-
-  @override
-  bool destroy() => shouldDestroy;
+  bool get respectCamera => false;
 }

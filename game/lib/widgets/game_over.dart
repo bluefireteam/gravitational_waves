@@ -49,12 +49,12 @@ class GameOverContainer extends StatelessWidget {
   final void Function() extraLife;
 
   GameOverContainer({
-    @required this.distance,
-    @required this.gems,
-    @required this.showExtraLifeButton,
-    @required this.goToMainMenu,
-    @required this.playAgain,
-    @required this.extraLife,
+    required this.distance,
+    required this.gems,
+    required this.showExtraLifeButton,
+    required this.goToMainMenu,
+    required this.playAgain,
+    required this.extraLife,
   });
 
   @override

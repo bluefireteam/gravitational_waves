@@ -5,7 +5,7 @@ class Column {
   static const OFFSET = 5;
 
   int bottom, top;
-  int bottomVariant, topVariant;
+  late int bottomVariant, topVariant;
 
   Column(this.bottom, this.top) {
     bottomVariant = Tileset.randomVariant();

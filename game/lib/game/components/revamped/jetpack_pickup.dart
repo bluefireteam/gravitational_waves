@@ -1,7 +1,4 @@
-import 'package:flame/anchor.dart';
-import 'package:flame/animation.dart';
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
+import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 
 import '../../game.dart';
@@ -10,24 +7,17 @@ import '../../util.dart';
 enum JetpackType { REGULAR, PULSER }
 
 class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
-  static final Sprite jetpack = Sprite('jetpack.png');
-  static final Animation pulser = Animation.sequenced(
-    'pulser.png',
-    6,
-    textureWidth: 16,
-    textureHeight: 16,
-    loop: false,
-  )..currentIndex = 5; // TODO(luan) poor man's set to last frame
-
   static const HOVER_TIME = 1.0;
   static const HOVER_DISTANCE = 4;
 
   static const JETPACK_DURATION = 15.0;
 
+  late final Sprite jetpack;
+  late final SpriteAnimation pulser;
+
   JetpackType type;
   double hoverClock = 0.0;
-  double startY;
-  bool shouldDestroy = false;
+  late double startY;
 
   JetpackPickup(this.type, double x, double y) {
     this.x = x;
@@ -36,22 +26,37 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
     this.anchor = Anchor.center;
   }
 
-  Sprite get sprite => getSpriteForType(type);
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
 
-  static Sprite getSpriteForType(JetpackType type) {
+    jetpack = await Sprite.load('jetpack.png');
+    pulser = await SpriteAnimation.load(
+      'pulser.png',
+      SpriteAnimationData.sequenced(
+        amount: 6,
+        textureSize: Vector2.all(16),
+        loop: false,
+        stepTime: 0.15,
+      ),
+    )
+      ..setToLast();
+  }
+
+  Sprite get sprite => getSpriteForType();
+
+  Sprite getSpriteForType() {
     return type == JetpackType.REGULAR ? jetpack : pulser.frames[0].sprite;
   }
 
-  static Animation getAnimationForType(JetpackType type) {
+  SpriteAnimation getAnimationForType(JetpackType type) {
     return type == JetpackType.REGULAR
-        ? Animation.spriteList([jetpack])
-        : pulser.reversed().reversed(); // TODO(luan) poor man's clone
+        ? SpriteAnimation.spriteList([jetpack], stepTime: 0)
+        : pulser.clone();
   }
 
   @override
   void update(double t) {
-    if (shouldDestroy) return;
-
     super.update(t);
 
     hoverClock = (hoverClock + t / HOVER_TIME) % 1.0;
@@ -63,13 +68,10 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
       gameRef.player.jetpackAnimation = getAnimationForType(type);
       gameRef.player.jetpackTimeout = JETPACK_DURATION;
       gameRef.player.hovering = false;
-      shouldDestroy = true;
+      removeFromParent();
     }
   }
 
   @override
-  int priority() => 4;
-
-  @override
-  bool destroy() => shouldDestroy;
+  int get priority => 4;
 }

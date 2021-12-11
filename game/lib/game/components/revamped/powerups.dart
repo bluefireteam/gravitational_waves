@@ -1,4 +1,6 @@
-import 'package:flame/position.dart';
+import 'package:dartlin/collections.dart';
+import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
 import '../../collections.dart';
 import '../../game.dart';
@@ -10,23 +12,30 @@ import 'firing_ship.dart';
 import 'jetpack_pickup.dart';
 import 'space_battle.dart';
 
-class Powerups {
+class Powerups extends Component with HasGameRef<MyGame> {
   static Spawner spaceBattleSpawner = Spawner(0.015);
   static Spawner jetpackSpawner = Spawner(0.5);
   static Spawner crystalContainerSpawner = Spawner(0.15);
 
-  MyGame game;
   bool enabled = false;
+  bool hasSpaceBattle = false;
 
-  bool hasSpaceBattle;
-
-  Powerups(this.game);
+  Powerups();
 
   void reset() {
     hasSpaceBattle = false;
   }
 
-  void maybeGeneratePowerups(double dt) {
+  @override
+  void update(double dt) {
+    if (gameRef.sleeping) {
+      return;
+    }
+    super.update(dt);
+    _maybeGeneratePowerups(dt);
+  }
+
+  void _maybeGeneratePowerups(double dt) {
     if (!enabled) {
       return;
     }
@@ -34,42 +43,43 @@ class Powerups {
     if (!hasSpaceBattle) {
       spaceBattleSpawner.maybeSpawn(dt, () {
         hasSpaceBattle = true;
-        game.addLater(SpaceBattle(game.size));
+        gameRef.add(SpaceBattle());
       });
     }
 
     jetpackSpawner.maybeSpawn(dt, () {
-      Position p = maybeGetOffscreenPosition();
+      Vector2? p = maybeGetOffscreenPosition();
       if (p != null) {
         final type = JetpackType.values.sample(R);
-        game.addLater(JetpackPickup(type, p.x, p.y));
+        gameRef.add(JetpackPickup(type, p.x, p.y));
       }
     });
 
     crystalContainerSpawner.maybeSpawn(dt, () {
-      Position p = maybeGetOffscreenPosition();
+      Vector2? p = maybeGetOffscreenPosition();
       if (p != null) {
-        game.addLater(CrystalContainerPickup(p.x, p.y));
+        gameRef.add(CrystalContainerPickup(p.x, p.y));
       }
     });
   }
 
-  Position maybeGetOffscreenPosition() {
-    double offscreenX = game.camera.x + game.size.width + 1;
-    Background firstOffscreen =
-        game.components.firstOrNull((c) => c is Background && c.x > offscreenX);
+  Vector2? maybeGetOffscreenPosition() {
+    double offscreenX = gameRef.camera.position.x + gameRef.size.x + 1;
+    Background? firstOffscreen = gameRef.children
+        .whereType<Background>()
+        .firstOrNull((c) => c.x > offscreenX);
     if (firstOffscreen == null) {
       return null;
     }
     int idx = firstOffscreen.columns.randomIdx(R);
     double x = firstOffscreen.x + (idx + 0.5) * BLOCK_SIZE;
     double y = firstOffscreen.columns[idx].randomYHeight() + BLOCK_SIZE / 2;
-    return Position(x, y);
+    return Vector2(x, y);
   }
 
   void spawnFiringShip() {
-    if (!game.sleeping) {
-      game.addLater(FiringShip(game.size));
+    if (!gameRef.sleeping) {
+      gameRef.add(FiringShip());
     }
   }
 }

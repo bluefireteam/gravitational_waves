@@ -1,27 +1,27 @@
 import 'dart:ui';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
 import 'palette.dart';
 import 'util.dart';
 
 class PauseOverlay {
-  static final Paint _filled = Palette.hud.paint..strokeWidth = 4.0;
-  static final Paint _hollow = Palette.hud.paint
+  static final Paint _filled = Palette.hud.paint()..strokeWidth = 4.0;
+  static final Paint _hollow = Palette.hud.paint()
     ..strokeWidth = 6.0
     ..style = PaintingStyle.stroke;
 
-  static void render(Canvas c, Size size, bool showMessage) {
-    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), _hollow);
+  static void render(Canvas c, Vector2 size, bool showMessage) {
+    c.drawRect(Rect.fromLTWH(0.0, 0.0, size.x, size.y), _hollow);
 
-    final xOffset = size.width - 8.0;
+    final xOffset = size.x - 8.0;
     final yOffset = 8.0;
     c.drawRect(Rect.fromLTWH(xOffset - 14.0, yOffset, 4.0, 18.0), _filled);
     c.drawRect(Rect.fromLTWH(xOffset - 4.0, yOffset, 4.0, 18.0), _filled);
 
     if (showMessage) {
-      Position p = Position(size.width / 2, size.height / 2);
+      Vector2 p = Vector2(size.x / 2, size.y / 2);
       Fonts.tutorial.render(c, 'Tap to resume', p, anchor: Anchor.center);
     }
   }

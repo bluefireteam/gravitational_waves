@@ -1,15 +1,12 @@
 import 'dart:ui';
 
-import 'package:flame/anchor.dart';
-import 'package:flame/animation.dart';
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/resizable.dart';
-import 'package:flame/position.dart';
+import 'package:flame/components.dart';
 
 import '../column.dart';
+import '../game.dart';
 import '../util.dart';
 
-class Tutorial extends Component with Resizable {
+class Tutorial extends Component with HasGameRef<MyGame> {
   static final positions = [64 - 6, 64 + 12]
       .map((e) => (-CHUNCK_SIZE / 2.0 + e) * BLOCK_SIZE)
       .toList();
@@ -22,42 +19,47 @@ class Tutorial extends Component with Resizable {
         List.generate(8, (_) => Column(0, 0));
   }
 
-  bool destroyed = false;
-  Animation animation = Animation.sequenced(
-    'hand.png',
-    2,
-    textureWidth: 32.0,
-    textureHeight: 48.0,
-    stepTime: 0.6,
-  );
+  SpriteAnimation? animation;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await SpriteAnimation.load(
+      'hand.png',
+      SpriteAnimationData.sequenced(
+        amount: 2,
+        textureSize: Vector2(32.0, 48.0),
+        stepTime: 0.6,
+      ),
+    );
+  }
 
   @override
   void render(Canvas c) {
-    Position p1 = Position(size.width / 2, size.height - 48.0 - 48.0);
+    super.render(c);
+
+    final gameSize = gameRef.size;
+
+    Vector2 p1 = Vector2(gameSize.x / 2, gameSize.y - 48.0 - 48.0);
     Fonts.tutorial.render(c, 'Tap to change', p1, anchor: Anchor.bottomCenter);
 
-    Position p2 = Position(size.width / 2, size.height - 32.0 - 48.0);
+    Vector2 p2 = Vector2(gameSize.x / 2, gameSize.y - 32.0 - 48.0);
     Fonts.tutorial.render(c, 'gravity', p2, anchor: Anchor.bottomCenter);
 
-    Position p3 = Position(size.width / 2, size.height - 16.0 - 48.0);
-    animation.getSprite().renderPosition(c, p3);
+    Vector2 p3 = Vector2(gameSize.x / 2, gameSize.y - 16.0 - 48.0);
+    animation?.getSprite().render(c, position: p3);
   }
 
   @override
   void update(double t) {
-    animation.update(t);
-  }
-
-  void remove() {
-    destroyed = true;
+    super.update(t);
+    animation?.update(t);
   }
 
   @override
-  int priority() => 7;
+  int get priority => 7;
 
   @override
-  bool isHud() => true;
-
-  @override
-  bool destroy() => destroyed;
+  bool get respectCamera => false;
 }

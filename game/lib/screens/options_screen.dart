@@ -1,3 +1,4 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import '../game/game.dart';
@@ -8,9 +9,7 @@ import '../widgets/label.dart';
 import '../widgets/palette.dart';
 
 class OptionsScreen extends StatefulWidget {
-  final MyGame game;
-
-  const OptionsScreen({Key key, this.game}) : super(key: key);
+  const OptionsScreen({Key? key}) : super(key: key);
 
   @override
   _OptionsScreenState createState() => _OptionsScreenState();
@@ -21,7 +20,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget.game.widget,
+        GameWidget(game: MyGame()),
         options(context),
       ],
     );
@@ -39,45 +38,48 @@ class _OptionsScreenState extends State<OptionsScreen> {
       child: Column(
         children: [
           SizedBox(
-              height: 80,
-              child: Label(
-                  label: "Options",
-                  fontSize: 82,
-                  fontColor: PaletteColors.blues.light)),
+            height: 80,
+            child: Label(
+              label: "Options",
+              fontSize: 82,
+              fontColor: PaletteColors.blues.light,
+            ),
+          ),
           Expanded(
             child: GRContainer(
-                padding: EdgeInsets.all(10),
-                width: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SecondaryButton(
-                      label: 'Music ${musicOn() ? 'On' : 'Off'}',
-                      onPress: () async {
-                        await Preferences.instance.toggleMusic();
-                        setState(() {});
-                      },
-                    ),
-                    SecondaryButton(
-                      label: 'Sound ${soundOn() ? 'On' : 'Off'}',
-                      onPress: () async {
-                        await Preferences.instance.toggleSounds();
-                        setState(() {});
-                      },
-                    ),
-                    SecondaryButton(
-                      label: 'Rumble ${rumbleOn() ? 'On' : 'Off'}',
-                      onPress: () async {
-                        await Preferences.instance.toggleRumble();
-                        setState(() {});
-                      },
-                    ),
-                    PrimaryButton(
-                      label: 'Back',
-                      onPress: () => Navigator.of(context).pop(),
-                    ),
-                  ],
-                )),
+              padding: EdgeInsets.all(10),
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SecondaryButton(
+                    label: 'Music ${musicOn() ? 'On' : 'Off'}',
+                    onPress: () async {
+                      await Preferences.instance.toggleMusic();
+                      setState(() {});
+                    },
+                  ),
+                  SecondaryButton(
+                    label: 'Sound ${soundOn() ? 'On' : 'Off'}',
+                    onPress: () async {
+                      await Preferences.instance.toggleSounds();
+                      setState(() {});
+                    },
+                  ),
+                  SecondaryButton(
+                    label: 'Rumble ${rumbleOn() ? 'On' : 'Off'}',
+                    onPress: () async {
+                      await Preferences.instance.toggleRumble();
+                      setState(() {});
+                    },
+                  ),
+                  PrimaryButton(
+                    label: 'Back',
+                    onPress: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+            ),
           ),
           SizedBox(height: 10),
         ],

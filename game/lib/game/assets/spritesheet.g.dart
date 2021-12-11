@@ -6,15 +6,15 @@ part of 'spritesheet.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AnimationElement _$AnimationElementFromJson(Map<String, dynamic> json) {
-  return AnimationElement()
-    ..x = json['x'] as int
-    ..y = json['y'] as int
-    ..w = json['w'] as int
-    ..h = json['h'] as int
-    ..length = json['length'] as int
-    ..millis = json['millis'] as int;
-}
+AnimationElement _$AnimationElementFromJson(Map<String, dynamic> json) =>
+    AnimationElement(
+      json['x'] as int,
+      json['y'] as int,
+      json['w'] as int,
+      json['h'] as int,
+      json['length'] as int,
+      json['millis'] as int,
+    );
 
 Map<String, dynamic> _$AnimationElementToJson(AnimationElement instance) =>
     <String, dynamic>{
@@ -26,16 +26,13 @@ Map<String, dynamic> _$AnimationElementToJson(AnimationElement instance) =>
       'millis': instance.millis,
     };
 
-AnimationsJson _$AnimationsJsonFromJson(Map<String, dynamic> json) {
-  return AnimationsJson()
-    ..animations = (json['animations'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(
-          k,
-          e == null
-              ? null
-              : AnimationElement.fromJson(e as Map<String, dynamic>)),
+AnimationsJson _$AnimationsJsonFromJson(Map<String, dynamic> json) =>
+    AnimationsJson(
+      (json['animations'] as Map<String, dynamic>).map(
+        (k, e) =>
+            MapEntry(k, AnimationElement.fromJson(e as Map<String, dynamic>)),
+      ),
     );
-}
 
 Map<String, dynamic> _$AnimationsJsonToJson(AnimationsJson instance) =>
     <String, dynamic>{

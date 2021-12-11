@@ -1,10 +1,7 @@
 import 'dart:ui';
 
-import 'package:flame/animation.dart';
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
+import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 
 import '../assets/char.dart';
 import '../game.dart';
@@ -23,31 +20,30 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   double speedY;
   int livesLeft;
 
-  double hurtTimer, shinyTimer, invulnerabilityTimer;
+  double hurtTimer = 0, shinyTimer = 0, invulnerabilityTimer = 0;
 
-  JetpackType jetpackType;
-  Animation jetpackAnimation;
-  double jetpackTimeout;
-  bool hovering;
+  JetpackType? jetpackType;
+  SpriteAnimation? jetpackAnimation;
+  double jetpackTimeout = 0;
+  bool hovering = false;
 
   PlayerParticles particles;
 
-  Position suctionCenter;
-  double scale = 1.0;
+  Vector2? suctionCenter;
+  double myScale = 1.0;
 
-  double deathDt;
+  double? deathDt;
 
-  Player() {
-    this.x = 0.0;
-    this.width = this.height = BLOCK_SIZE;
-    this.speedY = 0.0;
-    this.livesLeft = STARTING_LIVES;
-    this.particles = PlayerParticles();
+  Player()
+      : this.speedY = 0.0,
+        this.livesLeft = STARTING_LIVES,
+        this.particles = PlayerParticles(),
+        super(size: Vector2.all(BLOCK_SIZE)) {
     reset();
   }
 
   void reset() {
-    scale = 1.0;
+    myScale = 1.0;
     hurtTimer = 0.0;
     shinyTimer = 0.0;
     invulnerabilityTimer = 0;
@@ -61,7 +57,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     hurtTimer = 0.5;
     invulnerabilityTimer = 0.5; // start with half a second of invulnerability
     // run one update just to skip the death cliff
-    updatePosition(deathDt);
+    updatePosition(deathDt!);
   }
 
   bool get shouldFlip => gameRef.gravity > 0;
@@ -88,29 +84,28 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     }
     final blinkHurt = hurt && (hurtTimer * 1000) % 250 > 125;
     final palette = blinkHurt ? Palette.playerHurt : Palette.player;
-    return palette.paint;
+    return palette.paint();
   }
 
   @override
-  set gameRef(MyGame gameRef) {
-    super.gameRef = gameRef;
+  Future<void> onLoad() async {
+    await super.onLoad();
     this.y = getCurrentRect().bottom - BLOCK_SIZE;
   }
 
   @override
   void render(Canvas c) {
+    super.render(c);
+
     Sprite skin = Char.fromSkin(GameData.instance.selectedSkin);
-    if (!skin.loaded()) return;
 
-    double scaledW = skin.size.x * scale;
-    double scaledH = skin.size.y * scale;
-    double dX = (skin.size.x - scaledW) / 2;
-    double dY = (skin.size.y - scaledH) / 2;
+    double scaledW = skin.srcSize.x * myScale;
+    double scaledH = skin.srcSize.y * myScale;
+    double dX = (skin.srcSize.x - scaledW) / 2;
+    double dY = (skin.srcSize.y - scaledH) / 2;
 
-    Rect realRect = toRect();
-    double drawX = x - (skin.size.x - realRect.width) / 2 + dX;
-    double drawY =
-        y - (shouldFlip ? (skin.size.y - realRect.height) : 0.0) + dY;
+    double drawX = -(skin.srcSize.x - size.x) / 2 + dX;
+    double drawY = -(shouldFlip ? (skin.srcSize.y - size.y) : 0.0) + dY;
     Rect renderRect = Rect.fromLTWH(0, 0, scaledW, scaledH);
 
     c.save();
@@ -118,7 +113,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
 
     if (jetpack) {
       double dy = shouldFlip ? height : 0.0;
-      jetpackAnimation.getSprite().renderPosition(c, Position(-1, dy));
+      jetpackAnimation!.getSprite().render(c, position: Vector2(-1, dy));
     }
 
     if (angle == 0) {
@@ -138,14 +133,14 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     if (DEBUG) {
       c.drawRect(
         getCurrentRect(),
-        Palette.playerDebugRect.paint..style = PaintingStyle.stroke,
+        Palette.playerDebugRect.paint()..style = PaintingStyle.stroke,
       );
     }
   }
 
   void renderParticles(Canvas c) {
     c.save();
-    c.translate(x, shouldFlip ? y : y - BLOCK_SIZE);
+    c.translate(0, shouldFlip ? 0 : -BLOCK_SIZE);
     particles.render(c, !jetpack);
     c.restore();
   }
@@ -154,7 +149,7 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     shinyTimer = SHINE_TIMER;
   }
 
-  void suck(Position center) {
+  void suck(Vector2 center) {
     this.suctionCenter = center;
     this.jetpackTimeout = 0.0;
   }
@@ -192,19 +187,19 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
     }
     if (jetpack) {
       jetpackTimeout -= dt;
-      jetpackAnimation.update(dt);
+      jetpackAnimation!.update(dt);
     }
     if (!jetpack) {
       hovering = false;
     }
 
     if (suctionCenter != null) {
-      bool isThereYet = moveToCenter(suctionCenter, SUCTION_SPEED, dt);
-      if (scale == 0.001) {
+      bool isThereYet = moveToCenter(suctionCenter!, SUCTION_SPEED, dt);
+      if (myScale == 0.001) {
         gameRef.gameOver();
       } else if (isThereYet) {
-        scale -= dt;
-        scale = scale.clamp(0.001, 1.0);
+        myScale -= dt;
+        myScale = myScale.clamp(0.001, 1.0);
 
         angle += dt;
       }
@@ -256,42 +251,41 @@ class Player extends PositionComponent with HasGameRef<MyGame> {
   }
 
   Rect getCurrentRect() {
-    return gameRef.components
-        .where((c) => c is Background)
-        .map((c) => c as Background)
-        .firstWhere((c) => c.contains(right))
+    return gameRef.children
+        .whereType<Background>()
+        .firstWhere((c) => c.containsX(right))
         .findRectContaining(right);
   }
 
   double get right => x + width;
 
   @override
-  int priority() => 5;
+  int get priority => 5;
 
-  Position toCenter() => Position.fromOffset(this.toRect().center);
+  Vector2 toCenter() => toRect().center.toVector2();
 
   // maybe abstract to position component?
   bool moveToCenter(
-    Position goal,
+    Vector2 goal,
     double speed,
     double dt, {
     double treshold = 0.001,
   }) {
     if (goal.x - width / 2 == x && goal.y - height / 2 == y) return true;
 
-    Position displacement = toCenter().minus(goal);
-    double prevDist = displacement.length();
+    Vector2 displacement = toCenter() - goal;
+    double prevDist = displacement.length;
     if (prevDist < treshold) {
       x = goal.x - width / 2;
       y = goal.y - height / 2;
       return true;
     }
 
-    Position delta = displacement.scaleTo(speed * dt);
+    Vector2 delta = displacement..scaleTo(speed * dt);
     x += delta.x;
     y += delta.y;
 
-    double newDist = toCenter().minus(goal).length();
+    double newDist = (toCenter() - goal).length;
     if (newDist < treshold || newDist > prevDist) {
       // right there or overshoot, correct
       x = goal.x - width / 2;

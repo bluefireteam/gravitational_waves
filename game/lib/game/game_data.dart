@@ -11,21 +11,20 @@ part 'game_data.g.dart';
 
 @JsonSerializable()
 class GameData {
-  static GameData instance;
+  static late GameData instance;
 
   int coins;
   Skin selectedSkin;
   List<Skin> ownedSkins;
-  String playerId;
-  int highScore;
+  String? playerId;
+  int? highScore;
 
-  GameData() {
-    this.coins = 0;
-    this.highScore = null;
-    this.selectedSkin = Skin.ASTRONAUT;
-    this.ownedSkins = [Skin.ASTRONAUT];
-    this.playerId = null;
-  }
+  GameData()
+      : this.coins = 100,
+        this.highScore = null,
+        this.selectedSkin = Skin.ASTRONAUT,
+        this.ownedSkins = [Skin.ASTRONAUT],
+        this.playerId = null;
 
   Future<bool> buyAndSetSkin(Skin skin) async {
     int price = skinPrice(skin);
@@ -73,12 +72,12 @@ class GameData {
   }
 
   static Future<GameData> init() async {
-    return instance ??= await load();
+    return instance = await load();
   }
 
   static Future<GameData> load() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String pref = prefs.getString('gravitational_waves.data');
+    String? pref = prefs.getString('gravitational_waves.data');
     if (pref != null) {
       return GameData.fromJson(json.decode(pref));
     } else {
