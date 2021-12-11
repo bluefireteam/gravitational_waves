@@ -34,20 +34,19 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   Widget options(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
       child: Column(
         children: [
           SizedBox(
             height: 80,
             child: Label(
-              label: "Options",
+              label: 'Options',
               fontSize: 82,
               fontColor: PaletteColors.blues.light,
             ),
           ),
           Expanded(
             child: GRContainer(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               width: 300,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +80,7 @@ class _OptionsScreenState extends State<OptionsScreen> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
         ],
       ),
     );

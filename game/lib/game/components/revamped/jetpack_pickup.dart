@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 
 import '../../game.dart';
 import '../../util.dart';
@@ -21,9 +20,9 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
 
   JetpackPickup(this.type, double x, double y) {
     this.x = x;
-    this.y = this.startY = y;
-    this.width = this.height = BLOCK_SIZE;
-    this.anchor = Anchor.center;
+    this.y = startY = y;
+    width = height = BLOCK_SIZE;
+    anchor = Anchor.center;
   }
 
   @override
@@ -43,6 +42,7 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
       ..setToLast();
   }
 
+  @override
   Sprite get sprite => getSpriteForType();
 
   Sprite getSpriteForType() {
@@ -60,7 +60,7 @@ class JetpackPickup extends SpriteComponent with HasGameRef<MyGame> {
     super.update(t);
 
     hoverClock = (hoverClock + t / HOVER_TIME) % 1.0;
-    double dy = 1 - (2 * hoverClock - 1).abs() * HOVER_DISTANCE;
+    final dy = 1 - (2 * hoverClock - 1).abs() * HOVER_DISTANCE;
     y = startY + dy;
 
     if (gameRef.player.toRect().overlaps(toRect())) {

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 
@@ -16,7 +14,7 @@ class BrokenGlass extends PositionComponent with HasGameRef<MyGame> {
   BrokenGlass(double x, double y) {
     this.x = x;
     this.y = y;
-    this.width = this.height = BLOCK_SIZE;
+    width = height = BLOCK_SIZE;
   }
 
   @override

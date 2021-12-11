@@ -37,7 +37,7 @@ class PlayerParticles {
   }
 
   void jetpackBoost() {
-    Particle child = CircleParticle(
+    final child = CircleParticle(
       radius: 0.55,
       paint: Paint()..color = Palette.particlesJetpack.color,
     );
@@ -60,7 +60,7 @@ class PlayerParticles {
   }
 
   void reset() {
-    Particle child = CircleParticle(
+    final child = CircleParticle(
       radius: 0.45,
       paint: Paint()..color = Palette.particles.color,
     );

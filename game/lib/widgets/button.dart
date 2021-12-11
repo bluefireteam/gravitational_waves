@@ -32,7 +32,7 @@ class Button extends StatelessWidget {
   final Color? fontColor;
   final Color? backgroundColor;
 
-  Button({
+  const Button({
     required this.label,
     this.onPress,
     this.fontColor,
@@ -46,7 +46,8 @@ class Button extends StatelessWidget {
       margin: const EdgeInsets.all(2.5),
       child: ButtonTheme(
         minWidth: minWidth,
-        height: 36,
+        // TODO(luan): replace FlatButton
+        // ignore_for_file: deprecated_member_use
         child: FlatButton(
           color: fontColor,
           onPressed: onPress,

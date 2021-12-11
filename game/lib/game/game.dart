@@ -1,9 +1,8 @@
 import 'dart:ui';
 
+import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame/extensions.dart';
-import 'package:gravitational_waves/game/palette.dart';
 
 import 'analytics.dart';
 import 'audio.dart';
@@ -18,6 +17,7 @@ import 'components/stars.dart';
 import 'components/tutorial.dart';
 import 'components/wall.dart';
 import 'game_data.dart';
+import 'palette.dart';
 import 'pause_overlay.dart';
 import 'rotation_manager.dart';
 import 'rumble.dart';
@@ -45,7 +45,7 @@ class MyGame extends FlameGame with TapDetector {
   Tutorial? tutorial;
 
   bool sleeping = false;
-  bool paused = false;
+  bool gamePaused = false;
 
   late Player player;
   late Hud hud;
@@ -56,11 +56,11 @@ class MyGame extends FlameGame with TapDetector {
   Future<void> onLoad() async {
     await super.onLoad();
 
-    this.camera.viewport = FixedResolutionViewport(
+    camera.viewport = FixedResolutionViewport(
       Vector2(32, 18) * BLOCK_SIZE,
       noClip: true,
     );
-    this.camera.speed = 50.0;
+    camera.speed = 50.0;
 
     await preStart();
   }
@@ -69,10 +69,10 @@ class MyGame extends FlameGame with TapDetector {
     final isFirstTime = GameData.instance.isFirstTime();
 
     sleeping = true;
-    paused = false;
+    gamePaused = false;
 
     gravity = GRAVITY_ACC;
-    double firstX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+    const firstX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
     lastGeneratedX = firstX;
     coins = 0;
     hasUsedExtraLife = false;
@@ -122,21 +122,21 @@ class MyGame extends FlameGame with TapDetector {
 
   Future<void> generateNextChunck() async {
     while (lastGeneratedX < player.x + size.x) {
-      Background bg = Background(lastGeneratedX);
+      final bg = Background(lastGeneratedX);
       await _addBg(bg);
 
-      int amountCoints = 2 + R.nextInt(3);
-      final List<Coin> coins = [];
-      for (int i = 0; i < amountCoints; i++) {
-        Rect spot = bg.findRectFor(bg.columns.randomIdx(R));
-        bool top = R.nextBool();
-        double x = spot.center.dx;
-        double yOffset = Coin.SIZE / 2;
-        double y = top ? spot.top + yOffset : spot.bottom - yOffset;
+      final amountCoints = 2 + R.nextInt(3);
+      final coins = <Coin>[];
+      for (var i = 0; i < amountCoints; i++) {
+        final spot = bg.findRectFor(bg.columns.randomIdx(R));
+        final top = R.nextBool();
+        final x = spot.center.dx;
+        const yOffset = Coin.SIZE / 2;
+        final y = top ? spot.top + yOffset : spot.bottom - yOffset;
         if (coins.any((c) => c.overlaps(x, y))) {
           continue;
         }
-        Coin c = Coin(x, y);
+        final c = Coin(x, y);
         coins.add(c);
         await add(c);
       }
@@ -161,7 +161,7 @@ class MyGame extends FlameGame with TapDetector {
 
   @override
   void update(double t) {
-    if (paused) {
+    if (gamePaused) {
       tutorial?.update(t);
       return;
     }
@@ -191,7 +191,7 @@ class MyGame extends FlameGame with TapDetector {
   void gainExtraLife() {
     hasUsedExtraLife = true;
     player.extraLife();
-    paused = true;
+    gamePaused = true;
     showGameOver?.call(false);
     sleeping = false;
   }
@@ -206,8 +206,8 @@ class MyGame extends FlameGame with TapDetector {
     super.render(canvas);
     canvas.restore();
 
-    if (paused) {
-      bool showMessage = tutorial == null;
+    if (gamePaused) {
+      final showMessage = tutorial == null;
       PauseOverlay.render(canvas, canvasSize, showMessage);
     }
   }
@@ -224,8 +224,8 @@ class MyGame extends FlameGame with TapDetector {
     if (sleeping) {
       return;
     }
-    if (paused) {
-      bool isTutorial = tutorial != null;
+    if (gamePaused) {
+      final isTutorial = tutorial != null;
       resume();
       if (!isTutorial) {
         return;
@@ -244,16 +244,16 @@ class MyGame extends FlameGame with TapDetector {
 
   void pause() {
     Audio.pauseMusic();
-    if (sleeping || paused) {
+    if (sleeping || gamePaused) {
       return;
     }
-    paused = true;
+    gamePaused = true;
   }
 
   void resume() {
     tutorial?.removeFromParent();
     tutorial = null;
-    paused = false;
+    gamePaused = false;
     Audio.resumeMusic();
   }
 

@@ -50,7 +50,6 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _playSection = false;
       _playing = true;
-      this.game = game;
     });
   }
 
@@ -74,7 +73,7 @@ class _GameScreenState extends State<GameScreen> {
       return Container();
     }
 
-    List<Widget> children = [];
+    final children = <Widget>[];
 
     children.add(GameWidget(game: game));
 
@@ -82,8 +81,8 @@ class _GameScreenState extends State<GameScreen> {
       children.add(
         Center(
           child: SlideInContainer(
-            from: Offset(0.0, 1.5),
-            duration: Duration(milliseconds: 500),
+            from: const Offset(0.0, 1.5),
+            duration: const Duration(milliseconds: 500),
             child: _adLoading
                 ? GameOverLoadingContainer()
                 : GameOverContainer(
@@ -113,13 +112,13 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     if (!_playing) {
-      List<Widget> sectionChildren = [];
+      final sectionChildren = <Widget>[];
 
       if (_playSection) {
         sectionChildren.addAll([
           SlideInContainer(
-            from: Offset(-2.0, 0.0),
-            duration: Duration(milliseconds: 500),
+            from: const Offset(-2.0, 0.0),
+            duration: const Duration(milliseconds: 500),
             child: Column(
               children: [
                 PrimaryButton(
@@ -193,11 +192,10 @@ class _GameScreenState extends State<GameScreen> {
 
       children.add(
         Align(
-          alignment: Alignment.center,
           child: Column(
             children: [
               AnimatedContainer(
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 curve: Curves.fastOutSlowIn,
                 child: SlideInContainer(
                   from: const Offset(0.0, -1.5),
@@ -208,8 +206,6 @@ class _GameScreenState extends State<GameScreen> {
                 child: SlideInContainer(
                   from: const Offset(0.0, 1.5),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: sectionChildren,
                   ),
                 ),

@@ -10,6 +10,8 @@ class Spawner {
   }
 
   void maybeSpawn(double dt, Function() action) {
-    if (tossCoin(dt)) action();
+    if (tossCoin(dt)) {
+      action();
+    }
   }
 }

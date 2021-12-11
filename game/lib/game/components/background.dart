@@ -17,17 +17,17 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
 
   Background(double x) {
     this.x = x;
-    this.columns = _generateChunck(CHUNCK_SIZE).toList();
+    columns = _generateChunck(CHUNCK_SIZE).toList();
   }
 
   Background.plains(double x) {
     this.x = x;
-    this.columns = _generatePlains(CHUNCK_SIZE).toList();
+    columns = _generatePlains(CHUNCK_SIZE).toList();
   }
 
   Background.tutorial(double x) {
     this.x = x;
-    this.columns = Tutorial.generateTerrain().toList();
+    columns = Tutorial.generateTerrain().toList();
   }
 
   static Iterable<Column> _generatePlains(int size) {
@@ -36,12 +36,12 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
 
   static Iterable<Column> _generateChunck(int size) sync* {
     int? beforeTop, beforeBottom;
-    int changesTop = 0, changesBottom = 0;
-    for (int i = 0; i < size; i++) {
+    var changesTop = 0, changesBottom = 0;
+    for (var i = 0; i < size; i++) {
       if (i < 3 || i >= size - 3) {
         yield Column(0, 0);
       } else {
-        bool nextForcedZero = (i + 1) >= size - 3;
+        final nextForcedZero = (i + 1) >= size - 3;
         if (beforeTop == null || (changesTop / 2 * R.nextDouble() > 0.9)) {
           beforeTop = nextForcedZero ? 0 : R.nextInt(3);
           changesTop = 0;
@@ -75,61 +75,103 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
   void render(Canvas c) {
     super.render(c);
     columns.asMap().forEach((i, column) {
-      Column before = columns.getOrNull(i - 1) ?? column;
-      Column after = columns.getOrNull(i + 1) ?? column;
-      double px = i * BLOCK_SIZE;
+      final before = columns.getOrNull(i - 1) ?? column;
+      final after = columns.getOrNull(i + 1) ?? column;
+      final px = i * BLOCK_SIZE;
 
-      double ddy = gameRef.size.y;
+      final ddy = gameRef.size.y;
       drawBg(c, px, -ddy, BLOCK_SIZE, column.topHeight + ddy);
-      drawBg(c, px, gameRef.size.y - column.bottomHeight, BLOCK_SIZE,
-          column.bottomHeight + ddy);
+      drawBg(
+        c,
+        px,
+        gameRef.size.y - column.bottomHeight,
+        BLOCK_SIZE,
+        column.bottomHeight + ddy,
+      );
 
-      double bottomPy = gameRef.size.y - column.bottomHeight;
-      BlockSet bottomSet = Tileset.variant(column.bottomVariant);
+      final bottomPy = gameRef.size.y - column.bottomHeight;
+      final bottomSet = Tileset.variant(column.bottomVariant);
       if (before.bottom < column.bottom) {
-        int diff = column.bottom - before.bottom;
-        bottomSet.renderOuter(c, OuterTilePosition.TOP_LEFT, px, bottomPy);
-        for (int i = 1; i < diff; i++) {
+        final diff = column.bottom - before.bottom;
+        bottomSet.renderOuter(c, OuterTilePosition.topLeft, px, bottomPy);
+        for (var i = 1; i < diff; i++) {
           bottomSet.renderOuter(
-              c, OuterTilePosition.LEFT, px, bottomPy + i * BLOCK_SIZE);
-        }
-        bottomSet.renderInner(c, InnerTilePosition.BOTTOM_RIGHT, px,
-            bottomPy + diff * BLOCK_SIZE);
-      } else if (after.bottom < column.bottom) {
-        int diff = column.bottom - after.bottom;
-        bottomSet.renderOuter(c, OuterTilePosition.TOP_RIGHT, px, bottomPy);
-        for (int i = 1; i < diff; i++) {
-          bottomSet.renderOuter(
-              c, OuterTilePosition.RIGHT, px, bottomPy + i * BLOCK_SIZE);
+            c,
+            OuterTilePosition.left,
+            px,
+            bottomPy + i * BLOCK_SIZE,
+          );
         }
         bottomSet.renderInner(
-            c, InnerTilePosition.BOTTOM_LEFT, px, bottomPy + diff * BLOCK_SIZE);
+          c,
+          InnerTilePosition.bottomRight,
+          px,
+          bottomPy + diff * BLOCK_SIZE,
+        );
+      } else if (after.bottom < column.bottom) {
+        final diff = column.bottom - after.bottom;
+        bottomSet.renderOuter(c, OuterTilePosition.topRight, px, bottomPy);
+        for (var i = 1; i < diff; i++) {
+          bottomSet.renderOuter(
+            c,
+            OuterTilePosition.right,
+            px,
+            bottomPy + i * BLOCK_SIZE,
+          );
+        }
+        bottomSet.renderInner(
+          c,
+          InnerTilePosition.bottomLeft,
+          px,
+          bottomPy + diff * BLOCK_SIZE,
+        );
       } else {
-        bottomSet.renderOuter(c, OuterTilePosition.TOP, px, bottomPy);
+        bottomSet.renderOuter(c, OuterTilePosition.top, px, bottomPy);
       }
 
-      double topPy = column.topHeight - BLOCK_SIZE;
-      BlockSet topSet = Tileset.variant(column.topVariant);
+      final topPy = column.topHeight - BLOCK_SIZE;
+      final topSet = Tileset.variant(column.topVariant);
       if (before.top < column.top) {
-        int diff = column.top - before.top;
-        topSet.renderOuter(c, OuterTilePosition.BOTTOM_LEFT, px, topPy);
-        for (int i = 1; i < diff; i++) {
+        final diff = column.top - before.top;
+        topSet.renderOuter(c, OuterTilePosition.bottomLeft, px, topPy);
+        for (i = 1; i < diff; i++) {
           topSet.renderOuter(
-              c, OuterTilePosition.LEFT, px, topPy - i * BLOCK_SIZE);
+            c,
+            OuterTilePosition.left,
+            px,
+            topPy - i * BLOCK_SIZE,
+          );
         }
         topSet.renderInner(
-            c, InnerTilePosition.TOP_RIGHT, px, topPy - diff * BLOCK_SIZE);
+          c,
+          InnerTilePosition.topRight,
+          px,
+          topPy - diff * BLOCK_SIZE,
+        );
       } else if (after.top < column.top) {
-        int diff = column.top - after.top;
-        topSet.renderOuter(c, OuterTilePosition.BOTTOM_RIGHT, px, topPy);
-        for (int i = 1; i < diff; i++) {
+        final diff = column.top - after.top;
+        topSet.renderOuter(c, OuterTilePosition.bottomRight, px, topPy);
+        for (var i = 1; i < diff; i++) {
           topSet.renderOuter(
-              c, OuterTilePosition.RIGHT, px, topPy - i * BLOCK_SIZE);
+            c,
+            OuterTilePosition.right,
+            px,
+            topPy - i * BLOCK_SIZE,
+          );
         }
         topSet.renderInner(
-            c, InnerTilePosition.TOP_LEFT, px, topPy - diff * BLOCK_SIZE);
+          c,
+          InnerTilePosition.topLeft,
+          px,
+          topPy - diff * BLOCK_SIZE,
+        );
       } else {
-        topSet.renderOuter(c, OuterTilePosition.BOTTOM, px, topPy);
+        topSet.renderOuter(
+          c,
+          OuterTilePosition.bottom,
+          px,
+          topPy,
+        );
       }
     });
     if (DEBUG) {
@@ -141,7 +183,7 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
     c.drawRect(
       Rect.fromLTWH(startX, 0.0, endX - startX, gameRef.size.y),
       Paint()
-        ..color = Color(0xFFFF00FF)
+        ..color = const Color(0xFFFF00FF)
         ..strokeWidth = 2.0
         ..style = PaintingStyle.stroke,
     );
@@ -159,13 +201,13 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
   int get priority => 3;
 
   Rect findRectContaining(double targetX) {
-    int idx = ((targetX - x) / BLOCK_SIZE).floor();
+    final idx = ((targetX - x) / BLOCK_SIZE).floor();
     return findRectFor(idx);
   }
 
   Rect findRectFor(int idx) {
-    Column column = columns[idx];
-    double px = x + idx * BLOCK_SIZE;
+    final column = columns[idx];
+    final px = x + idx * BLOCK_SIZE;
     return Rect.fromLTWH(
       px,
       column.topHeight,

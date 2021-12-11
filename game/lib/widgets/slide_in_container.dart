@@ -7,7 +7,7 @@ class SlideInContainer extends StatefulWidget {
   final Duration duration;
   final Curve curve;
 
-  SlideInContainer({
+  const SlideInContainer({
     required this.child,
     this.from = const Offset(0.0, 0.0),
     this.to = const Offset(0.0, 0.0),
@@ -16,7 +16,7 @@ class SlideInContainer extends StatefulWidget {
   });
 
   @override
-  createState() => _SlideInContainer();
+  _SlideInContainer createState() => _SlideInContainer();
 }
 
 class _SlideInContainer extends State<SlideInContainer>
@@ -35,10 +35,12 @@ class _SlideInContainer extends State<SlideInContainer>
     _offsetAnimation = Tween<Offset>(
       begin: widget.from,
       end: widget.to,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: widget.curve,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: widget.curve,
+      ),
+    );
   }
 
   @override

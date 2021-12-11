@@ -30,16 +30,14 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
 
   Widget scoreboard(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
       child: Column(
         children: [
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Label(
-                  label: "Scoreboard",
+                  label: 'Scoreboard',
                   fontColor: PaletteColors.blues.light,
                   fontSize: 36,
                 ),
@@ -73,10 +71,11 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                                     Label(label: 'Could not fetch scoreboard.'),
                               );
                             }
+                            final data = snapshot.data as List;
                             return showScoreboard(
                               context,
                               GameData.instance.playerId!,
-                              snapshot.data[0] as List<ScoreBoardEntry>,
+                              data[0] as List<ScoreBoardEntry>,
                             );
                           }
                       }
@@ -86,7 +85,7 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   label: 'Back',
                   onPress: () => Navigator.of(context).pop(),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           )
@@ -108,21 +107,19 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
       padding: const EdgeInsets.all(10),
       children: (entries ?? []).asMap().entries.map((entry) {
         return Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
-          padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
+          margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
+          padding: const EdgeInsets.fromLTRB(0, 0, 10, 10),
           color: entry.value.playerId == playerId
               ? PaletteColors.pinks.light
               : PaletteColors.blues.dark,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 width: 120,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     SpriteWidget(
                       sprite: Char.fromSkin(entry.value.skin),
                       srcSize: Vector2(60.0, 40.0),
@@ -140,20 +137,19 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                   height: 40,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Label(
-                        label: '${entry.value.playerId}',
+                        label: entry.value.playerId,
                         fontSize: 14,
                         fontColor: fontColor(entry.value),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Label(
                         label: '${entry.value.score}',
                         fontSize: 14,
                         fontColor: fontColor(entry.value),
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                     ],
                   ),
                 ),

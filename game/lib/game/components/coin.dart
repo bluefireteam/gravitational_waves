@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/sprite.dart';
 
 import '../game.dart';
 
@@ -49,8 +48,10 @@ class Coin extends SpriteAnimationComponent with HasGameRef<MyGame> {
   }
 
   bool overlaps(double x, double y) {
-    Rect r = this.toRect().inflate(SIZE);
-    if (r.contains(Offset(x, y))) return true;
+    final r = toRect().inflate(SIZE);
+    if (r.contains(Offset(x, y))) {
+      return true;
+    }
     return (x - this.x).abs() < 4 * SIZE;
   }
 

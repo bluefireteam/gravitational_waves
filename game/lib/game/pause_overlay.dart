@@ -16,12 +16,12 @@ class PauseOverlay {
     c.drawRect(Rect.fromLTWH(0.0, 0.0, size.x, size.y), _hollow);
 
     final xOffset = size.x - 8.0;
-    final yOffset = 8.0;
+    const yOffset = 8.0;
     c.drawRect(Rect.fromLTWH(xOffset - 14.0, yOffset, 4.0, 18.0), _filled);
     c.drawRect(Rect.fromLTWH(xOffset - 4.0, yOffset, 4.0, 18.0), _filled);
 
     if (showMessage) {
-      Vector2 p = Vector2(size.x / 2, size.y / 2);
+      final p = Vector2(size.x / 2, size.y / 2);
       Fonts.tutorial.render(c, 'Tap to resume', p, anchor: Anchor.center);
     }
   }

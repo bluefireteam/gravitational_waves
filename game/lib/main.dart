@@ -77,15 +77,16 @@ void main() async {
                   Navigator.pushNamed(context, '/game');
                 },
               ),
-          '/options': (BuildContext ctx) => Scaffold(body: OptionsScreen()),
-          '/skins': (BuildContext ctx) => Scaffold(body: SkinsScreen()),
-          '/scoreboard': (BuildContext ctx) => Scaffold(
+          '/options': (BuildContext ctx) =>
+              const Scaffold(body: OptionsScreen()),
+          '/skins': (BuildContext ctx) => const Scaffold(body: SkinsScreen()),
+          '/scoreboard': (BuildContext ctx) => const Scaffold(
                 body: ScoreboardScreen(),
               ),
-          '/join-scoreboard': (BuildContext ctx) => Scaffold(
+          '/join-scoreboard': (BuildContext ctx) => const Scaffold(
                 body: JoinScoreboardScreen(),
               ),
-          '/credits': (BuildContext ctx) => Scaffold(
+          '/credits': (BuildContext ctx) => const Scaffold(
                 body: CreditsScreen(),
               ),
           '/game': (BuildContext ctx) => Scaffold(

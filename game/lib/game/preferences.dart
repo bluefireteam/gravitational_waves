@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'audio.dart';
+import 'util.dart';
 
 part 'preferences.g.dart';
 
@@ -18,45 +17,41 @@ class Preferences {
   String language;
 
   Preferences()
-      : this.musicOn = true,
-        this.soundOn = true,
-        this.rumbleOn = true,
-        this.language = 'en_US';
+      : musicOn = true,
+        soundOn = true,
+        rumbleOn = true,
+        language = 'en_US';
 
   Future toggleMusic() async {
-    this.musicOn = !this.musicOn;
-    if (!this.musicOn) {
+    musicOn = !musicOn;
+    if (!musicOn) {
       Audio.stopMusic();
     } else {
       Audio.menuMusic();
     }
-    await this.save();
+    await save();
   }
 
   Future toggleSounds() async {
-    this.soundOn = !this.soundOn;
-    await this.save();
+    soundOn = !soundOn;
+    await save();
   }
 
   Future toggleRumble() async {
-    this.rumbleOn = !this.rumbleOn;
-    await this.save();
-  }
-
-  Future<bool> save() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.setString('gravitational_waves.prefs', json.encode(toJson()));
+    rumbleOn = !rumbleOn;
+    await save();
   }
 
   static Future<Preferences> init() async {
     return instance = await load();
   }
 
+  Future<bool> save() => writePrefs('gravitational_waves.prefs', toJson());
+
   static Future<Preferences> load() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? pref = prefs.getString('gravitational_waves.prefs');
-    if (pref != null) {
-      return Preferences.fromJson(json.decode(pref));
+    final json = await readPrefs('gravitational_waves.prefs');
+    if (json != null) {
+      return Preferences.fromJson(json);
     } else {
       return Preferences();
     }

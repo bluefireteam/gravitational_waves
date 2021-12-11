@@ -5,9 +5,8 @@ import '../../game.dart';
 import '../../util.dart';
 
 class FiringShip extends SpriteAnimationComponent with HasGameRef<MyGame> {
-  static const S = 2.0;
-  static const TX_W = 80.0;
-  static const TX_H = 48.0;
+  static const scaleFactor = 2.0;
+  static final textureSize = Vector2(80.0, 48.0);
   static const APPROXIMATION_TIME = 2.0;
   static const FIRING_TIME = 4.0;
 
@@ -24,37 +23,31 @@ class FiringShip extends SpriteAnimationComponent with HasGameRef<MyGame> {
       'firing-ship.png',
       SpriteAnimationData.sequenced(
         amount: 8,
-        textureSize: Vector2(TX_W, TX_H),
+        textureSize: textureSize,
         stepTime: 0.15,
       ),
     )
       ..loop = true;
 
-    size = Vector2(S * TX_W, S * TX_H);
+    size = textureSize * scaleFactor;
     position = gameRef.size / 2;
     anchor = Anchor.center;
 
-    int beforeHoles = R.nextInt(2);
-    int afterHoles = 1 + R.nextInt(2);
+    final beforeHoles = R.nextInt(2);
+    final afterHoles = 1 + R.nextInt(2);
 
-    final timing = (_) => R.doubleBetween(0.5, 0.85);
-    this.beforeHoleScales = List.generate(beforeHoles, timing)..sort();
-    this.afterHoleScales = List.generate(afterHoles, timing)..sort();
+    double timing(int _) => R.doubleBetween(0.5, 0.85);
+    beforeHoleScales = List.generate(beforeHoles, timing)..sort();
+    afterHoleScales = List.generate(afterHoles, timing)..sort();
   }
 
   @override
-  double get width => TX_W * myScale;
-
-  @override
-  double get height => TX_H * myScale;
-
-  @override
   void update(double t) {
-    this.myScale += (t / APPROXIMATION_TIME);
-    this.myScale = this.myScale.clamp(0.0, 1.0);
+    myScale += t / APPROXIMATION_TIME;
+    myScale = myScale.clamp(0.0, 1.0);
 
-    if (this.myScale >= 0.5) {
-      final pred = (e) => this.myScale > e;
+    if (myScale >= 0.5) {
+      bool pred(double e) => myScale > e;
       if (beforeHoleScales.popIf(pred) != null) {
         gameRef.wall.spawnBrokenGlass(before: true);
       }
@@ -63,7 +56,7 @@ class FiringShip extends SpriteAnimationComponent with HasGameRef<MyGame> {
       }
     }
 
-    if (this.myScale >= 0.8) {
+    if (myScale >= 0.8) {
       // tick animation
       super.update(t);
       clock += t;
@@ -80,5 +73,5 @@ class FiringShip extends SpriteAnimationComponent with HasGameRef<MyGame> {
   int get priority => 1;
 
   @override
-  bool get respectCamera => false;
+  PositionType get positionType => PositionType.viewport;
 }

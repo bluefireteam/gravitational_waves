@@ -8,13 +8,15 @@ class Audio {
   static final AudioCache musicPlayer = _createLoopingPlayer(prefix: 'audio/');
 
   static AudioCache _createLoopingPlayer({required String prefix}) {
-    AudioPlayer player = AudioPlayer();
+    final player = AudioPlayer();
     player.setReleaseMode(ReleaseMode.LOOP);
     return AudioCache(prefix: prefix, fixedPlayer: player);
   }
 
   static Future init() async {
-    if (!ENABLE_AUDIO) return;
+    if (!ENABLE_AUDIO) {
+      return;
+    }
   }
 
   static void coin() {
@@ -26,15 +28,23 @@ class Audio {
   }
 
   static void sfx(String sound, {double volume = 1.0}) {
-    if (!ENABLE_AUDIO) return;
-    if (!Preferences.instance.soundOn) return;
+    if (!ENABLE_AUDIO) {
+      return;
+    }
+    if (!Preferences.instance.soundOn) {
+      return;
+    }
 
     FlameAudio.play('sfx/$sound');
   }
 
   static void music(String song) async {
-    if (!ENABLE_AUDIO) return;
-    if (!Preferences.instance.musicOn) return;
+    if (!ENABLE_AUDIO) {
+      return;
+    }
+    if (!Preferences.instance.musicOn) {
+      return;
+    }
     await musicPlayer.play('music/$song');
   }
 
