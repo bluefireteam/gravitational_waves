@@ -5,7 +5,9 @@ import 'preferences.dart';
 import 'util.dart';
 
 class Audio {
-  static final AudioCache musicPlayer = _createLoopingPlayer(prefix: 'audio/');
+  static final AudioCache musicPlayer = _createLoopingPlayer(
+    prefix: 'assets/audio/',
+  );
 
   static AudioCache _createLoopingPlayer({required String prefix}) {
     final player = AudioPlayer();
