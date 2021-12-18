@@ -11,12 +11,14 @@ import 'firing_ship.dart';
 import 'jetpack_pickup.dart';
 import 'space_battle.dart';
 
-class Powerups extends Component with HasGameRef<MyGame> {
-  static Spawner spaceBattleSpawner = Spawner(0.015);
-  static Spawner jetpackSpawner = Spawner(0.5);
-  static Spawner crystalContainerSpawner = Spawner(0.15);
+// change this if you want to easily test all powerups.
+const _M = 1.0;
 
-  bool enabled = false;
+class Powerups extends Component with HasGameRef<MyGame> {
+  static Spawner spaceBattleSpawner = Spawner(0.015 * _M);
+  static Spawner jetpackSpawner = Spawner(0.5 * _M);
+  static Spawner crystalContainerSpawner = Spawner(0.15 * _M);
+
   bool hasSpaceBattle = false;
 
   Powerups();
@@ -27,7 +29,7 @@ class Powerups extends Component with HasGameRef<MyGame> {
 
   @override
   void update(double dt) {
-    if (gameRef.sleeping) {
+    if (gameRef.sleeping || !gameRef.enablePowerups) {
       return;
     }
     super.update(dt);
@@ -35,10 +37,6 @@ class Powerups extends Component with HasGameRef<MyGame> {
   }
 
   void _maybeGeneratePowerups(double dt) {
-    if (!enabled) {
-      return;
-    }
-
     if (!hasSpaceBattle) {
       spaceBattleSpawner.maybeSpawn(dt, () {
         hasSpaceBattle = true;

@@ -91,7 +91,7 @@ class Wall extends PositionComponent with HasGameRef<MyGame> {
         .map((e) => startingPane + sign * e)
         .where((e) => !brokenPanes.containsKey(e))
         .take(number)
-        .associateBy((_) => Tileset.brokenWalls.randomIdx(R));
+        .associate((e) => Pair(e, Tileset.brokenWalls.randomIdx(R)));
 
     newBrokenPanes.forEach((paneIdx, brokenType) {
       final delta = Tileset.brokenWallDeltas[brokenType];

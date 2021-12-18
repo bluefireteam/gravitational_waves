@@ -44,8 +44,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void startGame({required bool enablePowerups}) {
-    game!.powerups.enabled = enablePowerups;
-    game!.start();
+    game!.start(enablePowerups);
 
     setState(() {
       _playSection = false;
@@ -143,7 +142,7 @@ class _GameScreenState extends State<GameScreen> {
         sectionChildren.addAll([
           Label(
             label:
-                'Total Coins: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}',
+                'Total Gems: ${GameData.instance.coins} | High Score: ${GameData.instance.highScore ?? '-'}',
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

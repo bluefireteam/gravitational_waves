@@ -46,6 +46,7 @@ class MyGame extends FlameGame with TapDetector {
 
   bool sleeping = false;
   bool gamePaused = false;
+  bool enablePowerups = false;
 
   late Player player;
   late Hud hud;
@@ -100,9 +101,10 @@ class MyGame extends FlameGame with TapDetector {
     camera.snapTo(Vector2(player.position.x - size.x / 3, 0));
   }
 
-  void start() {
+  void start(bool enablePowerups) {
+    this.enablePowerups = enablePowerups;
     Analytics.log(
-      powerups.enabled ? EventName.START_REVAMPED : EventName.START_CLASSIC,
+      enablePowerups ? EventName.START_REVAMPED : EventName.START_CLASSIC,
     );
     sleeping = false;
     add(hud = Hud());
@@ -113,7 +115,7 @@ class MyGame extends FlameGame with TapDetector {
 
   Future<void> restart() async {
     await preStart();
-    start();
+    start(enablePowerups);
   }
 
   Background findBackgroundForX(double x) {

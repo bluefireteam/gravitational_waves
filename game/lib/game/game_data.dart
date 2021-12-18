@@ -19,7 +19,7 @@ class GameData {
   int? highScore;
 
   GameData()
-      : coins = 100,
+      : coins = 0,
         highScore = null,
         selectedSkin = Skin.ASTRONAUT,
         ownedSkins = [Skin.ASTRONAUT],
