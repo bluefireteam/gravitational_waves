@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flame/game.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,6 @@ class _SkinsScreenState extends State<SkinsScreen> {
 
     children.add(
       Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 20),
           Label(
@@ -46,58 +47,68 @@ class _SkinsScreenState extends State<SkinsScreen> {
           const SizedBox(height: 20),
           Container(
             height: 100,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: Skin.values.map((v) {
-                final isOwned = GameData.instance.ownedSkins.contains(v);
-                final isSelected = GameData.instance.selectedSkin == v;
-                final price = skinPrice(v);
-                final sprite = Char.fromSkin(v);
-                final flameWidget = SizedBox(
-                  child: SpriteWidget(
-                    sprite: sprite,
-                    srcSize: Vector2(100.0, 80.0),
-                  ),
-                  width: 100.0,
-                  height: 100.0,
-                );
-                final widget = isOwned
-                    ? flameWidget
-                    : Stack(
-                        children: [
-                          Opacity(
-                            opacity: 0.3,
-                            child: flameWidget,
-                          ),
-                          Positioned(
-                            child: Label(
-                              label: '$price gems',
-                              fontColor: PaletteColors.blues.light,
+            child: ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(
+                dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                },
+              ),
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                children: Skin.values.map((v) {
+                  final isOwned = GameData.instance.ownedSkins.contains(v);
+                  final isSelected = GameData.instance.selectedSkin == v;
+                  final price = skinPrice(v);
+                  final sprite = Char.fromSkin(v);
+                  final flameWidget = SizedBox(
+                    child: SpriteWidget(
+                      sprite: sprite,
+                      srcSize: Vector2(100.0, 80.0),
+                    ),
+                    width: 100.0,
+                    height: 100.0,
+                  );
+                  final widget = isOwned
+                      ? flameWidget
+                      : Stack(
+                          children: [
+                            Opacity(
+                              opacity: 0.3,
+                              child: flameWidget,
                             ),
-                            right: 2.0,
-                            top: 2.0,
-                          ),
-                        ],
-                      );
-                final color = isSelected ? PaletteColors.blues.light : null;
+                            Positioned(
+                              child: Label(
+                                label: '$price gems',
+                                fontColor: PaletteColors.blues.light,
+                              ),
+                              right: 2.0,
+                              top: 2.0,
+                            ),
+                          ],
+                        );
+                  final color = isSelected ? PaletteColors.blues.light : null;
 
-                return GRContainer(
-                  padding: const EdgeInsets.all(12.0),
-                  width: 128,
-                  height: 128,
-                  child: GestureDetector(
-                    onTap: () async {
-                      if (isOwned) {
-                        await GameData.instance.buyAndSetSkin(v);
-                        setState(() {});
-                      } else if (price <= GameData.instance.coins) {
-                        setState(() => _skinToBuy = v);
-                      }
-                    },
-                    child: Container(color: color, child: widget),
-                  ),
-                );
-              }).toList(),
+                  return GRContainer(
+                    padding: const EdgeInsets.all(12.0),
+                    width: 128,
+                    height: 128,
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (isOwned) {
+                          await GameData.instance.buyAndSetSkin(v);
+                          setState(() {});
+                        } else if (price <= GameData.instance.coins) {
+                          setState(() => _skinToBuy = v);
+                        }
+                      },
+                      child: Container(color: color, child: widget),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ],
