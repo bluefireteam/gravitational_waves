@@ -4,7 +4,7 @@
 
 ![image](https://user-images.githubusercontent.com/882703/145734252-2fc01ef7-bbf5-4923-8708-27deb6d7dab6.png)
 
-This is a simple homage to Gravity Square, an old inifinity runner discountinued by Kongregate.
+This is a simple homage to Gravity Square, an old infinity runner discontinued by Kongregate.
 
 Color palette: https://lospec.com/palette-list/fzt-ethereal-16
 
