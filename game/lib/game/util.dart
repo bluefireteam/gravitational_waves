@@ -18,7 +18,7 @@ const ENABLE_ADS = true;
 
 const BLOCK_SIZE = 16.0;
 const BLOCK_SIZE_INT = 16;
-const CHUNCK_SIZE = 64;
+const CHUNK_SIZE = 64;
 
 const ROTATION_SPEED = 0.075;
 

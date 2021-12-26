@@ -17,12 +17,12 @@ class Background extends PositionComponent with HasGameRef<MyGame> {
 
   Background(double x) {
     this.x = x;
-    columns = _generateChunck(CHUNCK_SIZE).toList();
+    columns = _generateChunck(CHUNK_SIZE).toList();
   }
 
   Background.plains(double x) {
     this.x = x;
-    columns = _generatePlains(CHUNCK_SIZE).toList();
+    columns = _generatePlains(CHUNK_SIZE).toList();
   }
 
   Background.tutorial(double x) {

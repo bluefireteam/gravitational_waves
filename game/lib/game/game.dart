@@ -73,7 +73,7 @@ class MyGame extends FlameGame with TapDetector {
     gamePaused = false;
 
     gravity = GRAVITY_ACC;
-    const firstX = -CHUNCK_SIZE / 2.0 * BLOCK_SIZE;
+    const firstX = -CHUNK_SIZE / 2.0 * BLOCK_SIZE;
     lastGeneratedX = firstX;
     coins = 0;
     hasUsedExtraLife = false;
@@ -127,7 +127,11 @@ class MyGame extends FlameGame with TapDetector {
       final bg = Background(lastGeneratedX);
       await _addBg(bg);
 
-      final amountCoints = 2 + R.nextInt(3);
+      final coinLevel = Coin.computeCoinLevel(
+        x: lastGeneratedX,
+        powerups: enablePowerups,
+      );
+      final amountCoints = R.nextInt(1 + coinLevel);
       final coins = <Coin>[];
       for (var i = 0; i < amountCoints; i++) {
         final spot = bg.findRectFor(bg.columns.randomIdx(R));
