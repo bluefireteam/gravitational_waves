@@ -182,7 +182,7 @@ packages:
       name: dartlin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1"
+    version: "0.6.2"
   dashbook:
     dependency: "direct dev"
     description:
