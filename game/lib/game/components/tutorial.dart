@@ -8,7 +8,7 @@ import '../util.dart';
 
 class Tutorial extends Component with HasGameRef<MyGame> {
   static final positions = [64 - 6, 64 + 12]
-      .map((e) => (-CHUNCK_SIZE / 2.0 + e) * BLOCK_SIZE)
+      .map((e) => (-CHUNK_SIZE / 2.0 + e) * BLOCK_SIZE)
       .toList();
 
   static Iterable<Column> generateTerrain() {

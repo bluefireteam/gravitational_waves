@@ -17,13 +17,13 @@ int skinPrice(Skin skin) {
     case Skin.SECURITY:
     case Skin.PINK_HAIR_PUNK:
     case Skin.GREEN_HAIR_PUNK:
-      return 10;
+      return 50;
     case Skin.HAZMAT_SUIT:
     case Skin.ROBOT:
-      return 30;
+      return 150;
     case Skin.VAMPIRE:
     case Skin.RETRO_PILOT:
     case Skin.ALIEN:
-      return 50;
+      return 250;
   }
 }
