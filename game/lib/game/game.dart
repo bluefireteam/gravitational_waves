@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
+import '../screens/game_screen.dart';
 import 'analytics.dart';
 import 'audio.dart';
 import 'collections.dart';
@@ -25,7 +28,7 @@ import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
 
-class MyGame extends FlameGame with TapDetector {
+class MyGame extends FlameGame with TapDetector, KeyboardEvents {
   static Spawner planetSpawner = Spawner(0.12);
 
   // Setup by the flutter components to allow this game instance
@@ -227,6 +230,26 @@ class MyGame extends FlameGame with TapDetector {
 
   @override
   void onTapUp(TapUpInfo details) {
+    jump();
+    super.onTapUp(details);
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    RawKeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    if (event is RawKeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.space) {
+        jump();
+        return KeyEventResult.handled;
+      }
+    }
+
+    return super.onKeyEvent(event, keysPressed);
+  }
+
+  void jump() {
     if (sleeping) {
       return;
     }
@@ -237,7 +260,6 @@ class MyGame extends FlameGame with TapDetector {
         return;
       }
     }
-    super.onTapUp(details);
     if (showTutorial == 0) {
       showTutorial = -1; // if the player jumps don't show the tutorial
     }
