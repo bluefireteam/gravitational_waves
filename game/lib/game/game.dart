@@ -223,15 +223,12 @@ class MyGame extends FlameGame with TapDetector, KeyboardEvents {
 
   @override
   void onTapDown(TapDownInfo details) {
-    if (player.regularJetpack) {
-      player.hoverStart();
-    }
+    actionDown();
   }
 
   @override
   void onTapUp(TapUpInfo details) {
-    jump();
-    super.onTapUp(details);
+    actionUp();
   }
 
   @override
@@ -239,9 +236,12 @@ class MyGame extends FlameGame with TapDetector, KeyboardEvents {
     RawKeyEvent event,
     Set<LogicalKeyboardKey> keysPressed,
   ) {
-    if (event is RawKeyDownEvent) {
-      if (event.logicalKey == LogicalKeyboardKey.space) {
-        jump();
+    if (event.logicalKey == LogicalKeyboardKey.space) {
+      if (event is RawKeyDownEvent) {
+        actionDown();
+        return KeyEventResult.handled;
+      } else if (event is RawKeyUpEvent) {
+        actionUp();
         return KeyEventResult.handled;
       }
     }
@@ -249,7 +249,13 @@ class MyGame extends FlameGame with TapDetector, KeyboardEvents {
     return super.onKeyEvent(event, keysPressed);
   }
 
-  void jump() {
+  void actionDown() {
+    if (player.regularJetpack) {
+      player.hoverStart();
+    } else if (!player.jetpack) {
+      gravity *= -1;
+    }
+
     if (sleeping) {
       return;
     }
@@ -263,10 +269,11 @@ class MyGame extends FlameGame with TapDetector, KeyboardEvents {
     if (showTutorial == 0) {
       showTutorial = -1; // if the player jumps don't show the tutorial
     }
+  }
+
+  void actionUp() {
     if (player.jetpack) {
       player.boost();
-    } else {
-      gravity *= -1;
     }
   }
 
