@@ -1,8 +1,8 @@
-import 'dart:ui';
-
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'analytics.dart';
 import 'audio.dart';
@@ -25,7 +25,7 @@ import 'scoreboard.dart';
 import 'spawner.dart';
 import 'util.dart';
 
-class MyGame extends FlameGame with TapDetector {
+class MyGame extends FlameGame with TapDetector, KeyboardEvents {
   static Spawner planetSpawner = Spawner(0.12);
 
   // Setup by the flutter components to allow this game instance
@@ -220,13 +220,39 @@ class MyGame extends FlameGame with TapDetector {
 
   @override
   void onTapDown(TapDownInfo details) {
-    if (player.regularJetpack) {
-      player.hoverStart();
-    }
+    actionDown();
   }
 
   @override
   void onTapUp(TapUpInfo details) {
+    actionUp();
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    RawKeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    if (event.logicalKey == LogicalKeyboardKey.space) {
+      if (event is RawKeyDownEvent) {
+        actionDown();
+        return KeyEventResult.handled;
+      } else if (event is RawKeyUpEvent) {
+        actionUp();
+        return KeyEventResult.handled;
+      }
+    }
+
+    return super.onKeyEvent(event, keysPressed);
+  }
+
+  void actionDown() {
+    if (player.regularJetpack) {
+      player.hoverStart();
+    } else if (!player.jetpack) {
+      gravity *= -1;
+    }
+
     if (sleeping) {
       return;
     }
@@ -237,14 +263,14 @@ class MyGame extends FlameGame with TapDetector {
         return;
       }
     }
-    super.onTapUp(details);
     if (showTutorial == 0) {
       showTutorial = -1; // if the player jumps don't show the tutorial
     }
+  }
+
+  void actionUp() {
     if (player.jetpack) {
       player.boost();
-    } else {
-      gravity *= -1;
     }
   }
 

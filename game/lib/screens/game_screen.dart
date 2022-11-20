@@ -28,6 +28,8 @@ class _GameScreenState extends State<GameScreen> {
   bool _showGameOver = false;
   bool _adLoading = false;
 
+  final gameFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +52,8 @@ class _GameScreenState extends State<GameScreen> {
       _playSection = false;
       _playing = true;
     });
+
+    gameFocusNode.requestFocus();
   }
 
   void handleExtraLife() async {
@@ -74,7 +78,7 @@ class _GameScreenState extends State<GameScreen> {
 
     final children = <Widget>[];
 
-    children.add(GameWidget(game: game));
+    children.add(GameWidget(game: game, focusNode: gameFocusNode));
 
     if (_showGameOver) {
       children.add(
