@@ -48,8 +48,8 @@ class Button extends StatelessWidget {
         minWidth: minWidth,
         // TODO(luan): replace FlatButton
         // ignore_for_file: deprecated_member_use
-        child: FlatButton(
-          color: fontColor,
+        child: TextButton(
+          style: TextButton.styleFrom(foregroundColor: fontColor),
           onPressed: onPress,
           child: Text(
             label,
