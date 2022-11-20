@@ -1,12 +1,9 @@
-import 'dart:ui';
-
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import '../screens/game_screen.dart';
 import 'analytics.dart';
 import 'audio.dart';
 import 'collections.dart';

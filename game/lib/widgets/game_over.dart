@@ -103,7 +103,9 @@ class _GameOverContainerState extends State<GameOverContainer> {
               ),
             PrimaryButton(label: 'Play again', onPress: widget.playAgain),
             SecondaryButton(
-                label: 'Back to menu', onPress: widget.goToMainMenu),
+              label: 'Back to menu',
+              onPress: widget.goToMainMenu,
+            ),
           ],
         ),
       ),
